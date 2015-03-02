@@ -9,11 +9,11 @@
   </span>
   <div class="row">
     <div class="col-xs-12 col-sm-6">
-      <button type="button" class="btn btn-block btn" data-toggle="modal" data-target=".set-room-temp-modal">
+      <button type="button" class="btn btn-block btn" data-toggle="modal" data-target=".set-room-temp">
         <p>Temperatura pokojowa:</p>
-        <h1 style="font-size: 62px"><b><span id="roomVal">20.8</span>&deg;C</b></h1>
+        <h1 style="font-size: 62px"><b><span id="roomVal">00.0</span>&deg;C</b></h1>
         <p>Temperatura odczuwalna:</p>
-        <h2><span id="feelVal">21.2</span>&deg;C</h2>
+        <h2><span id="feelVal">00.0</span>&deg;C</h2>
       </button>
     </div>
     <div class="col-xs-12 col-sm-6">
@@ -24,11 +24,8 @@
         Tryb pracy:<br>roboczy
       </button>
       <button type="button" class="btn btn-block">
-        <p>Wilgotność:</p><h2><span id="humidity_value">70</span>%</h2> <!-- 0.0079 W/m2 per Lux-->
+        <p>Wilgotność:</p><h2><span id="humidity_value">000</span>%</h2>
       </button>
-      <!--<button type="button" class="btn btn-block">
-        <p>Nasłonecznienie:</p><h2><span id="lux_value">0 W/m<sup>2</sup></span></h2>--> <!-- 0.0079 W/m2 per Lux-->
-      <!--</button>-->
     </div>
   </div>
   <span class="hidden-xs"><br></span>
@@ -52,60 +49,28 @@
   </div>
 </div>
 
-
-
-<!-- TODO: Add 1 minute timeout to close modal -->
-<div class="modal fade set-room-temp-modal" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" data-target="#set-room-temp-modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title text-center">Temperatura pokojowa</h4>
-      </div> <!-- .modal-header -->
-      <div class="modal-body">
-        <p class="text-center">Ustaw temperaturę w pokoju</p>
-        <div class="well">
-          <div class="container-fluid">
-            <div class="row">
-              <input id="sliderRoom" data-slider-id='roomSlider' type="text" data-slider-min="15" data-slider-max="28" data-slider-step="0.1" data-slider-value="21.8"/>
-            </div> <!-- .row -->
-            <div class="row">
-              <div class="col-xs-6 text-center">
-                <h3>Temp<span class="hidden-xs">eratura</span> odczuwalna:<br>
-                <b><span id="feelValTmp">20.8</span>&deg;C</b></h3>
-              </div>
-              <div class="col-xs-6 text-center">
-                <h4>Temp<span class="hidden-xs">eratura</span>:<br>
-                <span id="roomValTmp">20.8</span>&deg;C</h4>
-              </div>
-            </div> <!-- .row -->
-          </div> <!-- .container-fluid -->
-        </div> <!-- .well -->
-      </div> <!-- .modal-body -->
-    </div> <!-- .modal-content -->
-  </div> <!-- .modal-dialog -->
-</div> <!-- .modal -->
+{% from 'modal.html' import modal with context %}
+{{ modal("set-room-temp", 
+         "Temperatura odczuwalna",
+         "Wprowadź temperaturę",
+         "Temperatura odczuwalna:") }}
 
 <script type="text/javascript">
-window.onload = function(){date()},
-                setInterval(
-                  function(){
-                    date()
-                  }, 1000);
+window.onload = function(){update()},
+                setInterval(function(){update()
+                  }, 500);
 
-function date() {
-  var MyDate = new Date(),
-  time = MyDate.getHours() + ':' + 
-        ('0' + MyDate.getMinutes()).slice(-2);
-  date = MyDate.getDate() + '/' + 
-        ('0' + (MyDate.getMonth() + 1)).slice(-2) + '/' + 
-        MyDate.getFullYear();
-  $('#time').html(time);
-  $('#date').html(date);
+function update() {
+  var myDate = new Date(),
+  time = myDate.getHours() + ':' + 
+        ('0' + myDate.getMinutes()).slice(-2);
+  date = myDate.getDate() + '/' + 
+        ('0' + (myDate.getMonth() + 1)).slice(-2) + '/' + 
+        myDate.getFullYear();
+  $('#time').text(time);
+  $('#date').text(date);
 }
 
-$(document).ready(function () {
-  $('.nav-dashboard').addClass('active');
-});            
+$(document).ready(function(){$('.nav-dashboard').addClass('active');});            
 </script>
 {% endblock %}
