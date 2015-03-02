@@ -1,6 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
-<p>Water placeholder</p>
+<div class="row">
+{% for name in names %}
+  <div class="col-xs-6">
+    <h1 class="text-center" style="color:#428bca">{{ name }}</h1>
+  </div>
+{% endfor %}
+</div>
+
+<div class="row">
+  <div class="col-xs-6">
+    <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target="#solar-max">
+      <h2><br></h2>
+      Maksimum:<br>
+      <h2><b><span id="solar-max-value">70</span>&deg;C</b></h2><br><br>
+    </button>
+  </div>
+  <div class="col-xs-6">
+    <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target="#heater-max">
+      Maksimum:<br>
+      <h2><b><span id="heater-max-value">60</span>&deg;C</b></h2>
+    </button>
+    <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target="#heater-min">
+      Minimum:<br>
+      <h2><b><span id="heater-min-value">45</span>&deg;C</b></h2>
+    </button>
+  </div>
+</div> <!-- .row -->
+
+{% from 'modal.html' import modal %}
+{{ modal("solar-max",
+         "Maksymalna temperatura",
+         "Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora",
+         [30,100]) }}
+{{ modal("heater-min",
+         "Minimalna temperatura",
+         "Ustaw minimalną temperaturę wody w zbiorniku dla zasilania z pieca",
+         [30,100]) }}
+{{ modal("heater-max",
+         "Maksymalna temperatura",
+         "Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z pieca",
+         [30,100]) }}
 
 <script type="text/javascript">
 $(document).ready(function () {

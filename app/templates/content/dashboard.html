@@ -2,10 +2,7 @@
 {% block content %}
 <div class="container-fluid">
   <span class="visible-lg visible-md">
-  <div class="row text-center">
-    <h1>Panel Kontrolny</h1>
-    <br>
-  </div>
+  <br>
   </span>
   <div class="row">
     <div class="col-xs-12 col-sm-6">
@@ -15,42 +12,41 @@
         <p>Temperatura odczuwalna:</p>
         <h2><span id="feelVal">00.0</span>&deg;C</h2>
       </button>
+      <span class="hidden-xs"><br></span>
+      <button type="button" class="btn btn-block">
+        <p>Temperatura zewnętrzna:</p>
+        <h2 id="temp_out">25.2&deg;C</h2>
+      </button>
     </div>
     <div class="col-xs-12 col-sm-6">
+      <button type="button" class="btn btn-block">
+        <p>Wilgotność:</p><h2><span id="humidity_value">000</span>%</h2>
+      </button>
       <button type="button" class="btn btn-block btn-warning">
         Praca pieca:<br>Tak
       </button>
       <button type="button" class="btn btn-block btn-info">
         Tryb pracy:<br>roboczy
       </button>
-      <button type="button" class="btn btn-block">
-        <p>Wilgotność:</p><h2><span id="humidity_value">000</span>%</h2>
-      </button>
-    </div>
-  </div>
-  <span class="hidden-xs"><br></span>
-  <div class="row">
-    <div class="col-xs-12 col-sm-6">
-      <button type="button" class="btn btn-block">
-        <p>Temperatura zewnętrzna:</p>
-        <h2 id="temp_out">25.2&deg;C</h2>
-      </button>
-    </div>
-    <div class="col-xs-6 col-sm-3">
-      <button type="button" class="btn btn-block" id="set-time">
-        <h4><b><span id="time">24:00</span></b></h4>
-      </button>
-    </div>
-    <div class="col-xs-6 col-xs-offset-0 col-sm-3 col-sm-offset-0">
-      <button type="button" class="btn btn-block" id="set-date">
-        <h4><span id="date">23/08/2014</span></h4>
-      </button>
+      <span class="hidden-xs"><br></span>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <button type="button" class="btn btn-block" id="set-time">
+            <h4><b><span id="time">24:00</span></b></h4>
+          </button>
+        </div>
+        <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-0">
+          <button type="button" class="btn btn-block" id="set-date">
+            <h4><span id="date">23/08/2014</span></h4>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-{% from 'modal.html' import modal with context %}
-{{ modal("set-room-temp", 
+{% from 'modal.html' import modal2 %}
+{{ modal2("set-room-temp", 
          "Temperatura odczuwalna",
          "Wprowadź temperaturę",
          "Temperatura odczuwalna:") }}
@@ -69,7 +65,7 @@ function update() {
         myDate.getFullYear();
   $('#time').text(time);
   $('#date').text(date);
-}
+};
 
 $(document).ready(function(){$('.nav-dashboard').addClass('active');});            
 </script>

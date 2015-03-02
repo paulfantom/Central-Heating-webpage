@@ -19,21 +19,10 @@ from app import app
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
-    user = {'nickname': 'Dupa'}  # fake user
-    posts = [  # fake array of posts
-        { 
-            'author': {'nickname': 'John'}, 
-            'body': 'Beautiful day in Portland!' 
-        },
-        { 
-            'author': {'nickname': 'Susan'}, 
-            'body': 'The Avengers movie was so cool!' 
-        }
-    ]
+    user='admin'
     return render_template("content/dashboard.html",
                            title='Home',
-                           user=user,
-                           posts=posts)
+                           user=user)
 
 @app.route('/status')
 def status():
@@ -41,7 +30,8 @@ def status():
 
 @app.route('/water')
 def water():
-    return render_template("content/water.html", title='Water')
+    names = ['Solar', 'Heater']
+    return render_template("content/water.html", title='Water', names=names)
 
 @app.route('/heater')
 def heater():
@@ -50,6 +40,10 @@ def heater():
 @app.route('/solar')
 def solar():
     return render_template("content/solar.html", title='Solar')
+
+@app.route('/circulation')
+def circulation():
+    return render_template("content/circulation.html", title='Circulation')
 
 @app.route('/options')
 def options():
