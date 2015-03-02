@@ -1,0 +1,167 @@
+/*
+ * Base structure
+ */
+
+html,body {
+  background-color: #444;
+}
+
+
+body {
+  background-color: #444;
+}
+
+p,h1,h2,h3,h4,h5,h6 {
+  color: #428bca;
+}
+*/
+
+
+.vertical-text{
+  float: left;
+  position: relative;
+  vertical-align: middle;
+  transform:rotate(270deg);
+  /*-moz-transform:rotate(90deg);
+  -o-transform:rotate(90deg);
+  -webkit-transform:rotate(90deg);
+  -ms-transform:rotate(90deg);*/
+}
+
+.modal {
+  background-color: #111;
+}
+.modal-header {
+  background-color: #333;
+}
+.modal-body {
+  background-color: #555;
+}
+.modal-footer {
+  background-color: #333;
+}
+.well {
+  background-color: #222;
+}
+.close {
+  color: #fff !important;
+  opacity: .7 !important;
+}
+.close:hover,
+.close:focus {
+  color: #f00 !important;
+  opacity: .5 !important;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display:none;
+  float:  left;
+  height: auto;
+  min-width:45px;
+}
+@media (min-width: 100px) {
+  .sidebar {
+    position: fixed;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #111;
+    border-right: 1px solid #000;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 10px;
+}
+@media (min-width: 200px) {
+  .main {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+/*
+ * Buttons
+ */
+.btn {
+  white-space: normal;
+}
+
+
+
+/*
+ * Navbar
+ */
+
+
+.navbar-toggle {
+  min-height:10px !important; 
+  margin-bottom:2px !important; 
+  padding-bottom:1px !important;
+  margin-top:2px !important; 
+  padding-top:1px !important;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+/*
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+*/
