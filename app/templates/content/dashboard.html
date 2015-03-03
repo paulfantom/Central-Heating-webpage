@@ -8,25 +8,35 @@
     <div class="col-xs-12 col-sm-6">
       <button type="button" class="btn btn-block btn" data-toggle="modal" data-target=".set-room-temp">
         <p>Temperatura pokojowa:</p>
-        <h1 style="font-size: 62px"><b><span id="roomVal">00.0</span>&deg;C</b></h1>
+        <h1 style="font-size: 62px"><b><span id="roomVal">{{ data['room_temp'] }}</span>&deg;C</b></h1>
         <p>Temperatura odczuwalna:</p>
-        <h2><span id="feelVal">00.0</span>&deg;C</h2>
+        <h2><span id="feelVal">{{ data['feel_temp'] }}</span>&deg;C</h2>
       </button>
       <span class="hidden-xs"><br></span>
       <button type="button" class="btn btn-block">
         <p>Temperatura zewnętrzna:</p>
-        <h2 id="temp_out">25.2&deg;C</h2>
+        <h2 id="temp_out">{{ data['out_temp'] }}&deg;C</h2>
       </button>
     </div>
     <div class="col-xs-12 col-sm-6">
       <button type="button" class="btn btn-block">
-        <p>Wilgotność:</p><h2><span id="humidity_value">000</span>%</h2>
+        <p>Wilgotność:</p><h2><span id="humidity_value">{{ data['humidity'] }}</span>%</h2>
       </button>
       <button type="button" class="btn btn-block btn-warning">
-        Praca pieca:<br>Tak
+        Praca pieca:<br>
+        {% if data['heater_status'] == 'on' %}
+          Tak
+        {% else %}
+          Nie
+        {% endif %}
       </button>
       <button type="button" class="btn btn-block btn-info">
-        Tryb pracy:<br>roboczy
+        Tryb pracy:<br>
+        {% if data['work_mode'] == 'normal' %}
+          Roboczy
+        {% else %}
+          Świąteczny
+        {% endif %}
       </button>
       <span class="hidden-xs"><br></span>
       <div class="row">

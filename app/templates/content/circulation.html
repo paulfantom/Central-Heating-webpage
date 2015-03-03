@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-<p>Circulation placeholder</p>
+<div class="row hidden-xs">
+  <h2 align="center">{{ title }}</h2>
+</div>
 
+{% from 'modal.html' import modal %}
+{% for row in data %}
+
+<div class="row">
+  <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target="#{{ row['name'] }}">
+    <div class="col-xs-6">
+      <h4>{{ row['title'] }}:</h4>
+    </div>
+    <div class="col-xs-6">
+      <h4><b><span id="{{ row['name'] }}-value">{{ row['value'] }}</span>{{ row['unit'] }}</b></h4>
+    </div>
+  </button>
+</div>  <!-- .row -->
+
+{{ modal(row['name'],
+         row['title'],
+         row['desc'],
+         row['range']) }}
+
+{% endfor %}
 
 <script type="text/javascript">
 $(document).ready(function () {
