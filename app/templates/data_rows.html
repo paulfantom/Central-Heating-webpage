@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+{%- if title is defined -%}
+<div class="row">
+  <h3 align="center">{{ title }}</h3>
+</div>
+{%- endif -%}
+
+{% from 'modal.html' import modal %}
+{% for row in data %}
+{% if row['range'] is defined %}
+<div class="row">
+  <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target="#{{ row['name'] }}">
+{% else %}
+<div class="container-fluid">
+  <div class="row">
+{% endif %}
+    <div class="col-xs-7">
+      <h4 align="center">{{ row['title'] }}:</h4>
+    </div>
+    <div class="col-xs-5">
+      <h4 align="center"><b><span id="{{ row['name'] }}-value">{{ row['value'] }}</span>{{ row['unit']|default('°C') }}</b></h4>
+    </div>
+{% if row['range'] is defined %}
+  </button>
+</div>
+{{ modal(row['name'],
+         row['title'],
+         row['desc'],
+         row['range']) }}
+
+{% else %}
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+
+{% if nav_item is defined %}
+<script type="text/javascript">
+$(document).ready(function () {
+  $(".{{ nav_item }}").addClass('active');
+});
+</script>
+{% endif %}
+
+{% endblock %}

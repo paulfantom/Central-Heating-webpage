@@ -6,20 +6,20 @@
   </span>
   <div class="row">
     <div class="col-xs-12 col-sm-6">
-      <button type="button" class="btn btn-block btn" data-toggle="modal" data-target=".set-room-temp">
+      <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target=".set-room-temp">
         <p>Temperatura pokojowa:</p>
         <h1 style="font-size: 62px"><b><span id="roomVal">{{ data['room_temp'] }}</span>&deg;C</b></h1>
         <p>Temperatura odczuwalna:</p>
         <h2><span id="feelVal">{{ data['feel_temp'] }}</span>&deg;C</h2>
       </button>
       <span class="hidden-xs"><br></span>
-      <button type="button" class="btn btn-block">
+      <button type="button" class="btn btn-block btn-link">
         <p>Temperatura zewnętrzna:</p>
         <h2 id="temp_out">{{ data['out_temp'] }}&deg;C</h2>
       </button>
     </div>
     <div class="col-xs-12 col-sm-6">
-      <button type="button" class="btn btn-block">
+      <button type="button" class="btn btn-block btn-link">
         <p>Wilgotność:</p><h2><span id="humidity_value">{{ data['humidity'] }}</span>%</h2>
       </button>
       <button type="button" class="btn btn-block btn-warning">
@@ -41,12 +41,12 @@
       <span class="hidden-xs"><br></span>
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <button type="button" class="btn btn-block" id="set-time">
+          <button type="button" class="btn btn-block btn-link" id="set-time">
             <h4><b><span id="time">24:00</span></b></h4>
           </button>
         </div>
         <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-0">
-          <button type="button" class="btn btn-block" id="set-date">
+          <button type="button" class="btn btn-block btn-link" id="set-date">
             <h4><span id="date">23/08/2014</span></h4>
           </button>
         </div>
