@@ -37,15 +37,15 @@
   
   <body>
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-1 col-sm-2 sidebar">
-{% include "sidebar.html" %}
-        </div>
-        <div class="col-xs-11 col-xs-offset-1 col-sm-10 col-sm-offset-2 content">
-{% block content %}{% endblock %}
-    </div></div></div>
+      <div class="col-xs-1 col-sm-2 sidebar">
+        {% include "sidebar.html" %}
+      </div>
+      <div class="col-xs-11 col-xs-offset-1 col-sm-10 col-sm-offset-2 content">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
     <footer class="footer">
-{% include "footer.html" %}
+      {% include "footer.html" %}
     </footer>
   </body>
 </html>

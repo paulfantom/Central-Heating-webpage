@@ -1,7 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
-<p>Options placeholder</p>
 
+{%- if title is defined -%}
+<div class="row">
+  <h3 align="center">{{ title }}</h3>
+</div>
+{%- endif -%}
+
+{% for row in data %}
+<div class="row">
+  <br>
+  {% for btn in row %}
+  <div class="col-xs-12 col-sm-6">
+    <button type="button" class="btn btn-block btn-{{ btn['type']|default('primary') }}" data-toggle="modal" data-target="#{{ btn['name'] }}">
+      <h2 style="color:#FFFFFF"><br>
+      {%- if btn['type'] == 'danger' -%}
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      <b><span> {{ btn['text'] }} </span></b>
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      {%- else -%}
+      {{- btn['text'] -}}
+      {%- endif -%}
+      <br>
+      {%- if btn['value'] is defined -%}
+      <span id="{{ btn['name'] }}_value"> {{ btn['value'] }}</span> min
+      {%- endif -%}
+      <br><br></h2>
+    </button>
+  </div>
+  {%- endfor %}
+</div>
+{%- endfor %}
 
 <script type="text/javascript">
 $(document).ready(function () {

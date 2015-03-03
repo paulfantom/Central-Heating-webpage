@@ -36,7 +36,7 @@ def dashboard():
 @app.route('/status')
 def status():
     values = []
-    return render_template("data_rows.html",data=values,title='Status',nav_item='nav-status')
+    return render_template("/content/status.html",data=values)
 
 @app.route('/water')
 def water():
@@ -140,4 +140,19 @@ def solar():
 
 @app.route('/options')
 def options():
-    return render_template("content/options.html", title='Opcje')
+
+    buttons = [[{'name'  : 'refresh_rate',
+                 'type'  : 'primary',
+                 'text'  : u'Częstotliwość odświeżania:',
+                 'value' : '1'},
+                {'name'  : 'placeholder',
+                 'text'  : 'placeholder'}],
+               [{'name'  : 'reboot_mcu',
+                 'type'  : 'danger',
+                 'text'  : u'Zresetuj sterownik'},
+                {'name'  : 'reboot_mcu',
+                 'type'  : 'danger',
+                 'text'  : u'Zresetuj HMI'}]]
+
+    return render_template("content/options.html",
+                           data=buttons)
