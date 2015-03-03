@@ -39,10 +39,6 @@ def status():
 
 @app.route('/water')
 def water():
-    names = ['Solar', 'Heater']
-    values = { "solar_max"  : 70,
-               "heater_max" : 60,
-               "heater_min" : 30 }
 
     values = [ {'title'  : u'Aktualna temp.',
                 'value' : 44 },
@@ -50,9 +46,11 @@ def water():
                 'value' : [90],
                 'range' : [30,100],
                 'title' : u'Solar',
-                'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora' },
+                'desc'  : [u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora'] },
                {'name'  : ["heater_max","heater_min"],
                 'value' : [90,30],
+                'info'  : [u'Maximum',
+                           u'Minimum'],
                 'range' : [30,100],
                 'title' : u'Piec',
                 'desc'  : [u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z pieca',
@@ -60,7 +58,6 @@ def water():
 
     return render_template("content/water.html",
                            title='Water',
-                           names=names,
                            data=values)
 
 @app.route('/circulation')
