@@ -1,25 +1,32 @@
+{% set active = active|default('dashboard') %}
           <ul class="nav nav-sidebar">
-            <li class="nav-dashboard"><a href="/dashboard">
+            <li class="nav-dashboard {% if active == 'dashboard' %}
+            active{% endif %}"><a href="/dashboard">
               <span class="glyphicon glyphicon-home"></span>
               <span class="hidden-xs"> Home</span></a>
             </li>
-            <li class="nav-status"><a href="/status">
+            <li class="nav-status {% if active == 'status' %}
+            active{% endif %}"><a href="/status">
               <span class="glyphicon glyphicon-stats"></span>
               <span class="hidden-xs"> Status</span></a>
             </li>
-            <li class="nav-water"><a href="/water">
+            <li class="nav-water {% if active == 'water' %}
+            active{% endif %}"><a href="/water">
               <span class="glyphicon glyphicon-tint"></span>
               <span class="hidden-xs"> Woda</span></a>
             </li>
-            <li class="nav-circulation"><a href="/circulation">
+            <li class="nav-circulation {% if active == 'circulation' %}
+            active{% endif %}"><a href="/circulation">
               <span class="glyphicon glyphicon-repeat"></span>
               <span class="hidden-xs"> Cyrkulacja</span></a>
             </li>
-            <li class="nav-heater"><a href="/heater">
+            <li class="nav-heater {% if active == 'heater' %}
+            active{% endif %}"><a href="/heater">
               <span class="glyphicon glyphicon-fire"></span>
               <span class="hidden-xs"> Ogrzewanie</span></a>
             </li>
-            <li class="nav-solar"><a href="/solar">
+            <li class="nav-solar {% if active == 'solar' %}
+            active{% endif %}"><a href="/solar">
               <span class="glyphicon glyphicon-asterisk"></span>
               <span class="hidden-xs"> Solar</span></a>
             </li>
@@ -30,7 +37,8 @@
             <li class="hidden-xs hidden-sm">
               <hr>
             </li>
-            <li class="nav-options hidden-xs"><a href="/options">
+            <li class="nav-options {% if active == 'options' %}
+            active {% endif %}hidden-xs"><a href="/options">
               <span class="glyphicon glyphicon-cog"></span>
               <span> Opcje</span></a>
             </li>

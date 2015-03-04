@@ -29,6 +29,7 @@ def dashboard():
              "heater_status" : 'on',
              "solar_status"  : 'on' }
     return render_template("content/dashboard.html",
+                           active='dashboard',
                            title='',
                            user=user,
                            data=data)
@@ -36,7 +37,7 @@ def dashboard():
 @app.route('/status')
 def status():
     values = []
-    return render_template("/content/status.html",data=values)
+    return render_template("/content/status.html",active='status',data=values)
 
 @app.route('/water')
 def water():
@@ -59,6 +60,7 @@ def water():
                 'desc'  : u'Ustaw minimalną temperaturę wody w zbiorniku dla zasilania z pieca' }]
 
     return render_template("data_rows.html",
+                           active='water',
                            data=values,
                            title='Woda',
                            nav_item='nav-water')
@@ -96,6 +98,7 @@ def circulation():
                 'title' : u'Przerwa',
                 'desc'  : u'Ustaw przerwę w pracy pompy w trybie poboru wody' } ]
     return render_template("data_rows.html",
+                           active='circulation',
                            data=values,
                            title="Cyrkulacja",
                            nav_item='nav-circulation')
@@ -128,7 +131,11 @@ def heater():
                    {'id' : 'sun', 'name' : u'Niedziela', 'state' : True} ]}
                ]
     save = u'Zapisz'
-    return render_template("content/heater.html", tabs=values, save=save, title='Piec')
+    return render_template("content/heater.html",
+                           active='heater',
+                           tabs=values,
+                           save=save,
+                           title='Piec')
 
 @app.route('/solar')
 def solar():
@@ -160,6 +167,7 @@ def solar():
                 'desc'  : u'Ustaw wartość różnicy temperatur powodującą wyłączenie układu solarnego' }]
 
     return render_template("data_rows.html",
+                           active='solar',
                            data=values,
                            title="Solar",
                            nav_item='nav-solar')
@@ -182,4 +190,5 @@ def options():
                  'text'  : u'Zresetuj sterownik'}]]
 
     return render_template("content/options.html",
+                           active='options',
                            data=buttons)
