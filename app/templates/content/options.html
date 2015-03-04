@@ -9,23 +9,25 @@
 
 {% for row in data %}
 <div class="row">
-  <br>
   {% for btn in row %}
   <div class="col-xs-12 col-sm-6">
+    <br>
     <button type="button" class="btn btn-block btn-{{ btn['type']|default('primary') }}" data-toggle="modal" data-target="#{{ btn['name'] }}">
-      <h2 style="color:#FFFFFF"><br>
+      <h3 style="color:#FFFFFF">
       {%- if btn['type'] == 'danger' -%}
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      <b><span> {{ btn['text'] }} </span></b>
+      <span class="glyphicon glyphicon-warning-sign"></span><br>
+      <b>{{ btn['text'] }}</b><br>
       <span class="glyphicon glyphicon-warning-sign"></span>
       {%- else -%}
-      {{- btn['text'] -}}
-      {%- endif -%}
       <br>
-      {%- if btn['value'] is defined -%}
-      <span id="{{ btn['name'] }}_value"> {{ btn['value'] }}</span> min
+      {{- btn['text'] -}}<br>
+        {%- if btn['value'] is defined -%}
+        <span id="{{ btn['name'] }}_value"> {{ btn['value'] }}</span> min<br>
+        {%- else -%}
+        <br>
+        {%- endif -%}
       {%- endif -%}
-      <br><br></h2>
+      <br></h3>
     </button>
   </div>
   {%- endfor %}
