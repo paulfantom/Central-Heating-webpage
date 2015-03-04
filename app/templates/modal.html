@@ -1,29 +1,37 @@
-{% macro modal(name, title_text, info_text, range) -%}
+{% macro modal(name, title_text, info_text, range, step, initial_value, unit, buttons) -%}
 <div class="modal fade" id="{{ name }}" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
+      {%- if title_text is defined %}
       <div class="modal-header">
         <h4 class="modal-title text-center">{{ title_text }}</h4>
       </div> <!-- .modal-header -->
+      {% endif -%}
       <div class="modal-body">
         <p class="text-center">{{ info_text }}</p>
         <div class="well">
           <div class="container-fluid">
             <div class="row">
               <div class="col-xs-9">
-                <input id="{{ name }}-slider" type="text" data-slider-min="{{range[0] }}" data-slider-max="{{range[1] }}" data-slider-step="0.5" data-slider-value="{{range[0] }}"/>
+                <input id="{{ name }}-slider" type="text"
+                       data-slider-min="{{range[0]}}"
+                       data-slider-max="{{range[1]}}"
+                       data-slider-step="{{step|default(1)}}"
+                       data-slider-value="{{initial_value}}"/>
               </div>
               <div class="col-xs-3">
-                <h2><b><span id="{{ name }}-value-tmp">0</span>&deg;C</b></h2>
+                <h2><b><span id="{{ name }}-value-tmp">{{ initial_value|default(range[0]) }}</span>{{ unit|default('°C') }}</b></h2>
               </div>
             </div> <!-- .row -->
           </div> <!-- .container-fluid -->
         </div> <!-- .well -->
       </div> <!-- .modal-body -->
+      {%- if buttons is defined %}
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
-        <button type="button" class="btn btn-primary" id="{{ name }}-save" data-dismiss="modal">Zapisz</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ buttons[0] }}</button>
+        <button type="button" class="btn btn-primary" id="{{ name }}-save" data-dismiss="modal">{{ buttons[1] }}</button>
       </div> <!-- .modal-footer -->
+      {% endif %}
     </div> <!-- .modal-content -->
   </div> <!-- .modal-dialog -->
 </div> <!-- .modal -->

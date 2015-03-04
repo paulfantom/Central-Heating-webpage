@@ -59,11 +59,10 @@ def water():
                 'title' : u'Piec (min)',
                 'desc'  : u'Ustaw minimalną temperaturę wody w zbiorniku dla zasilania z pieca' }]
 
-    return render_template("data_rows.html",
+    return render_template("data_rows.html", control_buttons=[u'Anuluj',u'Zapisz'],
                            active='water',
                            data=values,
-                           title='Woda',
-                           nav_item='nav-water')
+                           title='Woda')
 
 @app.route('/circulation')
 def circulation():
@@ -76,6 +75,7 @@ def circulation():
                {'name'  : "circulation_hyst",
                 'value' : 4,
                 'range' : [0.5,10],
+                'step'  : 0.5,
                 'unit'  : u'°C',
                 'title' : u'Histereza pracy',
                 'desc'  : u'Ustaw histerezę pracy pompy cyrkulacyjnej' },
@@ -97,11 +97,10 @@ def circulation():
                 'unit'  : ' min',
                 'title' : u'Przerwa',
                 'desc'  : u'Ustaw przerwę w pracy pompy w trybie poboru wody' } ]
-    return render_template("data_rows.html",
+    return render_template("data_rows.html", control_buttons=[u'Anuluj',u'Zapisz'],
                            active='circulation',
                            data=values,
-                           title="Cyrkulacja",
-                           nav_item='nav-circulation')
+                           title="Cyrkulacja")
 
 @app.route('/heater')
 def heater():
@@ -150,27 +149,29 @@ def solar():
                {'name'  : "solar_tank",
                 'value' : 90,
                 'range' : [0.5,10],
+                'step'  : 0.1,
                 'unit'  : u'°C',
                 'title' : u'Temperatura wody',
                 'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora' },
                {'name'  : "solar_on",
                 'value' : 4,
                 'range' : [0.5,15],
+                'step'  : 0.5,
                 'unit'  : u'°C',
                 'title' : u'Delta załączenia',
                 'desc'  : u'Ustaw wartość różnicy temperatur powodującą załączenie układu solarnego' },
                {'name'  : "solar_off",
                 'value' : 8,
                 'range' : [0.5,15],
+                'step'  : 0.5,
                 'unit'  : u'°C',
                 'title' : u'Delta wyłączenia',
                 'desc'  : u'Ustaw wartość różnicy temperatur powodującą wyłączenie układu solarnego' }]
 
-    return render_template("data_rows.html",
+    return render_template("data_rows.html", control_buttons=[u'Anuluj',u'Zapisz'],
                            active='solar',
                            data=values,
-                           title="Solar",
-                           nav_item='nav-solar')
+                           title="Solar")
 
 @app.route('/options')
 def options():

@@ -28,7 +28,11 @@
 {{ modal(row['name'],
          row['title'],
          row['desc'],
-         row['range']) }}
+         row['range'],
+         row['step']|default(1),
+         row['value'],
+         row['unit'],
+         control_buttons) }}
 
 {% else %}
   </div>
