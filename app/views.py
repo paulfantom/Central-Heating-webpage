@@ -36,8 +36,75 @@ def dashboard():
 
 @app.route('/status')
 def status():
-    values = []
+    values = {'solar_temp'    : 100.0,
+              'outside_temp'  : 26.5,
+              'room_temp'     : 22.1,
+              'room_humidity' : 50,
+              'apparent_temp' : 23.1,
+              'solar_meter'   :
+                  {'temp_in'  : 40.1,
+                   'temp_out' : 30.2,
+                   'temp_diff': 0.9,
+                   'flow'     : 10,
+                   'energy'   : 314.1,
+                   'consume'  : 10},
+              'heater_meter'  :
+                  {'temp_in'  : 40.1,
+                   'temp_out' : 30.2,
+                   'temp_diff': 0.9,
+                   'flow'     : 10,
+                   'energy'   : 314.1,
+                   'consume'  : 10},
+              'tank_meter'    :
+                  {'temp_in'  : 40.1,
+                   'temp_out' : 30.2,
+                   'temp_diff': 0.9,
+                   'flow'     : 10,
+                   'energy'   : 314.1,
+                   'consume'  : 10},
+              'state'         :
+                  {'burner'       : False,
+                   'heater_pump'  : False,
+                   'solar_pump'   : False,
+                   'solar_switch' : False,
+                   'heater_switch': False}}
     return render_template("/content/status.html",active='status',data=values)
+
+@app.route('/scheme')
+def scheme():
+    values = {'solar_temp'    : 100.0,
+              'outside_temp'  : 26.5,
+              'room_temp'     : 22.1,
+              'room_humidity' : 50,
+              'apparent_temp' : 23.1,
+              'solar_meter'   :
+                  {'temp_in'  : 40.1,
+                   'temp_out' : 30.2,
+                   'temp_diff': 0.9,
+                   'flow'     : 10,
+                   'energy'   : 314.1,
+                   'consume'  : 10},
+              'heater_meter'  :
+                  {'temp_in'  : 40.1,
+                   'temp_out' : 30.2,
+                   'temp_diff': 0.9,
+                   'flow'     : 10,
+                   'energy'   : 314.1,
+                   'consume'  : 10},
+              'tank_meter'    :
+                  {'temp_in'  : 40.1,
+                   'temp_out' : 30.2,
+                   'temp_diff': 0.9,
+                   'flow'     : 10,
+                   'energy'   : 314.1,
+                   'consume'  : 10},
+              'state'         :
+                  {'burner'       : False,
+                   'heater_pump'  : False,
+                   'solar_pump'   : False,
+                   'solar_switch' : False,
+                   'heater_switch': False}}
+    return render_template("/content/scheme.html",active='scheme',data=values)
 
 @app.route('/water')
 def water():

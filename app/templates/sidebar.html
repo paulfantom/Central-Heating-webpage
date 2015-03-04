@@ -5,10 +5,15 @@
               <span class="glyphicon glyphicon-home"></span>
               <span class="hidden-xs"> Home</span></a>
             </li>
-            <li class="nav-status {% if active == 'status' %}
+            <li class="hidden-md hidden-lg nav-status {% if active == 'status' %}
             active{% endif %}"><a href="/status">
-              <span class="glyphicon glyphicon-stats"></span>
+              <span class="glyphicon glyphicon-list-alt"></span>
               <span class="hidden-xs"> Status</span></a>
+            </li>
+            <li class="hidden-xs hidden-sm nav-scheme {% if active == 'scheme' %}
+            active{% endif %}"><a href="/scheme">
+              <span class="glyphicon glyphicon-eye-open"></span>
+              <span> Schemat</span></a>
             </li>
             <li class="nav-water {% if active == 'water' %}
             active{% endif %}"><a href="/water">
@@ -30,10 +35,6 @@
               <span class="glyphicon glyphicon-asterisk"></span>
               <span class="hidden-xs"> Solar</span></a>
             </li>
-<!--            <li class="nav-scheme hidden-xs hidden-sm"><a href="/scheme">
-              <span class="glyphicon glyphicon-eye-open"></span>
-              <span> Schemat</span></a>
-            </li>-->
             <li class="hidden-xs hidden-sm">
               <hr>
             </li>

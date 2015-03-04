@@ -1,5 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-<p>Status placeholder</p>
+<div class='container-fluid'>
+  <table>
+    {% for name,value in data.iteritems() %}
+    {% if value is mapping %}
+      {% for key,val in value.iteritems() %}
+      <tr>
+        <td><p>{{name}} {{key}}: </p></td>
+        <td><p>{{val}}</p></td>
+      </tr>
+      {% endfor %}
+    {% else %}
+    <tr>
+      <td><p>{{name}}: </p></td>
+      <td><p>{{value}}</p></td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </table>
 
+</div>
 {% endblock %}
