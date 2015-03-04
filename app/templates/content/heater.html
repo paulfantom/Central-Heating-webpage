@@ -1,8 +1,98 @@
 {% extends "base.html" %}
 {% block content %}
-<p>Heater placeholder</p>
+<div class="navbar-header">
+  <button type="button" class="navbar-toggle btn btn-link btn-block"
+          data-toggle="collapse" data-target="#heater-navbar-collapse">
+    <span class="glyphicon glyphicon-calendar"></span>
+    Menu
+  </button>
+</div>
+<div class="collapse navbar-collapse" id="heater-navbar-collapse">
+  <ul class="nav nav-pills nav-justified">
+    {%- for tab in tabs -%}
+    {%- if loop.index == 1 %}<li class="active">{% else %}<li>{% endif %}
+      {{ loop.index }}
+      <a href="#{{ tab['id'] }}" role="tab" data-toggle="tab">{{ tab['title'] }}</a>
+    </li>
+    {%- endfor -%}
+  </ul>
+</div>
 
-
+<div class="tab-content">
+{%- for tab in tabs %}
+  {%- if loop.index == 1 %}
+    <div class="tab-pane fade in active" id="{{ tab['id'] }}">
+  {%- else %}
+    <div class="tab-pane fade" id="{{ tab['id'] }}">
+  {%- endif %}
+  {%- if tab['table'] is defined %}
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-md-10 col-md-offset-1 text-center">
+          <h4>{{ tab['table']['title']  }}</h4>
+          <table class="table">
+          <tbody>
+            <tr>
+              {%- for col in tab['table']['col_names'] %}
+              <th class="text-center"><h5><b>{{ col }}</b></h5></th>
+              {%- endfor %}
+              <th class="text-right"></th>
+            </tr>
+          {% for row in tab['table']['data'] %}
+            <tr id="row_{{ loop.index }}">
+              {%- for i in range(tab['table']['col_names']|length) %}
+              <td class="text-center">
+                <button class="btn btn-link btn-block" id="value_{{ loop.index }}">{{ row[i] }}</button>
+              </td>
+              {%- endfor %}
+              <td class="text-right">
+                <button class="btn btn-danger" id="remove_row_{{ loop.index }}">
+                  <span class="glyphicon glyphicon-minus"></span>
+                </button>
+              </td>
+            </tr>
+          {%- endfor %}
+          </tbody>
+          <tfoot><tr>
+            {%- for i in range(tab['table']['col_names']|length-1) %}
+            <td class="text-center"><h5>{{ tab['table']['footer'][i] }}</h5></td>
+            {%- endfor %}
+            <td class="text-center">
+              <button class="btn btn-link btn-block" id="change_default">
+                {{ tab['table']['footer'][-1] }}
+              </button>
+            </td>
+            <td class="text-right">
+              <button class="btn btn-success" id="add_row">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>
+            </td>
+          </tr></tfoot>
+          </table>
+        </div>
+      </div>
+      {%- if save is defined %}
+      <div class="col-md-10 col-md-offset-1">
+          <button class="btn btn-primary btn-block" id="save">{{ save }}</button>
+        </div>
+      {%- endif %}
+    </div>
+  {% else %}
+    <br>
+    <div class="well text-center">
+      <div class="btn-group" data-toggle="buttons">
+      {% for day in tab['data'] %}
+        <label class="btn btn-info {% if day['state'] == True -%}
+          active{%- endif -%}" id='mon-label' style="min-width:110px">
+          <input type="checkbox" name="day" id="{{ day['id'] }}"><br>{{ day['name'] }}<br><br>
+        </label>
+      {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  </div>
+{% endfor %}
+</div>
 
 <script type="text/javascript">
 $(document).ready(function () {

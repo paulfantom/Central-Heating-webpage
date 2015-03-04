@@ -102,7 +102,33 @@ def circulation():
 
 @app.route('/heater')
 def heater():
-    return render_template("content/heater.html", title='Piec')
+    values = [{'title' : u'Doba robocza',
+               'id'    : 'work_day',
+               'table' : {
+                   'title'     : u'Harmonogram pracy pieca',
+                   'col_names' : ['OD','DO',u'T [°C]'],
+                   'data'      : [['10:00','20:23',21],['23:01','23:59',20]],
+                   'footer'    : [u'Pozostałe',u'godziny',18]}},
+              {'title' : u'Doba świąteczna',
+               'id'    : 'free_day',
+               'table' : {
+                   'title'     : u'Harmonogram pracy pieca',
+                   'col_names' : ['OD','DO',u'T [°C]'],
+                   'data'      : [['06:00','12:23',21],['15:01','23:59',20]],
+                   'footer'    : [u'Pozostałe',u'godziny',16]}},
+              {'title' : u'Tydzień',
+               'id'    : 'week',
+               'data'  : [
+                   {'id' : 'mon', 'name' : u'Poniedziałek', 'state' : False},
+                   {'id' : 'tue', 'name' : u'Wtorek', 'state' : False},
+                   {'id' : 'wed', 'name' : u'Środa', 'state' : False},
+                   {'id' : 'thu', 'name' : u'Czwartek', 'state' : False},
+                   {'id' : 'fri', 'name' : u'Piątek', 'state' : False},
+                   {'id' : 'sat', 'name' : u'Sobota', 'state' : True},
+                   {'id' : 'sun', 'name' : u'Niedziela', 'state' : True} ]}
+               ]
+    save = u'Zapisz'
+    return render_template("content/heater.html", tabs=values, save=save, title='Piec')
 
 @app.route('/solar')
 def solar():
@@ -141,18 +167,19 @@ def solar():
 @app.route('/options')
 def options():
 
-    buttons = [[{'name'  : 'refresh_rate',
+    buttons = [[{'name'  : 'refresh',
+                 'type'  : 'success',
+                 'text'  : u'Odśwież'},
+                {'name'  : 'refresh_rate',
                  'type'  : 'primary',
                  'text'  : u'Częstotliwość odświeżania:',
-                 'value' : '1'},
-                {'name'  : 'placeholder',
-                 'text'  : 'placeholder'}],
-               [{'name'  : 'reboot_mcu',
+                 'value' : '1'}],
+               [{'name'  : 'reboot',
                  'type'  : 'danger',
-                 'text'  : u'Zresetuj sterownik'},
+                 'text'  : u'Zresetuj HMI'},
                 {'name'  : 'reboot_mcu',
                  'type'  : 'danger',
-                 'text'  : u'Zresetuj HMI'}]]
+                 'text'  : u'Zresetuj sterownik'}]]
 
     return render_template("content/options.html",
                            data=buttons)
