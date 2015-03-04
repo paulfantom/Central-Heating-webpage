@@ -129,10 +129,18 @@ def heater():
                    {'id' : 'sat', 'name' : u'Sobota', 'state' : True},
                    {'id' : 'sun', 'name' : u'Niedziela', 'state' : True} ]}
                ]
+
+    hyst = { 'name'  : 'hysteresis',
+             'title' : u'Histereza',
+             'desc'  : u'Ustaw histerezę pracy ogrzewania',
+             'value' : 0.5,
+             'control_buttons' : [u'Anuluj',u'Zapisz'] }
+
     save = u'Zapisz'
     return render_template("content/heater.html",
                            active='heater',
                            tabs=values,
+                           hysteresis=hyst,
                            save=save,
                            title='Piec')
 
