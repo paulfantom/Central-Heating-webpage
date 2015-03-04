@@ -1,11 +1,12 @@
 {% set active = active|default('dashboard') %}
+<br>
           <ul class="nav nav-sidebar">
             <li class="nav-dashboard {% if active == 'dashboard' %}
             active{% endif %}"><a href="/dashboard">
               <span class="glyphicon glyphicon-home"></span>
               <span class="hidden-xs"> Home</span></a>
             </li>
-            <li class="hidden-md hidden-lg nav-status {% if active == 'status' %}
+            <li class="nav-status {% if active == 'status' %}
             active{% endif %}"><a href="/status">
               <span class="glyphicon glyphicon-list-alt"></span>
               <span class="hidden-xs"> Status</span></a>
