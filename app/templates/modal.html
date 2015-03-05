@@ -25,6 +25,13 @@
             <div class="row text-center">
               <h2><b><span id="{{ name }}-value-tmp">{{ initial_value|default(range[0]) }}</span>{{ unit|default('°C') }}</b></h2>
             </div>
+            {# same without javascript. Not working here, although working on JSfiddle: #}
+            {# <div class="slider-new">
+                <input class="slider-bar" type="range" value="50" min='100' max='500' onchange="{{ name }}-value-tmp.value=value"/>
+            </div>
+            <div>
+                <h2><b><output id="{{ name }}-value-tmp">50</output></b></h2>
+            </div> #}
           </div> <!-- .container-fluid -->
         </div> <!-- .well -->
       </div> <!-- .modal-body -->
