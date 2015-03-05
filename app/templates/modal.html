@@ -12,14 +12,14 @@
         <div class="well">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-xs-9">
-                <input id="{{ name }}-slider" type="text"
+              <div class="col-sm-9 text-center">
+                <input id="{{ name }}-slider" type="range"
                        data-slider-min="{{range[0]}}"
                        data-slider-max="{{range[1]}}"
                        data-slider-step="{{step|default(1)}}"
                        data-slider-value="{{initial_value}}"/>
               </div>
-              <div class="col-xs-3">
+              <div class="col-sm-3 text-center">
                 <h2><b><span id="{{ name }}-value-tmp">{{ initial_value|default(range[0]) }}</span>{{ unit|default('°C') }}</b></h2>
               </div>
             </div> <!-- .row -->
@@ -41,6 +41,9 @@
   $("#{{ name }}-slider").slider({});
 
   $("#{{ name }}-slider").on('slide', function(slideEvt) {
+    $("#{{ name }}-value-tmp").text(slideEvt.value);
+  });
+  $("#{{ name }}-slider").on('wheel', function(slideEvt) {
     $("#{{ name }}-value-tmp").text(slideEvt.value);
   });
   
