@@ -35,10 +35,19 @@ def dashboard():
                            user=user,
                            data=data)
 
-@app.route('/test2')
+@app.route('/test2', methods=['GET', 'POST'])
 def test2():
+    slider = {'min'   : 10,
+              'max'   : 80,
+              'value' : 17,
+              'step'  : 1 }
+    submit_text = u'Zapisz'
     form = RangeForm()
-    return render_template("test2.html",form=form)
+    form.min = slider['min']
+    form.max = slider['max']
+    if form.validate_on_submit():
+        return redirect('/')
+    return render_template("test2.html",slider=slider,submit=submit_text,form=form)
 
 @app.route('/test')
 def test():

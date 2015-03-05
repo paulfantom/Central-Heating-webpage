@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+  {%- if data['header'] is defined %}
+  <div class="modal-header">
+    <h4 class="modal-title text-center">{{ data['header'] }}</h4>
+  </div> <!-- .modal-header -->
+  {%- endif %}
+  <div class="modal-body">
+    <p class="text-center">{{ data['info'] }}</p>
+    <div class="well">
+      <div class="container-fluid">
+        <form oninput="{{ data['name']|default('x') }}.value=parseInt({{form.slider.id}}.value)">
+          {{form.slider}}
+          <p><output class="text-center" name="{{ data['name']|default('x') }}" for="{{form.slider.id}}">{{ data['value']|default('00') }}</output></p>
+        </form>
+        {{form.slider.name.value}}
+      </div> <!-- .container-fluid -->
+    </div> <!-- .well -->
+  </div> <!-- .modal-body -->
+  <div class="modal-footer">
+     <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+     <button type="button" class="btn btn-primary" id="{{ name }}-save" data-dismiss="modal">Zapisz</button>
+  </div> <!-- .modal-footer -->
+
+  </body>
+</html>
