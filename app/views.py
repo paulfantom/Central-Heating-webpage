@@ -43,9 +43,10 @@ def test2():
               'step'  : 1 }
     submit_text = u'Zapisz'
     form = RangeForm()
-    form.min = slider['min']
-    form.max = slider['max']
+
     if form.validate_on_submit():
+        val = request.form['slider']
+        print(val)
         return redirect('/')
     return render_template("test2.html",slider=slider,submit=submit_text,form=form)
 
