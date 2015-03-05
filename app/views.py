@@ -35,31 +35,6 @@ def dashboard():
                            user=user,
                            data=data)
 
-@app.route('/test2', methods=['GET', 'POST'])
-def test2():
-    slider = {'min'   : 10,
-              'max'   : 80,
-              'value' : 17,
-              'step'  : 1 }
-    submit_text = u'Zapisz'
-    form = RangeForm()
-
-    if form.validate_on_submit():
-        val = request.form['slider']
-        print(val)
-        return redirect('/')
-    return render_template("test2.html",slider=slider,submit=submit_text,form=form)
-
-@app.route('/test')
-def test():
-    # find record of 'name' in database
-    form = RangeForm()
-    form.label = u'Title'
-    form.scope = [0,200]
-    data = request.query_string
-    return render_template("test.html",data=data,form=form)
-
-
 @app.route('/status')
 def status():
     values = {'sensors' : [
@@ -322,15 +297,29 @@ def solar():
                            data=values,
                            title=title)
 
-@app.route('/solar/change-<name>')
-@app.route('/water/change-<name>')
-@app.route('/circulation/change-<name>')
+@app.route('/solar/change-<name>', methods=['GET', 'POST'])
+@app.route('/water/change-<name>', methods=['GET', 'POST'])
+@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
 def set_value(name):
-    # find record of 'name' in database
+    # get those data from SQL:
+    slider = {'min'   : 10,
+              'max'   : 80,
+              'value' : 17,
+              'step'  : 1 }
+    description = {'submit' : u'Zapisz',
+                   'info'   : u'suwaj suwaj' }
+
+
     form = RangeForm()
-    form.scope = [0,200]
-    data = request.query_string
-    return render_template("test.html",data=data,form=form)
+    from wtforms.validators import NumberRange
+    form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
+
+    if form.validate_on_submit():
+        val = request.form['slider']
+        print(val)
+        return redirect('/' + request.path.split('/')[1])
+
+    return render_template("test.html",action=request.path,slider=slider,desc=description,form=form)
 
 
 @app.route('/options')
