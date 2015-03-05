@@ -7,11 +7,10 @@
 </div>
 {%- endif -%}
 
-{% from 'modal.html' import modal %}
 {% for row in data %}
 {% if row['range'] is defined %}
 <div class="row">
-  <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target="#{{ row['name'] }}">
+  <a class="btn btn-block btn-link" data-toggle="modal" href="change-{{ row['name'] }}" data-target="#{{ row['name'] }}">
 {% else %}
 <div class="container-fluid">
   <div class="row">
@@ -23,17 +22,14 @@
       <h4 class="text-center"><b><span id="{{ row['name'] }}-value">{{ row['value'] }}</span>{{ row['unit']|default('°C') }}</b></h4>
     </div>
 {% if row['range'] is defined %}
-  </button>
+  </a>
 </div>
-{{ modal(row['name'],
-         row['title'],
-         row['desc'],
-         row['range'],
-         row['step']|default(1),
-         row['value'],
-         row['unit'],
-         control_buttons) }}
-
+<div class="modal fade" id="{{ row['name'] }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div> <!-- /.modal-content -->
+    </div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->
 {% else %}
   </div>
 </div>

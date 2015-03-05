@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
 
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, request
 from app import app
-#from .forms import LoginForm
+from .forms import RangeForm
 
 #@app.route('/login', methods=['GET', 'POST'])
 #def login():
@@ -20,6 +20,7 @@ from app import app
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
+
     user='admin'
     data = { "room_temp" : 20,
              "feel_temp" : 21,
@@ -33,6 +34,21 @@ def dashboard():
                            title='',
                            user=user,
                            data=data)
+
+@app.route('/test2')
+def test2():
+    form = RangeForm()
+    return render_template("test2.html",form=form)
+
+@app.route('/test')
+def test():
+    # find record of 'name' in database
+    form = RangeForm()
+    form.label = u'Title'
+    form.scope = [0,200]
+    data = request.query_string
+    return render_template("test.html",data=data,form=form)
+
 
 @app.route('/status')
 def status():
@@ -148,7 +164,7 @@ def scheme():
                    'heater_switch': False}}
     return render_template("/content/scheme.html",active='scheme',data=values)
 
-@app.route('/water')
+@app.route('/water/')
 def water():
     values = [ {'title' : u'Aktualna temperatura',
                 'value' : 44 },
@@ -173,7 +189,7 @@ def water():
                            data=values,
                            title='Woda')
 
-@app.route('/circulation')
+@app.route('/circulation/')
 def circulation():
     values = [ {'name'  : "circulation_temp",
                 'value' : 40,
@@ -253,8 +269,14 @@ def heater():
                            save=save,
                            title='Piec')
 
-@app.route('/solar')
+@app.route('/solar/')
 def solar():
+    user = request.args.get('t')
+    if user is not None:
+        title=user
+    else:
+        title="Solar"
+
     values = [ {'title' : u'Aktualna temperatura',
                 'value' : 10 },
                {'name'  : "solar_critical",
@@ -288,7 +310,18 @@ def solar():
     return render_template("data_rows.html", control_buttons=[u'Anuluj',u'Zapisz'],
                            active='solar',
                            data=values,
-                           title="Solar")
+                           title=title)
+
+@app.route('/solar/change-<name>')
+@app.route('/water/change-<name>')
+@app.route('/circulation/change-<name>')
+def set_value(name):
+    # find record of 'name' in database
+    form = RangeForm()
+    form.scope = [0,200]
+    data = request.query_string
+    return render_template("test.html",data=data,form=form)
+
 
 @app.route('/options')
 def options():
