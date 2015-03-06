@@ -297,17 +297,22 @@ def solar():
                            data=values,
                            title=title)
 
+@app.route('/heater/change-<name>', methods=['GET', 'POST'])
 @app.route('/solar/change-<name>', methods=['GET', 'POST'])
 @app.route('/water/change-<name>', methods=['GET', 'POST'])
 @app.route('/circulation/change-<name>', methods=['GET', 'POST'])
 def set_value(name):
-    # get those data from SQL:
+    # get those data from SQL(name):
     slider = {'min'   : 10,
               'max'   : 80,
               'value' : 17,
-              'step'  : 1 }
-    description = {'submit' : u'Zapisz',
-                   'info'   : u'suwaj suwaj' }
+              'step'  : 0.1,
+              'unit'  : u'°C'}
+    description = {'title'  : u'Przykładowy modal',
+                   'info'   : u'suwaj suwaj',
+                   's_info' : u'Temperatura:',
+                   'cancel' : u'Anuluj',
+                   'submit' : u'Zapisz'}
 
 
     form = RangeForm()
@@ -316,10 +321,11 @@ def set_value(name):
 
     if form.validate_on_submit():
         val = request.form['slider']
+        print(name)
         print(val)
         return redirect('/' + request.path.split('/')[1])
 
-    return render_template("test.html",action=request.path,slider=slider,desc=description,form=form)
+    return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
 
 
 @app.route('/options')

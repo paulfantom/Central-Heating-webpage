@@ -6,33 +6,32 @@
   <h3 class="text-center">{{ title }}</h3>
 </div>
 {%- endif -%}
-
-{% for row in data %}
-{% if row['range'] is defined %}
+{%- for row in data %}
+{%- if row['range'] is defined %}
 <div class="row">
   <a class="btn btn-block btn-link" data-toggle="modal" href="change-{{ row['name'] }}" data-target="#{{ row['name'] }}">
-{% else %}
-<div class="container-fluid">
-  <div class="row">
-{% endif %}
     <div class="col-xs-7 col-sm-offset-2 col-sm-4 col-lg-offset-3 col-lg-3">
       <h4 class="text-center">{{ row['title'] }}:</h4>
     </div>
     <div class="col-xs-5 col-sm-4 col-lg-3">
       <h4 class="text-center"><b><span id="{{ row['name'] }}-value">{{ row['value'] }}</span>{{ row['unit']|default('°C') }}</b></h4>
     </div>
-{% if row['range'] is defined %}
   </a>
+  <div class="modal fade" id="{{ row['name'] }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content"></div></div>
+  </div> <!-- .modal -->
 </div>
-<div class="modal fade" id="{{ row['name'] }}" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        </div> <!-- /.modal-content -->
-    </div> <!-- /.modal-dialog -->
-</div> <!-- /.modal -->
 {% else %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-7 col-sm-offset-2 col-sm-4 col-lg-offset-3 col-lg-3">
+      <h4 class="text-center">{{ row['title'] }}:</h4>
+    </div>
+    <div class="col-xs-5 col-sm-4 col-lg-3">
+      <h4 class="text-center"><b><span id="{{ row['name'] }}-value">{{ row['value'] }}</span>{{ row['unit']|default('°C') }}</b></h4>
+    </div>
   </div>
 </div>
-{% endif %}
-{% endfor %}
+{%- endif %}
+{%- endfor %}
 {% endblock %}

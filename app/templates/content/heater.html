@@ -75,9 +75,14 @@
       </div>
       <div class="row clearfix">
         <div class="col-md-5 col-md-offset-1">
-          <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target="#{{ hysteresis['name'] }}">
+          {% if hysteresis is defined %}
+          <a class="btn btn-block btn-link" data-toggle="modal" href="change-{{ hysteresis['name'] }}" data-target="#{{ hysteresis['name'] }}">
             {{ hysteresis['title'] }}: <span class="{{ hysteresis['name'] }}-value">{{ hysteresis['value']  }}</span>{{ hysteresis['unit']|default('°C') }}
-          </button>
+          </a>
+          <div class="modal fade" id="{{ hysteresis['name'] }}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog"><div class="modal-content"></div></div>
+          </div>
+          {%- endif %}
         </div>
       {%- if save is defined %}
         <div class="col-md-5">
@@ -91,7 +96,7 @@
     <div class="well text-center">
       <div class="btn-group" data-toggle="buttons">
       {% for day in tab['data'] %}
-        <label class="btn btn-info {% if day['state'] == True -%}
+        <label class="btn btn-info {% if day['state'] -%}
           active{%- endif -%}" id='mon-label' style="min-width:110px">
           <input type="checkbox" name="day" id="{{ day['id'] }}"><br>{{ day['name'] }}<br><br>
         </label>
@@ -105,6 +110,7 @@
 </div>
 
 {% if hysteresis is defined %}
+{#
 {{ modal(hysteresis['name'],
          hysteresis['title'],
          hysteresis['desc'],
@@ -112,6 +118,6 @@
          hysteresis['step']|default(0.1),
          hysteresis['value'],
          hysteresis['unit']|default('°C'),
-         hysteresis['control_buttons']) }}
+         hysteresis['control_buttons']) }}#}
 {% endif %}
 {% endblock %}
