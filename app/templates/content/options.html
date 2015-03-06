@@ -12,14 +12,14 @@
   <div class="row text-center"><br></div>
   <div class="row text-center">
     <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
-      <input type="button" class="btn btn-block btn-success" value="Reload Page" onClick="window.location.reload()"/>
+      <input type="button" class="btn btn-block btn-success" value="{% trans %}Reload Page{% endtrans %}" onClick="window.location.reload()"/>
     </div>
   </div>
   <div class="row text-center"><br></div>
   <div class="row text-center">
     <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
       <a class="btn btn-block btn-primary" data-toggle="modal" href="options/change-refresh" data-target="#refresh_rate">
-        Refresh rate: <b><span id="refresh_rate-value">1</span> min</b>
+        {% trans %}Refresh rate{% endtrans %}: <b><span id="refresh_rate-value">1</span> min</b>
       </a>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -10,9 +10,9 @@
     <link rel="icon" href="http://getbootstrap.com/favicon.ico">
 
     {% if title %}
-      <title>{{ title }} - Zarządzanie wodą</title>
+      <title>{{ title }} - {% trans %}Water Management{% endtrans %}</title>
     {% else %}
-      <title>Zarządzanie wodą</title>
+      <title>{% trans %}Water Management{% endtrans %}</title>
     {% endif %}
 
     <!-- Bootstrap core CSS -->
