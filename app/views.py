@@ -35,7 +35,7 @@ def dashboard():
                            user=user,
                            data=data)
 
-@app.route('/set-room-temp', methods=['GET', 'POST'])
+#@app.route('/set-room-temp', methods=['GET', 'POST'])
 def room_temp():
     # get those data from SQL(name):
     slider = {'min'   : 10,
@@ -323,11 +323,12 @@ def solar():
                            data=values,
                            title=title)
 
+@app.route('/set-room-temp', methods=['GET', 'POST'])
 @app.route('/heater/change-<name>', methods=['GET', 'POST'])
 @app.route('/solar/change-<name>', methods=['GET', 'POST'])
 @app.route('/water/change-<name>', methods=['GET', 'POST'])
 @app.route('/circulation/change-<name>', methods=['GET', 'POST'])
-def set_value(name):
+def set_value(name=None):
     # get those data from SQL(name):
     slider = {'min'   : 10,
               'max'   : 80,
@@ -347,8 +348,11 @@ def set_value(name):
 
     if form.validate_on_submit():
         val = request.form['slider']
-        print(name)
         print(val)
+        if name is None:
+            return redirect('/')
+
+        print(name)
         return redirect('/' + request.path.split('/')[1])
 
     return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
