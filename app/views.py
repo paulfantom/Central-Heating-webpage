@@ -35,6 +35,32 @@ def dashboard():
                            user=user,
                            data=data)
 
+@app.route('/set-room-temp', methods=['GET', 'POST'])
+def room_temp():
+    # get those data from SQL(name):
+    slider = {'min'   : 10,
+              'max'   : 80,
+              'value' : 17,
+              'step'  : 0.1,
+              'unit'  : u'°C'}
+    description = {'title'  : u'Przykładowy modal',
+                   'info'   : u'suwaj suwaj',
+                   's_info' : u'Temperatura:',
+                   'cancel' : u'Anuluj',
+                   'submit' : u'Zapisz'}
+
+
+    form = RangeForm()
+    from wtforms.validators import NumberRange
+    form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
+
+    if form.validate_on_submit():
+        val = request.form['slider']
+        print(val)
+        return redirect('/')
+
+    return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
+
 @app.route('/status')
 def status():
     values = {'sensors' : [

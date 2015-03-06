@@ -6,12 +6,15 @@
   </span>
   <div class="row">
     <div class="col-xs-12 col-sm-6">
-      <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target=".set-room-temp">
+      <a class="btn btn-block btn-link" href='set-room-temp' data-toggle="modal" data-target="#set-temp">
         <p>Temperatura pokojowa:</p>
         <h1 style="font-size: 62px"><b><span id="roomVal">{{ data['room_temp'] }}</span>&deg;C</b></h1>
         <p>Temperatura odczuwalna:</p>
         <h2><span id="feelVal">{{ data['feel_temp'] }}</span>&deg;C</h2>
-      </button>
+      </a>
+      <div class="modal fade" id="set-temp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog"><div class="modal-content"></div></div>
+      </div> <!-- .modal -->
       <span class="hidden-xs"><br></span>
       <button type="button" class="btn btn-block btn-link">
         <p>Temperatura zewnętrzna:</p>

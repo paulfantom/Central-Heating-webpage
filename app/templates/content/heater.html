@@ -76,7 +76,7 @@
       <div class="row clearfix">
         <div class="col-md-5 col-md-offset-1">
           {% if hysteresis is defined %}
-          <a class="btn btn-block btn-link" data-toggle="modal" href="change-{{ hysteresis['name'] }}" data-target="#{{ hysteresis['name'] }}">
+          <a class="btn btn-block btn-link" data-toggle="modal" href="heater/change-{{ hysteresis['name'] }}" data-target="#{{ hysteresis['name'] }}">
             {{ hysteresis['title'] }}: <span class="{{ hysteresis['name'] }}-value">{{ hysteresis['value']  }}</span>{{ hysteresis['unit']|default('°C') }}
           </a>
           <div class="modal fade" id="{{ hysteresis['name'] }}" tabindex="-1" role="dialog" aria-hidden="true">
