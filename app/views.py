@@ -366,6 +366,6 @@ def options():
     options = OptionsForm()
     options.apparent.description = False
 
-    return render_template("content/options_new.html",
+    return render_template("content/options.html",
                            active='options',
                            options = options)
