@@ -32,7 +32,7 @@
   </div> <!-- .modal-body -->
   <div class="modal-footer">
      <button type="button" class="btn btn-default" data-dismiss="modal" id="close">{{ desc['cancel']|default('Cancel') }}</button>
-     <button type="submit" class="btn btn-primary">{{ desc['submit']|default('Submit') }}</button>
+     {{ form.submit(class="btn btn-primary", value=desc['submit']|default('Submit')) }}
   </div> <!-- .modal-footer -->
   </form>
   <script type="text/javascript">

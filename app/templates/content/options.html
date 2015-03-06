@@ -7,31 +7,57 @@
 </div>
 {%- endif -%}
 
-{% for row in data %}
-<div class="row">
-  {% for btn in row %}
-  <div class="col-xs-12 col-sm-6">
-    <br>
-    <button type="button" class="btn btn-block btn-{{ btn['type']|default('primary') }}" data-toggle="modal" data-target="#{{ btn['name'] }}">
-      <h3 style="color:#FFFFFF">
-      {%- if btn['type'] == 'danger' -%}
-      <span class="glyphicon glyphicon-warning-sign"></span><br>
-      <b>{{ btn['text'] }}</b><br>
-      <span class="glyphicon glyphicon-warning-sign"></span>
-      {%- else -%}
-      <br>
-      {{- btn['text'] -}}<br>
-        {%- if btn['value'] is defined -%}
-        <span id="{{ btn['name'] }}_value"> {{ btn['value'] }}</span> min<br>
-        {%- else -%}
-        <br>
-        {%- endif -%}
-      {%- endif -%}
-      <br></h3>
-    </button>
+
+<div class="container-fluid">
+  <div class="row text-center"><br></div>
+  <div class="row text-center">
+    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
+      <input type="button" class="btn btn-block btn-success" value="Reload Page" onClick="window.location.reload()"/>
+    </div>
   </div>
-  {%- endfor %}
-</div>
-{%- endfor %}
+  <div class="row text-center"><br></div>
+  <div class="row text-center">
+    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
+      <a class="btn btn-block btn-primary" data-toggle="modal" href="options/change-refresh" data-target="#refresh_rate">
+        Refresh rate: <b><span id="refresh_rate-value">1</span> min</b>
+      </a>
+    </div>
+  </div>
+  <div class="modal fade" id="refresh_rate" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content"></div></div>
+  </div> <!-- .modal -->
+  <form>
+  {{ options.hidden_tag() }}
+  {% for i in options %}
+    {% if i.name != "csrf_token" %}
+  <div class="row text-center"><br></div>
+  <div class="row text-center">
+    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
+  {{ render_field(i) }}
+    </div>
+  </div>
+    {% endif %}
+  {% endfor %}
+  </form>
+  <div class="row text-center"><br></div>
+
+</div> <!-- .container-fluid -->
 
 {% endblock %}
+
+{% macro render_field(field) -%}
+  {% if field.name == 'apparent' %}
+    {% if field.description %}
+      {% set t = 'btn-success' %}
+    {% else %}
+      {% set t = 'btn-warning' %}
+    {% endif %}
+    {% set buttonize = 'btn btn-block ' + t %}
+  {% elif field.name == 'reboot' or field.name == 'reboot_mcu' %}
+  {% set buttonize = 'btn btn-block btn-danger' %}
+  {% else %}
+  {% set buttonize = 'btn btn-block btn-primary'%}
+  {% endif %}
+
+  {{ field(class=buttonize) }}
+{%- endmacro %}

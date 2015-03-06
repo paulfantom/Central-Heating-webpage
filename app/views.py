@@ -1,8 +1,10 @@
 # -*- coding: UTF-8 -*-
 
 from flask import render_template, flash, redirect, request
+from wtforms.validators import NumberRange
 from app import app
-from .forms import RangeForm
+from .forms import RangeForm, OptionsForm
+
 
 #@app.route('/login', methods=['GET', 'POST'])
 #def login():
@@ -324,6 +326,7 @@ def solar():
                            title=title)
 
 @app.route('/set-room-temp', methods=['GET', 'POST'])
+@app.route('/options/change-<name>', methods=['GET', 'POST'])
 @app.route('/heater/change-<name>', methods=['GET', 'POST'])
 @app.route('/solar/change-<name>', methods=['GET', 'POST'])
 @app.route('/water/change-<name>', methods=['GET', 'POST'])
@@ -343,7 +346,6 @@ def set_value(name=None):
 
 
     form = RangeForm()
-    from wtforms.validators import NumberRange
     form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
 
     if form.validate_on_submit():
@@ -358,23 +360,12 @@ def set_value(name=None):
     return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
 
 
-@app.route('/options')
+@app.route('/options', methods=['GET', 'POST'])
 def options():
 
-    buttons = [[{'name'  : 'refresh',
-                 'type'  : 'success',
-                 'text'  : u'Odśwież'},
-                {'name'  : 'refresh_rate',
-                 'type'  : 'primary',
-                 'text'  : u'Częstotliwość odświeżania:',
-                 'value' : '1'}],
-               [{'name'  : 'reboot',
-                 'type'  : 'danger',
-                 'text'  : u'Zresetuj HMI'},
-                {'name'  : 'reboot_mcu',
-                 'type'  : 'danger',
-                 'text'  : u'Zresetuj sterownik'}]]
+    options = OptionsForm()
+    options.apparent.description = False
 
-    return render_template("content/options.html",
+    return render_template("content/options_new.html",
                            active='options',
-                           data=buttons)
+                           options = options)
