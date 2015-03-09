@@ -1,6 +1,21 @@
+{% macro row(len) %}
+<tr>
+{%- for i in range(len) %}
+  <td class="text-center">
+    <button class="btn btn-link btn-block" id="value_{{ loop.index }}">00</button>
+  </td>
+{%- endfor %}
+  <td class="text-right">
+    <button class="btn btn-danger" id="remove_row_{{ loop.index }}" onclick="deleteRow()">
+      <span class="glyphicon glyphicon-minus"></span>
+    </button>
+  </td>
+</tr>
+{% endmacro %}
+
 {% extends "base.html" %}
 {% block content %}
-{% from 'modal.html' import modal %}
+
 {# TODO unify id's #}
 <br>
 <div class="navbar-header">
@@ -41,14 +56,14 @@
               <th class="text-right"></th>
             </tr>
           {% for row in tab['table']['data'] %}
-            <tr id="row_{{ loop.index }}">
+            <tr>
               {%- for i in range(tab['table']['col_names']|length) %}
               <td class="text-center">
-                <button class="btn btn-link btn-block" id="value_{{ loop.index }}">{{ row[i] }}</button>
+                <button class="btn btn-link btn-block">{{ row[i] }}</button>
               </td>
               {%- endfor %}
               <td class="text-right">
-                <button class="btn btn-danger" id="remove_row_{{ loop.index }}" onclick="deleteRow()">
+                <button class="btn btn-danger delete-row">
                   <span class="glyphicon glyphicon-minus"></span>
                 </button>
               </td>
@@ -65,7 +80,7 @@
               </button>
             </td>
             <td class="text-right">
-              <button class="btn btn-success" id="add_row" onclick="addRow()">
+              <button class="btn btn-success" onclick="addRow('#{{ tab['id'] }}-table')">
                 <span class="glyphicon glyphicon-plus"></span>
               </button>
             </td>
@@ -107,30 +122,5 @@
 {% endfor %}
 </div>
 
-<script type="text/javascript">
-  function addRow(){
-  $('#work_day-table').append('{#{% row() %}#}');};
-  function deleteRow(row)
-{
-    var i=row.parentNode.parentNode.rowIndex;
-    document.getElementById('work_day-table').deleteRow(i);
-}
-</script>
-
 {% endblock %}
 
-
-{% macro row() %}
-<tr>
-{%- for i in range(tab['table']['col_names']|length) %}
-  <td class="text-center">
-    <button class="btn btn-link btn-block" id="value_{{ loop.index }}">{{ row[i] }}</button>
-  </td>
-{%- endfor %}
-  <td class="text-right">
-    <button class="btn btn-danger" id="remove_row_{{ loop.index }}" onclick="deleteRow()">
-      <span class="glyphicon glyphicon-minus"></span>
-    </button>
-  </td>
-</tr>
-{% endmacro %}
