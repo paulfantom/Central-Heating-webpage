@@ -1,0 +1,11 @@
+.output {
+    display: inline;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.btn-day.active {
+    background-color: #C9302C;
+    border-color: #AC2925;
+}

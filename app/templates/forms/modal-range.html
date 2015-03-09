@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+  <form oninput="out.value={{form.slider.id}}.value" action="{{ action }}" method="post" name="{{form.slider.name}}">
+  {%- if desc['title'] is defined %}
+  <div class="modal-header">
+    <h4 class="modal-title text-center">{{ desc['title'] }}</h4>
+  </div> <!-- .modal-header -->
+  {%- endif %}
+  <div class="modal-body">
+    <p class="text-center">{{ desc['info']|default('Description') }}</p>
+    <div class="container-fluid">
+      <div class="row text-center">
+        <div class="input-group">
+          <span class="input-group-addon"><b>{{slider['min']}}</b></span>
+          {{ form.hidden_tag() }}
+          {{ form.slider(class="form-control",
+                         value=slider['value'],
+                         min=slider['min'],
+                         max=slider['max'],
+                         step=slider['step']) }}
+          <span class="input-group-addon"><b>{{slider['max']}}</b></span>
+        </div> <!-- .input-group -->
+      </div> <!-- .row -->
+      <div class="row text-center">
+        <h3>{{ desc['s_info'] }} <output name="out" for="{{form.slider.id}}" class="output">{{ slider['value']|default('00') }}</output> {{ slider['unit'] }}</h3>
+      </div>
+    </div> <!-- .container-fluid -->
+  </div> <!-- .modal-body -->
+  <div class="modal-footer">
+     <button type="button" class="btn btn-default" data-dismiss="modal" id="close">{% trans %}Cancel{% endtrans %}</button>
+     {{ form.submit(class="btn btn-primary", value=gettext('Save')) }}
+  </div> <!-- .modal-footer -->
+  </form>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      setTimeout(function() { $("#close").click(); }, 5000);
+    });
+  </script>
+  </body>
+</html>

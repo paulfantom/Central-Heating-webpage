@@ -1,13 +1,28 @@
+{% macro row(len) %}
+<tr>
+{%- for i in range(len) %}
+  <td class="text-center">
+    <button class="btn btn-link btn-block" id="value_{{ loop.index }}">00</button>
+  </td>
+{%- endfor %}
+  <td class="text-right">
+    <button class="btn btn-danger" id="remove_row_{{ loop.index }}" onclick="deleteRow()">
+      <span class="glyphicon glyphicon-minus"></span>
+    </button>
+  </td>
+</tr>
+{% endmacro %}
+
 {% extends "base.html" %}
 {% block content %}
-{% from 'modal.html' import modal %}
+
 {# TODO unify id's #}
 <br>
 <div class="navbar-header">
   <button type="button" class="navbar-toggle btn btn-link btn-block"
           data-toggle="collapse" data-target="#heater-navbar-collapse">
     <span class="glyphicon glyphicon-calendar"></span>
-    Menu
+    {% trans %}Menu{% endtrans %}
   </button>
 </div>
 <div class="collapse navbar-collapse" id="heater-navbar-collapse">
@@ -32,7 +47,7 @@
       <div class="row clearfix">
         <div class="col-md-10 col-md-offset-1 text-center">
           <h4>{{ tab['table']['title']  }}</h4>
-          <table class="table">
+          <table class="table" id="{{ tab['id'] }}-table">
           <tbody>
             <tr>
               {%- for col in tab['table']['col_names'] %}
@@ -41,14 +56,14 @@
               <th class="text-right"></th>
             </tr>
           {% for row in tab['table']['data'] %}
-            <tr id="row_{{ loop.index }}">
+            <tr>
               {%- for i in range(tab['table']['col_names']|length) %}
               <td class="text-center">
-                <button class="btn btn-link btn-block" id="value_{{ loop.index }}">{{ row[i] }}</button>
+                <button class="btn btn-link btn-block">{{ row[i] }}</button>
               </td>
               {%- endfor %}
               <td class="text-right">
-                <button class="btn btn-danger" id="remove_row_{{ loop.index }}">
+                <button class="btn btn-danger delete-row">
                   <span class="glyphicon glyphicon-minus"></span>
                 </button>
               </td>
@@ -65,7 +80,7 @@
               </button>
             </td>
             <td class="text-right">
-              <button class="btn btn-success" id="add_row">
+              <button class="btn btn-success" onclick="addRow('#{{ tab['id'] }}-table')">
                 <span class="glyphicon glyphicon-plus"></span>
               </button>
             </td>
@@ -73,25 +88,19 @@
           </table>
         </div>
       </div>
-      <div class="row clearfix">
-        <div class="col-md-5 col-md-offset-1">
-          <button type="button" class="btn btn-block btn-link" data-toggle="modal" data-target="#{{ hysteresis['name'] }}">
-            {{ hysteresis['title'] }}: <span class="{{ hysteresis['name'] }}-value">{{ hysteresis['value']  }}</span>{{ hysteresis['unit']|default('°C') }}
-          </button>
-        </div>
       {%- if save is defined %}
-        <div class="col-md-5">
-          <button class="btn btn-primary btn-block" id="save">{{ save }}</button>
+      <div class="row clearfix">
+        <div class="col-md-6 col-md-offset-3">
+          <button class="btn btn-primary btn-block" id="save">{% trans %}Save{% endtrans %}</button>
         </div>
-      {%- endif %}
       </div>
-
+      {%- endif %}
     {% else %}
     <br>
     <div class="well text-center">
       <div class="btn-group" data-toggle="buttons">
       {% for day in tab['data'] %}
-        <label class="btn btn-info {% if day['state'] == True -%}
+        <label class="btn btn-info btn-day {% if day['state'] -%}
           active{%- endif -%}" id='mon-label' style="min-width:110px">
           <input type="checkbox" name="day" id="{{ day['id'] }}"><br>{{ day['name'] }}<br><br>
         </label>
@@ -104,14 +113,5 @@
 {% endfor %}
 </div>
 
-{% if hysteresis is defined %}
-{{ modal(hysteresis['name'],
-         hysteresis['title'],
-         hysteresis['desc'],
-         hysteresis['range']|default([0.1,2]),
-         hysteresis['step']|default(0.1),
-         hysteresis['value'],
-         hysteresis['unit']|default('°C'),
-         hysteresis['control_buttons']) }}
-{% endif %}
 {% endblock %}
+

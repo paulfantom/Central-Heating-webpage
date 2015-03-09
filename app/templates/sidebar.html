@@ -4,37 +4,37 @@
             <li class="nav-dashboard {% if active == 'dashboard' %}
             active{% endif %}"><a href="/dashboard">
               <span class="glyphicon glyphicon-home"></span>
-              <span class="hidden-xs"> Home</span></a>
+              <span class="hidden-xs"> {% trans %}Home{% endtrans %}</span></a>
             </li>
             <li class="nav-status {% if active == 'status' %}
             active{% endif %}"><a href="/status">
               <span class="glyphicon glyphicon-list-alt"></span>
-              <span class="hidden-xs"> Status</span></a>
+              <span class="hidden-xs"> {% trans %}Status{% endtrans %}</span></a>
             </li>
-            <li class="hidden-xs hidden-sm nav-scheme {% if active == 'scheme' %}
+            {#<li class="hidden-xs hidden-sm nav-scheme {% if active == 'scheme' %}
             active{% endif %}"><a href="/scheme">
               <span class="glyphicon glyphicon-eye-open"></span>
-              <span> Schemat</span></a>
-            </li>
+              <span> {% trans %}Scheme{% endtrans %}</span></a>
+            </li>#}
             <li class="nav-water {% if active == 'water' %}
             active{% endif %}"><a href="/water">
               <span class="glyphicon glyphicon-tint"></span>
-              <span class="hidden-xs"> Woda</span></a>
+              <span class="hidden-xs"> {% trans %}Water{% endtrans %}</span></a>
             </li>
             <li class="nav-circulation {% if active == 'circulation' %}
             active{% endif %}"><a href="/circulation">
               <span class="glyphicon glyphicon-repeat"></span>
-              <span class="hidden-xs"> Cyrkulacja</span></a>
+              <span class="hidden-xs"> {% trans %}Circulation{% endtrans %}</span></a>
             </li>
             <li class="nav-heater {% if active == 'heater' %}
             active{% endif %}"><a href="/heater">
               <span class="glyphicon glyphicon-fire"></span>
-              <span class="hidden-xs"> Ogrzewanie</span></a>
+              <span class="hidden-xs"> {% trans %}Heater{% endtrans %}</span></a>
             </li>
             <li class="nav-solar {% if active == 'solar' %}
             active{% endif %}"><a href="/solar">
               <span class="glyphicon glyphicon-asterisk"></span>
-              <span class="hidden-xs"> Solar</span></a>
+              <span class="hidden-xs"> {% trans %}Solar{% endtrans %}</span></a>
             </li>
             <li class="hidden-xs hidden-sm">
               <hr>
@@ -42,6 +42,6 @@
             <li class="nav-options {% if active == 'options' %}
             active {% endif %}hidden-xs"><a href="/options">
               <span class="glyphicon glyphicon-cog"></span>
-              <span> Opcje</span></a>
+              <span> {% trans %}Options{% endtrans %}</span></a>
             </li>
           </ul>

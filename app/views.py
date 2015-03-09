@@ -1,8 +1,40 @@
 # -*- coding: UTF-8 -*-
 
-from flask import render_template, flash, redirect
-from app import app
-#from .forms import LoginForm
+from flask import render_template, redirect, request
+from flask.ext.babel import gettext
+from wtforms.validators import NumberRange
+from app import app, babel
+from .forms import RangeForm, OptionsForm
+from config import LANGUAGES
+
+def get_data():
+
+
+
+    return data
+
+def get_from_SQL(record,field):
+    return None
+
+def apparent(toggle=False):
+    #get apparent temperature switch state from SQL
+    apparent = True
+
+    if toggle:
+        apparent = not apparent
+
+    return apparent
+
+def reboot():
+    return None
+
+def reboot_mcu():
+    return None
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(LANGUAGES.keys())
 
 #@app.route('/login', methods=['GET', 'POST'])
 #def login():
@@ -20,70 +52,97 @@ from app import app
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
+
     user='admin'
     data = { "room_temp" : 20,
              "feel_temp" : 21,
              "humidity"  : 60,
              "out_temp"  : 19,
-             "work_mode" : 'normal',
-             "heater_status" : 'on',
-             "solar_status"  : 'on' }
+             "work_mode" : gettext('Normal'),
+             "heater_status" : gettext('ON'),
+             "solar_status"  : gettext('ON') }
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
                            user=user,
                            data=data)
 
+#@app.route('/set-room-temp', methods=['GET', 'POST'])
+def room_temp():
+    # get those data from SQL(name):
+    slider = {'min'   : 10,
+              'max'   : 80,
+              'value' : 17,
+              'step'  : 0.1,
+              'unit'  : u'°C'}
+    description = {'title'  : gettext('Example modal'),
+                   'info'   : gettext('move it'),
+                   's_info' : gettext('Temperature') + ':',
+                   'cancel' : gettext('Cancel'),
+                   'submit' : gettext('Save')}
+
+
+    form = RangeForm()
+    from wtforms.validators import NumberRange
+    form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
+
+    if form.validate_on_submit():
+        val = request.form['slider']
+        print(val)
+        return redirect('/')
+
+    return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
+
 @app.route('/status')
 def status():
     values = {'sensors' : [
-                  {'name'  : u'Temperatura kolektora',
-                   'id'    : 'solar_temp',
-                   'unit'  : u'°C',
-                   'value' : 100.0 },
-                  {'name'  : u'Temperatura na zewnątrz',
-                   'id'    : 'outside_temp',
-                   'unit'  : u'°C',
-                   'value' : 26.5 },
-                  {'name'  : u'Temperatura wewnątrz',
-                   'id'    : 'room_temp',
-                   'unit'  : u'°C',
-                   'value' : 22.1 },
-                  {'name'  : u'Temperatura odczuwalna',
-                   'id'    : 'apparent_temp',
-                   'unit'  : u'°C',
-                   'value' : 23.1 },
-                  {'name'  : u'Wilgotność',
-                   'id'    : 'humidity',
-                   'unit'  : u'%',
-                   'value' : 50 }],
+                  {'title'  : gettext('Solar temperature'),
+                   'name'   : 'solar_temp',
+                   'unit'   : u'°C',
+                   'value'  : 100.0 },
+                  {'title'  : gettext('Outside temperature'),
+                   'name'   : 'outside_temp',
+                   'unit'   : u'°C',
+                   'value'  : 26.5 },
+                  {'title'  : gettext('Inside temperature'),
+                   'name'   : 'room_temp',
+                   'unit'   : u'°C',
+                   'value'  : 22.1 },
+                  {'title'  : gettext('Apparent temperature'),
+                   'name'   : 'apparent_temp',
+                   'unit'   : u'°C',
+                   'value'  : 23.1 },
+                  {'title'  : gettext('Humidity'),
+                   'name'   : 'humidity',
+                   'unit'   : u'%',
+                   'value'  : 50 }],
               'meters'  : {
-                  'labels'  : {'temp_in'  : u'Temperatura zaislania',
-                               'temp_out' : u'Temperatura powrotu',
-                               'temp_diff': u'Różnica temperatur',
-                               'flow'     : u'Przepływ',
-                               'energy'   : u'Energia',
-                               'consume'  : u'???????'},
+                  'labels'  : {'temp_in'  : gettext('Input temperature'),
+                               'temp_out' : gettext('Output temperature'),
+                               'temp_diff': gettext('Temperature difference'),
+                               'flow'     : gettext('Flow'),
+                               'energy'   : gettext('Energy'),
+                               'consume'  : gettext('Consumption')},
                   'order'   : ['temp_in','temp_out','temp_diff','flow','energy','consume'],
                   'units'   : [u'°C',    u'°C',     u'°C',      u'm³/h',u'kWh', u'???'],
-                  'devices' : [{'name'     : u'Solar',
-                                'id'       : 'solar',
+                  'devices' : [{'title'    : gettext('Solar'),
+                                'name'     : 'solar',
                                 'temp_in'  : 40.1,
                                 'temp_out' : 30.2,
                                 'temp_diff': 0.9,
                                 'flow'     : 10,
                                 'energy'   : 314.1,
                                 'consume'  : 10},
-                               {'name'     : u'Zbiornik',
-                                'id'       : 'tank',
+                               {'title'    : gettext('Tank'),
+                                'name'     : 'tank',
                                 'temp_in'  : 40.1,
                                 'temp_out' : 30.2,
                                 'temp_diff': 0.9,
                                 'flow'     : 10,
                                 'energy'   : 314.1,
                                 'consume'  : 10},
-                               {'name'     : u'Piec',
-                                'id'       : 'heater',
+                               {'title'    : gettext('Heater'),
+                                'name'     : 'heater',
                                 'temp_in'  : 40.1,
                                 'temp_out' : 30.2,
                                 'temp_diff': 0.9,
@@ -91,22 +150,22 @@ def status():
                                 'energy'   : 314.1,
                                 'consume'  : 10}]},
               'states'  : [
-                  {'name'  : u'Palnik',
-                   'id'    : 'burner',
+                  {'title'  : gettext('Burner'),
+                   'name'    : 'burner',
                    'value' : 'ON' },
-                  {'name'  : u'Pompa pieca',
-                   'id'    : 'heater_pump',
+                  {'title'  : gettext('Heater pump'),
+                   'name'    : 'heater_pump',
                    'value' : 'ON' },
-                  {'name'  : u'Pompa kolaktora',
-                   'id'    : 'solar_pump',
+                  {'title'  : gettext('Solar pump'),
+                   'name'    : 'solar_pump',
                    'value' : 'ON' },
-                  {'name'  : u'Siłownik układu solarnego',
-                   'id'    : 'solar_switch',
+                  {'title'  : gettext('Solar system actuator'),
+                   'name'    : 'solar_switch',
                    'value' : 'ON' },
-                  {'name'  : u'Siłownik układu CO/CWU',
-                   'id'    : 'heater_switch',
-                   'value' : 'CWU' } ]}
-    title=u'Dane z czujników'
+                  {'title'  : gettext('DHW/CH actuator'),
+                   'name'    : 'heater_switch',
+                   'value' : gettext('DHW') } ]}
+    title=gettext('Sensors data')
     return render_template("/content/status.html",
                            active='status',
                            data=values,
@@ -148,165 +207,194 @@ def scheme():
                    'heater_switch': False}}
     return render_template("/content/scheme.html",active='scheme',data=values)
 
-@app.route('/water')
+@app.route('/water/')
 def water():
-    values = [ {'title' : u'Aktualna temperatura',
+    values = [ {'title' : gettext('Current temperature'),
                 'value' : 44 },
                {'name'  : "solar_max",
                 'value' : 90,
                 'range' : [30,100],
-                'title' : u'Solar',
+                'title' : gettext('Solar'),
                 'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora' },
                {'name'  : "heater_max",
                 'value' : 90,
                 'range' : [30,100],
-                'title' : u'Piec (max)',
+                'title' : gettext('Heater (max)'),
                 'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z pieca' },
                {'name'  : "heater_min",
                 'value' : 30,
                 'range' : [30,100],
-                'title' : u'Piec (min)',
+                'title' : gettext('Heater (min)'),
                 'desc'  : u'Ustaw minimalną temperaturę wody w zbiorniku dla zasilania z pieca' }]
 
-    return render_template("data_rows.html", control_buttons=[u'Anuluj',u'Zapisz'],
+    return render_template("data_rows.html",
                            active='water',
                            data=values,
-                           title='Woda')
+                           title=gettext('Water'))
 
-@app.route('/circulation')
+@app.route('/circulation/')
 def circulation():
     values = [ {'name'  : "circulation_temp",
                 'value' : 40,
                 'range' : [30,100],
                 'unit'  : u'°C',
-                'title' : u'Temperatura pracy',
+                'title' : gettext('Work temperature'),
                 'desc'  : u'Ustaw temperaturę pracy pompy cyrkulacyjnej' },
                {'name'  : "circulation_hyst",
                 'value' : 4,
                 'range' : [0.5,10],
                 'step'  : 0.5,
                 'unit'  : u'°C',
-                'title' : u'Histereza pracy',
+                'title' : gettext('Hysteresis'),
                 'desc'  : u'Ustaw histerezę pracy pompy cyrkulacyjnej' },
                {'name'  : "circulation_solar",
                 'value' : 70,
                 'range' : [30,150],
                 'unit'  : u'°C',
-                'title' : u'Wymagana temperatura kolektora',
+                'title' : gettext('Required solar temperature'),
                 'desc'  : u'Ustaw minimalną temperaturę kolektora dla załączenia cyrkulacji' },
                {'name'  : "time_on",
                 'value' : 30,
                 'range' : [1,300],
                 'unit'  : 's',
-                'title' : u'Czas pracy',
+                'title' : gettext('ON time'),
                 'desc'  : u'Ustaw czas pracy pompy w trybie poboru wody' },
                {'name'  : "time_off",
                 'value' : 30,
                 'range' : [1,180],
                 'unit'  : ' min',
-                'title' : u'Przerwa',
+                'title' : gettext('OFF time'),
                 'desc'  : u'Ustaw przerwę w pracy pompy w trybie poboru wody' } ]
-    return render_template("data_rows.html", control_buttons=[u'Anuluj',u'Zapisz'],
+    return render_template("data_rows.html",
                            active='circulation',
                            data=values,
-                           title="Cyrkulacja")
+                           title=gettext('Circulation'))
 
 @app.route('/heater')
 def heater():
-    values = [{'title' : u'Doba robocza',
+    values = [{'title' : gettext('Work day'),
                'id'    : 'work_day',
                'table' : {
-                   'title'     : u'Harmonogram pracy pieca',
-                   'col_names' : ['OD','DO',u'T [°C]'],
+                   'title'     : gettext('Heating schedule'),
+                   'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
                    'data'      : [['10:00','20:23',21],['23:01','23:59',20]],
-                   'footer'    : [u'Pozostałe',u'godziny',18]}},
-              {'title' : u'Doba świąteczna',
+                   'footer'    : [gettext('Other'),gettext('Hours'),18]}},
+              {'title' : gettext('Free day'),
                'id'    : 'free_day',
                'table' : {
-                   'title'     : u'Harmonogram pracy pieca',
+                   'title'     : gettext('Heating schedule'),
                    'col_names' : ['OD','DO',u'T [°C]'],
                    'data'      : [['06:00','12:23',21],['15:01','23:59',20]],
-                   'footer'    : [u'Pozostałe',u'godziny',16]}},
-              {'title' : u'Tydzień',
+                   'footer'    : [gettext('Other'),gettext('Hours'),16]}},
+              {'title' : gettext('Week'),
                'id'    : 'week',
                'data'  : [
-                   {'id' : 'mon', 'name' : u'Poniedziałek', 'state' : False},
-                   {'id' : 'tue', 'name' : u'Wtorek', 'state' : False},
-                   {'id' : 'wed', 'name' : u'Środa', 'state' : False},
-                   {'id' : 'thu', 'name' : u'Czwartek', 'state' : False},
-                   {'id' : 'fri', 'name' : u'Piątek', 'state' : False},
-                   {'id' : 'sat', 'name' : u'Sobota', 'state' : True},
-                   {'id' : 'sun', 'name' : u'Niedziela', 'state' : True} ]}
+                   {'id' : 'mon', 'name' : gettext('Monday'), 'state' : False},
+                   {'id' : 'tue', 'name' : gettext('Tuesday'), 'state' : False},
+                   {'id' : 'wed', 'name' : gettext('Wednesday'), 'state' : False},
+                   {'id' : 'thu', 'name' : gettext('Thursday'), 'state' : False},
+                   {'id' : 'fri', 'name' : gettext('Friday'), 'state' : False},
+                   {'id' : 'sat', 'name' : gettext('Saturday'), 'state' : True},
+                   {'id' : 'sun', 'name' : gettext('Sunday'), 'state' : True} ]}
                ]
 
-    hyst = { 'name'  : 'hysteresis',
-             'title' : u'Histereza',
-             'desc'  : u'Ustaw histerezę pracy ogrzewania',
-             'value' : 0.5,
-             'control_buttons' : [u'Anuluj',u'Zapisz'] }
+    hyst = 0.5
 
-    save = u'Zapisz'
     return render_template("content/heater.html",
                            active='heater',
                            tabs=values,
-                           hysteresis=hyst,
-                           save=save,
-                           title='Piec')
+                           hysteresis_value=hyst,
+                           save=True,
+                           title=gettext('Heater'))
 
-@app.route('/solar')
+@app.route('/solar/')
 def solar():
-    values = [ {'title' : u'Aktualna temperatura',
+    user = request.args.get('t')
+    if user is not None:
+        title=user
+    else:
+        title="Solar"
+
+    values = [ {'title' : gettext('Current temperature'),
                 'value' : 10 },
                {'name'  : "solar_critical",
                 'value' : 130,
                 'range' : [70,200],
                 'unit'  : u'°C',
-                'title' : u'Temperatura krytyczna',
+                'title' : gettext('Critical temperature'),
                 'desc'  : u'Ustaw krytyczną temperaturę wyłączenia kolektora' },
                {'name'  : "solar_tank",
                 'value' : 90,
                 'range' : [0.5,10],
                 'step'  : 0.1,
                 'unit'  : u'°C',
-                'title' : u'Temperatura wody',
+                'title' : gettext('Water temperature'),
                 'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora' },
                {'name'  : "solar_on",
                 'value' : 4,
                 'range' : [0.5,15],
                 'step'  : 0.5,
                 'unit'  : u'°C',
-                'title' : u'Delta załączenia',
+                'title' : gettext('Temperature difference (ON)'),
                 'desc'  : u'Ustaw wartość różnicy temperatur powodującą załączenie układu solarnego' },
                {'name'  : "solar_off",
                 'value' : 8,
                 'range' : [0.5,15],
                 'step'  : 0.5,
                 'unit'  : u'°C',
-                'title' : u'Delta wyłączenia',
+                'title' : gettext('Temperature difference (OFF)'),
                 'desc'  : u'Ustaw wartość różnicy temperatur powodującą wyłączenie układu solarnego' }]
 
-    return render_template("data_rows.html", control_buttons=[u'Anuluj',u'Zapisz'],
+    return render_template("data_rows.html",
                            active='solar',
                            data=values,
-                           title="Solar")
+                           title=title)
 
-@app.route('/options')
+@app.route('/set-room-temp', methods=['GET', 'POST'])
+@app.route('/options/change-<name>', methods=['GET', 'POST'])
+@app.route('/heater/change-<name>', methods=['GET', 'POST'])
+@app.route('/solar/change-<name>', methods=['GET', 'POST'])
+@app.route('/water/change-<name>', methods=['GET', 'POST'])
+@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
+def set_value(name=None):
+    # get those data from SQL(name):
+    slider = {'min'   : 10,
+              'max'   : 80,
+              'value' : 17,
+              'step'  : 0.1,
+              'unit'  : u'°C'}
+    description = {'title'  : gettext('Example modal'),
+                   'info'   : gettext('Move it'),
+                   's_info' : gettext('Temperature')+':'}
+
+    form = RangeForm()
+    form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
+
+    if form.validate_on_submit():
+        val = request.form['slider']
+        print(val)
+        if name is None:
+            return redirect('/')
+
+        print(name)
+        return redirect('/' + request.path.split('/')[1])
+
+    return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
+
+@app.route('/options', methods=['GET', 'POST'])
 def options():
+    options = OptionsForm()
+    options.apparent.description = apparent()
+    if options.validate_on_submit():
+        if options.data['apparent'] is not None:
+            options.apparent.description = apparent(True)
+        if options.data['reboot']:
+            reboot()
+        if options.data['reboot_mcu']:
+            reboot_mcu()
 
-    buttons = [[{'name'  : 'refresh',
-                 'type'  : 'success',
-                 'text'  : u'Odśwież'},
-                {'name'  : 'refresh_rate',
-                 'type'  : 'primary',
-                 'text'  : u'Częstotliwość odświeżania:',
-                 'value' : '1'}],
-               [{'name'  : 'reboot',
-                 'type'  : 'danger',
-                 'text'  : u'Zresetuj HMI'},
-                {'name'  : 'reboot_mcu',
-                 'type'  : 'danger',
-                 'text'  : u'Zresetuj sterownik'}]]
-
+    hyst_val = 0.5
     return render_template("content/options.html",
                            active='options',
-                           data=buttons)
+                           options = options,
+                           hysteresis_value=hyst_val)

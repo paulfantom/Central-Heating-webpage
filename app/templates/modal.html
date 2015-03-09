@@ -11,27 +11,25 @@
         <p class="text-center">{{ info_text }}</p>
         <div class="well">
           <div class="container-fluid">
+            <form oninput="{{ name }}-tmp.value={{ name }}-slider.value">
             <div class="row">
               <div class="hidden-xs col-sm-2 col-md-1 text-center"><h3>{{range[0]}}</h3></div>
               <div class="col-sm-8 col-md-10 text-center">
-                <input id="{{ name }}-slider" type="range"
-                       data-slider-min="{{range[0]}}"
-                       data-slider-max="{{range[1]}}"
-                       data-slider-step="{{step|default(1)}}"
-                       data-slider-value="{{initial_value}}"/>
+                <div class="slider-new">
+                <input id="{{ name }}-slider" type="range" class="slider-bar"
+                       min="{{range[0]}}"
+                       max="{{range[1]}}"
+                       step="{{step|default(1)}}"
+                       value="{{initial_value}}"/>
+                </div>
               </div>
               <div class="hidden-xs col-sm-2 col-md-1 text-center"><h3>{{range[1]}}</h3></div>
             </div>
             <div class="row text-center">
-              <h2><b><span id="{{ name }}-value-tmp">{{ initial_value|default(range[0]) }}</span>{{ unit|default('°C') }}</b></h2>
+              <h2><b><output id="{{ name }}-tmp" for="{{ name }}-slider"></output>{{ unit|default('°C') }}</b></h2>
             </div>
             {# same without javascript. Not working here, although working on JSfiddle: #}
-            {# <div class="slider-new">
-                <input class="slider-bar" type="range" value="50" min='100' max='500' onchange="{{ name }}-value-tmp.value=value"/>
-            </div>
-            <div>
-                <h2><b><output id="{{ name }}-value-tmp">50</output></b></h2>
-            </div> #}
+            </form>
           </div> <!-- .container-fluid -->
         </div> <!-- .well -->
       </div> <!-- .modal-body -->
@@ -45,6 +43,7 @@
   </div> <!-- .modal-dialog -->
 </div> <!-- .modal -->
 
+<!--
 <script type="text/javascript">
   $(document).ready(function() {
   $("#{{ name }}-slider").slider({});
@@ -61,7 +60,7 @@
     $(".{{ name }}-value").text($("#{{ name }}-slider").val())
   });
   });
-</script>
+</script>-->
 {%- endmacro %}
 
 {% macro modal2(name, title_text, header_text, main_text) -%}
