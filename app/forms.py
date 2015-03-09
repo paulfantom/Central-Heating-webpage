@@ -4,13 +4,15 @@ from wtforms.fields import SubmitField
 
 from wtforms.validators import NumberRange, Optional
 
+from flask.ext.babel import gettext
+
 class RangeForm(Form):
     slider = DecimalRangeField('Slider')
-    submit = SubmitField('Submit')
+    submit = SubmitField(gettext('Save'))
 
 class OptionsForm(Form):
-    apparent   = SubmitField('Use apparent temperature',
+    apparent   = SubmitField(gettext('Use apparent temperature'),
                              validators=[Optional()],
                              description=True)
-    reboot     = SubmitField('Reboot HMI',validators=[Optional()])
-    reboot_mcu = SubmitField('Reboot MCU',validators=[Optional()])
+    reboot     = SubmitField(gettext('Reboot HMI'),validators=[Optional()])
+    reboot_mcu = SubmitField(gettext('Reboot MCU'),validators=[Optional()])
