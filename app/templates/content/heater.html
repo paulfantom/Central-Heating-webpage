@@ -7,7 +7,7 @@
   <button type="button" class="navbar-toggle btn btn-link btn-block"
           data-toggle="collapse" data-target="#heater-navbar-collapse">
     <span class="glyphicon glyphicon-calendar"></span>
-    Menu
+    {% trans %}Menu{% endtrans %}
   </button>
 </div>
 <div class="collapse navbar-collapse" id="heater-navbar-collapse">
@@ -75,18 +75,16 @@
       </div>
       <div class="row clearfix">
         <div class="col-md-5 col-md-offset-1">
-          {% if hysteresis is defined %}
-          <a class="btn btn-block btn-link" data-toggle="modal" href="heater/change-{{ hysteresis['name'] }}" data-target="#{{ hysteresis['name'] }}">
-            {{ hysteresis['title'] }}: <span class="{{ hysteresis['name'] }}-value">{{ hysteresis['value']  }}</span>{{ hysteresis['unit']|default('°C') }}
+          <a class="btn btn-block btn-link" data-toggle="modal" href="heater/change-hysteresis" data-target="#hysteresis">
+            {% trans %}Hysteresis{% endtrans %}: <span class="hysteresis-value">{{ hysteresis_value }}</span>{% trans %}°C{% endtrans %}
           </a>
-          <div class="modal fade" id="{{ hysteresis['name'] }}" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal fade" id="hysteresis" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog"><div class="modal-content"></div></div>
           </div>
-          {%- endif %}
         </div>
       {%- if save is defined %}
         <div class="col-md-5">
-          <button class="btn btn-primary btn-block" id="save">{{ save }}</button>
+          <button class="btn btn-primary btn-block" id="save">{% trans %}Save{% endtrans %}</button>
         </div>
       {%- endif %}
       </div>
@@ -109,15 +107,4 @@
 {% endfor %}
 </div>
 
-{% if hysteresis is defined %}
-{#
-{{ modal(hysteresis['name'],
-         hysteresis['title'],
-         hysteresis['desc'],
-         hysteresis['range']|default([0.1,2]),
-         hysteresis['step']|default(0.1),
-         hysteresis['value'],
-         hysteresis['unit']|default('°C'),
-         hysteresis['control_buttons']) }}#}
-{% endif %}
 {% endblock %}

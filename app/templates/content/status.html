@@ -12,8 +12,8 @@
       <table class="table">
       {% for i in range(data[origin]|length) %}
         <tr>
-          <td class="text-center"><p>{{data[origin][i]['name']}}:</p></td>
-          <td class="text-center" id="{{data[origin][i]['id']}}"><p>{{data[origin][i]['value']}} {{data[origin][i]['unit']}}</p></td>
+          <td class="text-center"><p>{{data[origin][i]['title']}}:</p></td>
+          <td class="text-center" name="{{data[origin][i]['name']}}"><p>{{data[origin][i]['value']}} {{data[origin][i]['unit']}}</p></td>
         </tr>
        {% endfor %}
       </table>
@@ -25,8 +25,8 @@
     {% for i in range(data['meters']['devices']|length) %}
     <div class="col-xs-12 col-md-6">
       <table class="table">
-        <span id="{{data['meters']['devices'][i]['id']}}">
-        <tr><p class="text-center"><b>{{ data['meters']['devices'][i]['name'] }}</b></p></tr>
+        <span name="{{data['meters']['devices'][i]['name']}}">
+        <tr><p class="text-center"><b>{{ data['meters']['devices'][i]['title'] }}</b></p></tr>
         {% for trow in data['meters']['order'] %}
         <tr>
           <td class="text-center"><p>{{ data['meters']['labels'][trow] }}</p></td>

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from flask import render_template, flash, redirect, request
+from flask import render_template, redirect, request
 from wtforms.validators import NumberRange
 from app import app
 from .forms import RangeForm, OptionsForm
@@ -66,24 +66,24 @@ def room_temp():
 @app.route('/status')
 def status():
     values = {'sensors' : [
-                  {'name'  : u'Temperatura kolektora',
-                   'id'    : 'solar_temp',
+                  {'title'  : u'Temperatura kolektora',
+                   'name'    : 'solar_temp',
                    'unit'  : u'°C',
                    'value' : 100.0 },
-                  {'name'  : u'Temperatura na zewnątrz',
-                   'id'    : 'outside_temp',
+                  {'title'  : u'Temperatura na zewnątrz',
+                   'name'    : 'outside_temp',
                    'unit'  : u'°C',
                    'value' : 26.5 },
-                  {'name'  : u'Temperatura wewnątrz',
-                   'id'    : 'room_temp',
+                  {'title'  : u'Temperatura wewnątrz',
+                   'name'    : 'room_temp',
                    'unit'  : u'°C',
                    'value' : 22.1 },
-                  {'name'  : u'Temperatura odczuwalna',
-                   'id'    : 'apparent_temp',
+                  {'title'  : u'Temperatura odczuwalna',
+                   'name'    : 'apparent_temp',
                    'unit'  : u'°C',
                    'value' : 23.1 },
-                  {'name'  : u'Wilgotność',
-                   'id'    : 'humidity',
+                  {'title'  : u'Wilgotność',
+                   'name'    : 'humidity',
                    'unit'  : u'%',
                    'value' : 50 }],
               'meters'  : {
@@ -95,24 +95,24 @@ def status():
                                'consume'  : u'???????'},
                   'order'   : ['temp_in','temp_out','temp_diff','flow','energy','consume'],
                   'units'   : [u'°C',    u'°C',     u'°C',      u'm³/h',u'kWh', u'???'],
-                  'devices' : [{'name'     : u'Solar',
-                                'id'       : 'solar',
+                  'devices' : [{'title'     : u'Solar',
+                                'name'       : 'solar',
                                 'temp_in'  : 40.1,
                                 'temp_out' : 30.2,
                                 'temp_diff': 0.9,
                                 'flow'     : 10,
                                 'energy'   : 314.1,
                                 'consume'  : 10},
-                               {'name'     : u'Zbiornik',
-                                'id'       : 'tank',
+                               {'title'     : u'Zbiornik',
+                                'name'       : 'tank',
                                 'temp_in'  : 40.1,
                                 'temp_out' : 30.2,
                                 'temp_diff': 0.9,
                                 'flow'     : 10,
                                 'energy'   : 314.1,
                                 'consume'  : 10},
-                               {'name'     : u'Piec',
-                                'id'       : 'heater',
+                               {'title'     : u'Piec',
+                                'name'       : 'heater',
                                 'temp_in'  : 40.1,
                                 'temp_out' : 30.2,
                                 'temp_diff': 0.9,
@@ -120,20 +120,20 @@ def status():
                                 'energy'   : 314.1,
                                 'consume'  : 10}]},
               'states'  : [
-                  {'name'  : u'Palnik',
-                   'id'    : 'burner',
+                  {'title'  : u'Palnik',
+                   'name'    : 'burner',
                    'value' : 'ON' },
-                  {'name'  : u'Pompa pieca',
-                   'id'    : 'heater_pump',
+                  {'title'  : u'Pompa pieca',
+                   'name'    : 'heater_pump',
                    'value' : 'ON' },
-                  {'name'  : u'Pompa kolaktora',
-                   'id'    : 'solar_pump',
+                  {'title'  : u'Pompa kolaktora',
+                   'name'    : 'solar_pump',
                    'value' : 'ON' },
-                  {'name'  : u'Siłownik układu solarnego',
-                   'id'    : 'solar_switch',
+                  {'title'  : u'Siłownik układu solarnego',
+                   'name'    : 'solar_switch',
                    'value' : 'ON' },
-                  {'name'  : u'Siłownik układu CO/CWU',
-                   'id'    : 'heater_switch',
+                  {'title'  : u'Siłownik układu CO/CWU',
+                   'name'    : 'heater_switch',
                    'value' : 'CWU' } ]}
     title=u'Dane z czujników'
     return render_template("/content/status.html",
@@ -268,18 +268,13 @@ def heater():
                    {'id' : 'sun', 'name' : u'Niedziela', 'state' : True} ]}
                ]
 
-    hyst = { 'name'  : 'hysteresis',
-             'title' : u'Histereza',
-             'desc'  : u'Ustaw histerezę pracy ogrzewania',
-             'value' : 0.5,
-             'control_buttons' : [u'Anuluj',u'Zapisz'] }
+    hyst = 0.5
 
-    save = u'Zapisz'
     return render_template("content/heater.html",
                            active='heater',
                            tabs=values,
-                           hysteresis=hyst,
-                           save=save,
+                           hysteresis_value=hyst,
+                           save=True,
                            title='Piec')
 
 @app.route('/solar/')
@@ -344,7 +339,6 @@ def set_value(name=None):
                    'cancel' : u'Anuluj',
                    'submit' : u'Zapisz'}
 
-
     form = RangeForm()
     form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
 
@@ -359,13 +353,42 @@ def set_value(name=None):
 
     return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
 
-
 @app.route('/options', methods=['GET', 'POST'])
 def options():
-
     options = OptionsForm()
-    options.apparent.description = False
+    options.apparent.description = apparent()
+    if options.validate_on_submit():
+        if options.data['apparent'] is not None:
+            options.apparent.description = apparent(True)
+        if options.data['reboot']:
+            reboot()
+        if options.data['reboot_mcu']:
+            reboot_mcu()
 
     return render_template("content/options.html",
                            active='options',
                            options = options)
+
+def format_data(name,value=False,unit=False,title=False,desc=False,range=False,step=False,all=False):
+    data = {}
+
+
+    return data
+
+def get_from_SQL(record,field):
+    return None
+
+def apparent(toggle=False):
+    #get apparent temperature switch state from SQL
+    apparent = True
+
+    if toggle:
+        apparent = not apparent
+
+    return apparent
+
+def reboot():
+    return None
+
+def reboot_mcu():
+    return None
