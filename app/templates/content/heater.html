@@ -32,7 +32,7 @@
       <div class="row clearfix">
         <div class="col-md-10 col-md-offset-1 text-center">
           <h4>{{ tab['table']['title']  }}</h4>
-          <table class="table">
+          <table class="table" id="{{ tab['id'] }}-table">
           <tbody>
             <tr>
               {%- for col in tab['table']['col_names'] %}
@@ -48,7 +48,7 @@
               </td>
               {%- endfor %}
               <td class="text-right">
-                <button class="btn btn-danger" id="remove_row_{{ loop.index }}">
+                <button class="btn btn-danger" id="remove_row_{{ loop.index }}" onclick="deleteRow()">
                   <span class="glyphicon glyphicon-minus"></span>
                 </button>
               </td>
@@ -65,7 +65,7 @@
               </button>
             </td>
             <td class="text-right">
-              <button class="btn btn-success" id="add_row">
+              <button class="btn btn-success" id="add_row" onclick="addRow()">
                 <span class="glyphicon glyphicon-plus"></span>
               </button>
             </td>
@@ -107,4 +107,30 @@
 {% endfor %}
 </div>
 
+<script type="text/javascript">
+  function addRow(){
+  $('#work_day-table').append('{#{% row() %}#}');};
+  function deleteRow(row)
+{
+    var i=row.parentNode.parentNode.rowIndex;
+    document.getElementById('work_day-table').deleteRow(i);
+}
+</script>
+
 {% endblock %}
+
+
+{% macro row() %}
+<tr>
+{%- for i in range(tab['table']['col_names']|length) %}
+  <td class="text-center">
+    <button class="btn btn-link btn-block" id="value_{{ loop.index }}">{{ row[i] }}</button>
+  </td>
+{%- endfor %}
+  <td class="text-right">
+    <button class="btn btn-danger" id="remove_row_{{ loop.index }}" onclick="deleteRow()">
+      <span class="glyphicon glyphicon-minus"></span>
+    </button>
+  </td>
+</tr>
+{% endmacro %}
