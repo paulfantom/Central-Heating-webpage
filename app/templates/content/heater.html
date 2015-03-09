@@ -88,22 +88,13 @@
           </table>
         </div>
       </div>
-      <div class="row clearfix">
-        <div class="col-md-5 col-md-offset-1">
-          <a class="btn btn-block btn-link" data-toggle="modal" href="heater/change-hysteresis" data-target="#hysteresis">
-            {% trans %}Hysteresis{% endtrans %}: <span class="hysteresis-value">{{ hysteresis_value }}</span>{% trans %}°C{% endtrans %}
-          </a>
-          <div class="modal fade" id="hysteresis" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog"><div class="modal-content"></div></div>
-          </div>
-        </div>
       {%- if save is defined %}
-        <div class="col-md-5">
+      <div class="row clearfix">
+        <div class="col-md-6 col-md-offset-3">
           <button class="btn btn-primary btn-block" id="save">{% trans %}Save{% endtrans %}</button>
         </div>
-      {%- endif %}
       </div>
-
+      {%- endif %}
     {% else %}
     <br>
     <div class="well text-center">

@@ -393,6 +393,8 @@ def options():
         if options.data['reboot_mcu']:
             reboot_mcu()
 
+    hyst_val = 0.5
     return render_template("content/options.html",
                            active='options',
-                           options = options)
+                           options = options,
+                           hysteresis_value=hyst_val)
