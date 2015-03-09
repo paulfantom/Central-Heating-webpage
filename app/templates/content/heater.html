@@ -94,7 +94,7 @@
     <div class="well text-center">
       <div class="btn-group" data-toggle="buttons">
       {% for day in tab['data'] %}
-        <label class="btn btn-info {% if day['state'] -%}
+        <label class="btn btn-info btn-day {% if day['state'] -%}
           active{%- endif -%}" id='mon-label' style="min-width:110px">
           <input type="checkbox" name="day" id="{{ day['id'] }}"><br>{{ day['name'] }}<br><br>
         </label>
