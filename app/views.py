@@ -6,15 +6,8 @@ from wtforms.validators import NumberRange
 from app import app, babel, db
 from .forms import RangeForm, OptionsForm
 from config import LANGUAGES
-
-def get_data():
-
-
-
-    return data
-
-def get_from_SQL(record,field):
-    return None
+from .system import *
+from .data import *
 
 def apparent(toggle=False):
     #get apparent temperature switch state from SQL
@@ -24,13 +17,6 @@ def apparent(toggle=False):
         apparent = not apparent
 
     return apparent
-
-def reboot():
-    return None
-
-def reboot_mcu():
-    return None
-
 
 @babel.localeselector
 def get_locale():
@@ -384,10 +370,11 @@ def set_value(name=None):
 @app.route('/options', methods=['GET', 'POST'])
 def options():
     options = OptionsForm()
-    options.apparent.description = apparent()
+    options.apparent.description = get_value('use_apparent_temperature')
     if options.validate_on_submit():
         if options.data['apparent'] is not None:
-            options.apparent.description = apparent(True)
+            options.apparent.description = not options.apparent.description
+            # save options.apparent.description to SQL
         if options.data['reboot']:
             reboot()
         if options.data['reboot_mcu']:

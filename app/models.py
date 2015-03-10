@@ -31,55 +31,20 @@ class Settings(db.Model):
     def __repr__(self):
         return '<Index %r>' % self.index
 
-    def __init__(self, circulation_time_off, circulation_time_on,
-                 circulation_solar, circulation_hysteresis, circulation_temp,
-                 solar_off, solar_on, solar_critical,
-                 tank_solar_max, tank_heater_max, tank_heater_min,
-                 room_hysteresis, schedule, schedule_override_temp,
-                 use_apparent_temperature, refresh_rate):
+    def __init__(self, circulation_time_off=None, circulation_time_on=None,
+                 circulation_solar=None, circulation_hysteresis=None,
+                 circulation_temp=None, solar_off=None, solar_on=None,
+                 solar_critical=None, tank_solar_max=None,
+                 tank_heater_max=None, tank_heater_min=None,
+                 room_hysteresis=None, schedule=None,
+                 schedule_override_temp=None, use_apparent_temperature=None,
+                 refresh_rate=None):
         self.timestamp = strftime("%Y-%m-%dT%H:%M:%S")
-        self.circulation_time_off = circulation_time_off
-        self.circulation_time_on = circulation_time_on
-        self.circulation_solar = circulation_solar
-        self.circulation_hysteresis = circulation_hysteresis
-        self.circulation_temp = circulation_temp
-        self.solar_off = solar_off
-        self.solar_on = solar_on
-        self.solar_critical = solar_critical
-        self.tank_solar_max = tank_solar_max
-        self.tank_heater_max = tank_heater_max
-        self.tank_heater_min = tank_heater_min
-        self.room_hysteresis = room_hysteresis
-        self.schedule = schedule
-        self.schedule_override_temp = schedule_override_temp
-        self.use_apparent_temperature = use_apparent_temperature
-        self.refresh_rate = refresh_rate
+        # populate all columns
+        l = locals()
+        for arg in l:
+            setattr(self,arg,l[arg])
 
-def get_query(db_model):
-    try:
-        q = db.session.query(db_model).order_by(db_model.index.desc()).first()
-    except AttributeError:
-        try:
-            q = db.session.query(db_model).order_by(db_model.index.desc()).first()
-        except AttributeError:
-            return None
-    return q
-
-def get_last_row(db_model):
-    q = get_query(db_model)
-    d = {}
-    for col in q.__table__.columns._data.keys():
-        d[col] = getattr(q,col)
-    return d
-
-def get_value(column,db_model=Settings):
-    q = get_query(db_model)
-    try:
-        return getattr(q,column)
-    except AttributeError:
-        return None
-    except TypeError:
-        return None
 
 #class Data(db.Model):
     #index = db.Column(db.Integer, primary_key=True, unique=True)
