@@ -4,10 +4,13 @@ from flask import render_template, redirect, request
 from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
 from app import app, babel, db
+import json
+
 from .forms import RangeForm, OptionsForm
 from config import LANGUAGES
 from .system import *
 from .data import *
+
 
 def apparent(toggle=False):
     #get apparent temperature switch state from SQL
@@ -77,7 +80,11 @@ def room_temp():
         print(val)
         return redirect('/')
 
-    return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
+    return render_template("forms/modal-range.html",
+                           action=request.path,
+                           slider=slider,
+                           desc=description,
+                           form=form)
 
 @app.route('/status')
 def status():
@@ -191,7 +198,10 @@ def scheme():
                    'solar_pump'   : False,
                    'solar_switch' : False,
                    'heater_switch': False}}
-    return render_template("/content/scheme.html",active='scheme',data=values)
+    return render_template("/content/scheme.html",
+                           active='scheme',
+                           data=values,
+                           title=gettext('Scheme'))
 
 @app.route('/water/')
 def water():
@@ -223,20 +233,23 @@ def circulation():
 
 @app.route('/heater')
 def heater():
+    schedule = json.loads(get_value('schedule',Settings))
+
+    # TODO write form for this:
     values = [{'title' : gettext('Work day'),
                'id'    : 'work_day',
                'table' : {
                    'title'     : gettext('Heating schedule'),
                    'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
-                   'data'      : [['10:00','20:23',21],['23:01','23:59',20]],
-                   'footer'    : [gettext('Other'),gettext('Hours'),18]}},
+                   'data'      : schedule['work'],
+                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
               {'title' : gettext('Free day'),
                'id'    : 'free_day',
                'table' : {
                    'title'     : gettext('Heating schedule'),
                    'col_names' : ['OD','DO',u'T [°C]'],
-                   'data'      : [['06:00','12:23',21],['15:01','23:59',20]],
-                   'footer'    : [gettext('Other'),gettext('Hours'),16]}},
+                   'data'      : schedule['free'],
+                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
               {'title' : gettext('Week'),
                'id'    : 'week',
                'data'  : [
@@ -249,12 +262,9 @@ def heater():
                    {'id' : 'sun', 'name' : gettext('Sunday'), 'state' : True} ]}
                ]
 
-    hyst = 0.5
-
     return render_template("content/heater.html",
                            active='heater',
                            tabs=values,
-                           hysteresis_value=hyst,
                            save=True,
                            title=gettext('Heater'))
 
