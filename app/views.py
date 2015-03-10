@@ -197,67 +197,28 @@ def scheme():
 def water():
     # get setpoints from SQL
     settings = get_last_row(Settings)
-    values = [ {'title' : gettext('Current temperature'),
-                'value' : 44 },
-               {'name'  : "tank_solar_max",
-                'value' : settings['tank_solar_max'],
-                'range' : [30,100],
-                'title' : gettext('Solar'),
-                'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora' },
-               {'name'  : "tank_heater_max",
-                'value' : settings['tank_heater_max'],
-                'range' : [30,100],
-                'title' : gettext('Heater (max)'),
-                'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z pieca' },
-               {'name'  : "tank_heater_min",
-                'value' : settings['tank_heater_min'],
-                'range' : [30,100],
-                'title' : gettext('Heater (min)'),
-                'desc'  : u'Ustaw minimalną temperaturę wody w zbiorniku dla zasilania z pieca' }]
+
+    order = ['tank_solar_max', 'tank_heater_max', 'tank_heater_min']
+    data = [ {'title' : gettext('Current temperature'), 'value' : 44 }]
+    data += populate(order,settings)
 
     return render_template("data_rows.html",
                            active='water',
-                           data=values,
+                           data=data,
                            title=gettext('Water'))
 
 @app.route('/circulation/')
 def circulation():
     # get setpoints from SQL
     settings = get_last_row(Settings)
-    values = [ {'name'  : "circulation_temp",
-                'value' : settings['circulation_temp'],
-                'range' : [30,100],
-                'unit'  : u'°C',
-                'title' : gettext('Work temperature'),
-                'desc'  : u'Ustaw temperaturę pracy pompy cyrkulacyjnej' },
-               {'name'  : "circulation_hysteresis",
-                'value' : settings['circulation_hysteresis'],
-                'range' : [0.5,10],
-                'step'  : 0.5,
-                'unit'  : u'°C',
-                'title' : gettext('Hysteresis'),
-                'desc'  : u'Ustaw histerezę pracy pompy cyrkulacyjnej' },
-               {'name'  : "circulation_solar",
-                'value' : settings['circulation_solar'],
-                'range' : [30,150],
-                'unit'  : u'°C',
-                'title' : gettext('Required solar temperature'),
-                'desc'  : u'Ustaw minimalną temperaturę kolektora dla załączenia cyrkulacji' },
-               {'name'  : "circulation_time_on",
-                'value' : settings['circulation_time_on'],
-                'range' : [1,300],
-                'unit'  : 's',
-                'title' : gettext('ON time'),
-                'desc'  : u'Ustaw czas pracy pompy w trybie poboru wody' },
-               {'name'  : "circulation_time_off",
-                'value' : settings['circulation_time_off'],
-                'range' : [1,180],
-                'unit'  : ' min',
-                'title' : gettext('OFF time'),
-                'desc'  : u'Ustaw przerwę w pracy pompy w trybie poboru wody' } ]
+
+    order = ['circulation_temp','circulation_hysteresis','circulation_solar',
+             'circulation_time_on','circulation_time_off']
+    val = populate(order,settings)
+
     return render_template("data_rows.html",
                            active='circulation',
-                           data=values,
+                           data=val,
                            title=gettext('Circulation'))
 
 @app.route('/heater')
@@ -299,50 +260,18 @@ def heater():
 
 @app.route('/solar/')
 def solar():
-    user = request.args.get('t')
-    if user is not None:
-        title=user
-    else:
-        title="Solar"
-
     # get setpoints from SQL
     settings = get_last_row(Settings)
-    values = [ {'title' : gettext('Current temperature'),
-                'value' : 10 },
-               {'name'  : "solar_critical",
-                'value' : settings['solar_critical'],
-                'range' : [70,200],
-                'unit'  : u'°C',
-                'title' : gettext('Critical temperature'),
-                'desc'  : u'Ustaw krytyczną temperaturę wyłączenia kolektora' },
-               {'name'  : "tank_solar_max",
-                'value' : settings['tank_solar_max'],
-                'range' : [0.5,10],
-                'step'  : 0.1,
-                'unit'  : u'°C',
-                'title' : gettext('Water temperature'),
-                'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora' },
-               {'name'  : "solar_on",
-                'value' : settings['solar_on'],
-                'range' : [0.5,15],
-                'step'  : 0.5,
-                'unit'  : u'°C',
-                'title' : gettext('Temperature difference (ON)'),
-                'desc'  : u'Ustaw wartość różnicy temperatur powodującą załączenie układu solarnego' },
-               {'name'  : "solar_off",
-                'value' : settings['solar_off'],
-                'range' : [0.5,15],
-                'step'  : 0.5,
-                'unit'  : u'°C',
-                'title' : gettext('Temperature difference (OFF)'),
-                'desc'  : u'Ustaw wartość różnicy temperatur powodującą wyłączenie układu solarnego' }]
+    order = ['solar_critical','tank_solar_max','solar_on','solar_off']
+    data = [ {'title' : gettext('Current temperature'), 'value' : 10 }]
+    data += populate(order,settings)
 
     return render_template("data_rows.html",
                            active='solar',
-                           data=values,
-                           title=title)
+                           data=data,
+                           title=gettext("Solar"))
 
-@app.route('/set-room-temp', methods=['GET', 'POST'])
+@app.route('/change-<name>', methods=['GET', 'POST'])
 @app.route('/options/change-<name>', methods=['GET', 'POST'])
 @app.route('/heater/change-<name>', methods=['GET', 'POST'])
 @app.route('/solar/change-<name>', methods=['GET', 'POST'])
@@ -355,14 +284,17 @@ def set_value(name=None):
 
     # get value from SQL
     value = get_value(name,Settings)
-    slider = {'min'   : 10,
-              'max'   : 80,
+
+    val = populate(name)[0]
+    if 'step' not in val:
+        val['step'] = 1
+    slider = {'min'   : val['range'][0],
+              'max'   : val['range'][1],
               'value' : value,
-              'step'  : 0.1,
-              'unit'  : u'°C'}
-    description = {'title'  : gettext('Example modal'),
-                   'info'   : gettext('Move it'),
-                   's_info' : gettext('Temperature')+':'}
+              'step'  : val['step'],
+              'unit'  : val['unit']}
+
+    description = {key:val[key] for key in ['title','desc']}
 
     form = RangeForm()
     form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
@@ -376,7 +308,11 @@ def set_value(name=None):
 
         return redirect('/' + request.path.split('/')[1])
 
-    return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
+    return render_template("forms/modal-range.html",
+                           action=request.path,
+                           slider=slider,
+                           desc=description,
+                           form=form)
 
 @app.route('/options', methods=['GET', 'POST'])
 def options():
@@ -401,3 +337,25 @@ def options():
                            options = options,
                            refresh_rate = refresh,
                            hysteresis_value = hysteresis)
+
+def populate(order,SQL_data=None,keys=None):
+    if keys is None:
+        keys = ['range', 'unit', 'desc', 'step', 'title']
+    if type(order) != list:
+        order = [order]
+
+    data = []
+    for name in order:
+        d = {}
+        d['name'] = name
+        try:
+            d['value'] = SQL_data[name]
+        except TypeError:
+            pass
+        for k in keys:
+            try:
+                d[k] = app.config['DESCRIPTIONS'][name][k]
+            except KeyError:
+                pass
+        data.append(d)
+    return data

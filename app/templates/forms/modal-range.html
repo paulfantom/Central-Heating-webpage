@@ -11,7 +11,7 @@
   </div> <!-- .modal-header -->
   {%- endif %}
   <div class="modal-body">
-    <p class="text-center">{{ desc['info']|default('Description') }}</p>
+    <p class="text-center">{{ desc['desc']|default('Description') }}</p>
     <div class="container-fluid">
       <div class="row text-center">
         <div class="input-group">
@@ -26,7 +26,7 @@
         </div> <!-- .input-group -->
       </div> <!-- .row -->
       <div class="row text-center">
-        <h3>{{ desc['s_info'] }} <output name="out" for="{{form.slider.id}}" class="output">{{ slider['value']|default('00') }}</output> {{ slider['unit'] }}</h3>
+        <h3>{% trans %}Current value{% endtrans %}: <output name="out" for="{{form.slider.id}}" class="output">{{ slider['value']|default('00') }}</output> {{ slider['unit'] }}</h3>
       </div>
     </div> <!-- .container-fluid -->
   </div> <!-- .modal-body -->
@@ -37,7 +37,7 @@
   </form>
   <script type="text/javascript">
     $(document).ready(function() {
-      setTimeout(function() { $("#close").click(); }, 5000);
+      setTimeout(function() { $("#close").click(); }, 60000);
     });
   </script>
   </body>
