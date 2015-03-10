@@ -195,20 +195,22 @@ def scheme():
 
 @app.route('/water/')
 def water():
+    # get setpoints from SQL
+    settings = get_last_row(Settings)
     values = [ {'title' : gettext('Current temperature'),
                 'value' : 44 },
-               {'name'  : "solar_max",
-                'value' : 90,
+               {'name'  : "tank_solar_max",
+                'value' : settings['tank_solar_max'],
                 'range' : [30,100],
                 'title' : gettext('Solar'),
                 'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora' },
-               {'name'  : "heater_max",
-                'value' : 90,
+               {'name'  : "tank_heater_max",
+                'value' : settings['tank_heater_max'],
                 'range' : [30,100],
                 'title' : gettext('Heater (max)'),
                 'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z pieca' },
-               {'name'  : "heater_min",
-                'value' : 30,
+               {'name'  : "tank_heater_min",
+                'value' : settings['tank_heater_min'],
                 'range' : [30,100],
                 'title' : gettext('Heater (min)'),
                 'desc'  : u'Ustaw minimalną temperaturę wody w zbiorniku dla zasilania z pieca' }]
@@ -220,33 +222,35 @@ def water():
 
 @app.route('/circulation/')
 def circulation():
+    # get setpoints from SQL
+    settings = get_last_row(Settings)
     values = [ {'name'  : "circulation_temp",
-                'value' : 40,
+                'value' : settings['circulation_temp'],
                 'range' : [30,100],
                 'unit'  : u'°C',
                 'title' : gettext('Work temperature'),
                 'desc'  : u'Ustaw temperaturę pracy pompy cyrkulacyjnej' },
-               {'name'  : "circulation_hyst",
-                'value' : 4,
+               {'name'  : "circulation_hysteresis",
+                'value' : settings['circulation_hysteresis'],
                 'range' : [0.5,10],
                 'step'  : 0.5,
                 'unit'  : u'°C',
                 'title' : gettext('Hysteresis'),
                 'desc'  : u'Ustaw histerezę pracy pompy cyrkulacyjnej' },
                {'name'  : "circulation_solar",
-                'value' : 70,
+                'value' : settings['circulation_solar'],
                 'range' : [30,150],
                 'unit'  : u'°C',
                 'title' : gettext('Required solar temperature'),
                 'desc'  : u'Ustaw minimalną temperaturę kolektora dla załączenia cyrkulacji' },
-               {'name'  : "time_on",
-                'value' : 30,
+               {'name'  : "circulation_time_on",
+                'value' : settings['circulation_time_on'],
                 'range' : [1,300],
                 'unit'  : 's',
                 'title' : gettext('ON time'),
                 'desc'  : u'Ustaw czas pracy pompy w trybie poboru wody' },
-               {'name'  : "time_off",
-                'value' : 30,
+               {'name'  : "circulation_time_off",
+                'value' : settings['circulation_time_off'],
                 'range' : [1,180],
                 'unit'  : ' min',
                 'title' : gettext('OFF time'),
@@ -301,30 +305,32 @@ def solar():
     else:
         title="Solar"
 
+    # get setpoints from SQL
+    settings = get_last_row(Settings)
     values = [ {'title' : gettext('Current temperature'),
                 'value' : 10 },
                {'name'  : "solar_critical",
-                'value' : 130,
+                'value' : settings['solar_critical'],
                 'range' : [70,200],
                 'unit'  : u'°C',
                 'title' : gettext('Critical temperature'),
                 'desc'  : u'Ustaw krytyczną temperaturę wyłączenia kolektora' },
-               {'name'  : "solar_tank",
-                'value' : 90,
+               {'name'  : "tank_solar_max",
+                'value' : settings['tank_solar_max'],
                 'range' : [0.5,10],
                 'step'  : 0.1,
                 'unit'  : u'°C',
                 'title' : gettext('Water temperature'),
                 'desc'  : u'Ustaw maksymalną temperaturę wody w zbiorniku dla zasilania z kolektora' },
                {'name'  : "solar_on",
-                'value' : 4,
+                'value' : settings['solar_on'],
                 'range' : [0.5,15],
                 'step'  : 0.5,
                 'unit'  : u'°C',
                 'title' : gettext('Temperature difference (ON)'),
                 'desc'  : u'Ustaw wartość różnicy temperatur powodującą załączenie układu solarnego' },
                {'name'  : "solar_off",
-                'value' : 8,
+                'value' : settings['solar_off'],
                 'range' : [0.5,15],
                 'step'  : 0.5,
                 'unit'  : u'°C',
@@ -344,9 +350,14 @@ def solar():
 @app.route('/circulation/change-<name>', methods=['GET', 'POST'])
 def set_value(name=None):
     # get those data from SQL(name):
+    if name is None:
+        name = 'schedule_override_temp'
+
+    # get value from SQL
+    value = get_value(name,Settings)
     slider = {'min'   : 10,
               'max'   : 80,
-              'value' : 17,
+              'value' : value,
               'step'  : 0.1,
               'unit'  : u'°C'}
     description = {'title'  : gettext('Example modal'),
@@ -358,11 +369,11 @@ def set_value(name=None):
 
     if form.validate_on_submit():
         val = request.form['slider']
-        print(val)
+        # save to SQL
+        change_setting(name,val)
         if name is None:
             return redirect('/')
 
-        print(name)
         return redirect('/' + request.path.split('/')[1])
 
     return render_template("forms/modal-range.html",action=request.path,slider=slider,desc=description,form=form)
@@ -370,18 +381,23 @@ def set_value(name=None):
 @app.route('/options', methods=['GET', 'POST'])
 def options():
     options = OptionsForm()
-    options.apparent.description = get_value('use_apparent_temperature')
+
+    data = get_last_row(Settings)
+    options.apparent.description = data['use_apparent_temperature']
+    refresh = data['refresh_rate']
+    hysteresis = data['room_hysteresis']
+
     if options.validate_on_submit():
         if options.data['apparent'] is not None:
             options.apparent.description = not options.apparent.description
-            # save options.apparent.description to SQL
+            change_setting('use_apparent_temperature',options.apparent.description)
         if options.data['reboot']:
             reboot()
         if options.data['reboot_mcu']:
             reboot_mcu()
 
-    hyst_val = 0.5
     return render_template("content/options.html",
                            active='options',
                            options = options,
-                           hysteresis_value=hyst_val)
+                           refresh_rate = refresh,
+                           hysteresis_value = hysteresis)

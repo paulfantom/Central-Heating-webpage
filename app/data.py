@@ -1,4 +1,5 @@
 from .models import Settings
+from app import db
 
 def get_query(db_model):
     try:
