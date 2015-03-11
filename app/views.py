@@ -6,7 +6,7 @@ from wtforms.validators import NumberRange
 from app import app, babel, db
 import json
 
-from .forms import RangeForm, OptionsForm
+from .forms import *
 from config import LANGUAGES
 from .system import *
 from .data import *
@@ -231,9 +231,10 @@ def circulation():
                            data=val,
                            title=gettext('Circulation'))
 
-@app.route('/heater')
+@app.route('/heater', methods=['GET', 'POST'])
 def heater():
     schedule = json.loads(get_value('schedule',Settings))
+    print(schedule['week'])
 
     # TODO write form for this:
     values = [{'title' : gettext('Work day'),
@@ -250,22 +251,28 @@ def heater():
                    'col_names' : ['OD','DO',u'T [°C]'],
                    'data'      : schedule['free'],
                    'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
-              {'title' : gettext('Week'),
-               'id'    : 'week',
-               'data'  : [
-                   {'id' : 'mon', 'name' : gettext('Monday'), 'state' : False},
-                   {'id' : 'tue', 'name' : gettext('Tuesday'), 'state' : False},
-                   {'id' : 'wed', 'name' : gettext('Wednesday'), 'state' : False},
-                   {'id' : 'thu', 'name' : gettext('Thursday'), 'state' : False},
-                   {'id' : 'fri', 'name' : gettext('Friday'), 'state' : False},
-                   {'id' : 'sat', 'name' : gettext('Saturday'), 'state' : True},
-                   {'id' : 'sun', 'name' : gettext('Sunday'), 'state' : True} ]}
+              {'title'  : gettext('Week'),
+               'id'     : 'week',
+               'states' : schedule['week']}
                ]
+
+    week = WeekForm()
+    week_change = False
+    if week.validate_on_submit():
+        i = 0
+        for k in sorted(week.data):
+            if week.data[k]:
+                values[2]['states'][i] = abs(values[2]['states'][i]-1)
+            i+=1
+        week_change = True
+
 
     return render_template("content/heater.html",
                            active='heater',
                            tabs=values,
                            save=True,
+                           week_form=week,
+                           week_changed=week_change,
                            title=gettext('Heater'))
 
 @app.route('/solar/')

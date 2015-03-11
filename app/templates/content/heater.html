@@ -27,8 +27,13 @@
 </div>
 <div class="collapse navbar-collapse" id="heater-navbar-collapse">
   <ul class="nav nav-pills nav-justified">
+    {% if week_changed %}
+      {% set init_tab = 3 %}
+    {% else %}
+      {% set init_tab = 1 %}
+    {% endif %}
     {%- for tab in tabs -%}
-    {%- if loop.index == 1 %}<li class="active">{% else %}<li>{% endif %}
+    <li {%- if loop.index == init_tab %} class="active"{% endif %}>
       <a href="#{{ tab['id'] }}" role="tab" data-toggle="tab">{{ tab['title'] }}</a>
     </li>
     {%- endfor -%}
@@ -37,7 +42,7 @@
 
 <div class="tab-content">
 {%- for tab in tabs %}
-  {%- if loop.index == 1 %}
+  {%- if loop.index == init_tab %}
   <div class="tab-pane fade in active" id="{{ tab['id'] }}">
   {%- else %}
   <div class="tab-pane fade" id="{{ tab['id'] }}">
@@ -97,14 +102,23 @@
       {%- endif %}
     {% else %}
     <br>
-    <div class="well text-center">
-      <div class="btn-group" data-toggle="buttons">
-      {% for day in tab['data'] %}
-        <label class="btn btn-info btn-day {% if day['state'] -%}
-          active{%- endif -%}" id='mon-label' style="min-width:110px">
-          <input type="checkbox" name="day" id="{{ day['id'] }}"><br>{{ day['name'] }}<br><br>
-        </label>
-      {% endfor %}
+    <div class="row">
+      <div class="well text-center col-lg-8 col-lg-offset-2">
+        <form method="post">
+          {{ week_form.hidden_tag() }}
+          <div class="btn-group btn-group-justified">
+          {% for field in week_form if field.name != "csrf_token" %}
+            {% if tabs[2]['states'][loop.index-1] == 1%}
+            {% set a = ' active' %}{%else%}{% set a=''%}
+            {% endif %}
+          {#{{ field.label(class="btn btn-info btn-day"+a) }}#}
+            <div class="btn-group" role="group">
+              {{ field(class="btn btn-info btn-day"+a,
+                       style="min-height:70px") }}
+            </div>
+          {% endfor %}
+          </div>
+        </form>
       </div>
     </div>
     {% endif %}
@@ -114,4 +128,3 @@
 </div>
 
 {% endblock %}
-
