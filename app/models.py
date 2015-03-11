@@ -5,7 +5,7 @@ from time import strftime
 
 class Settings(db.Model):
     index = db.Column(db.Integer, primary_key=True, unique=True)
-    timestamp = db.Column(db.String(20), unique=True)
+    timestamp = db.Column(db.String(20))
     # CIRCULATION
     circulation_time_off = db.Column(db.Integer)
     circulation_time_on = db.Column(db.Float(1))
@@ -48,7 +48,7 @@ class Settings(db.Model):
 
 #class Data(db.Model):
     #index = db.Column(db.Integer, primary_key=True, unique=True)
-    #timestamp = db.Column(db.String(20), unique=True)
+    #timestamp = db.Column(db.String(20))
 
     #solar_temperature = db.Column(db.Float(1))
     #outside_temperature = db.Column(db.Float(1))
