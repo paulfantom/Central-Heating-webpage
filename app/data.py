@@ -37,7 +37,11 @@ def change_setting(name,value):
     db.session.commit()
 
 def parse_timetable(input_json):
-    
+    out = []
 
 
-    return None
+
+    out.append({'title' : gettext('Week'),
+               'id'     : 'week',
+               'states' : input_json['week']})
+    return out

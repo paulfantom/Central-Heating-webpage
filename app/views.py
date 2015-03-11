@@ -256,6 +256,17 @@ def heater():
                'states' : schedule['week']}
                ]
 
+''' #Validator (move it to client-side JS)
+    for i in range(len(list_FROM)):
+        if list_TO[i] < list_FROM[i]:
+            print("Error - hour_TO is earlier than hour_FROM")
+            break
+        for j in range(len(list_FROM)-i):
+            if list_FROM[j] < list_FROM[i] < list_TO[j]:
+                print("Error - conflicting ranges")
+            if list_FROM[j] < list_TO[i] < list_TO[j]:
+                print("Error - conflicting ranges")
+'''
     week = WeekForm()
     init_tab = 1
     if week.validate_on_submit():
