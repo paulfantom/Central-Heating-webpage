@@ -17,15 +17,19 @@
         <div class="modal-dialog"><div class="modal-content"></div></div>
       </div> <!-- .modal -->
       <span class="hidden-xs"><br></span>
-      <button type="button" class="btn btn-block btn-link">
+      <div class="text-center">
+<!--       <button type="button" class="btn btn-block btn-link"> -->
         <p>{% trans %}Outside temperature{% endtrans %}:</p>
         <h2 id="temp_out">{{ data['out_temp'] }}&deg;C</h2>
-      </button>
+<!--       </button> -->
+      </div>
     </div>
     <div class="col-xs-12 col-sm-6">
-      <button type="button" class="btn btn-block btn-link">
+      <div class="text-center">
+<!--       <button type="button" class="btn btn-block btn-link"> -->
         <p>{% trans %}Humidity{% endtrans %}:</p><h2><span id="humidity_value">{{ data['humidity'] }}</span>%</h2>
-      </button>
+<!--       </button> -->
+      <div class="text-center">
       <button type="button" class="btn btn-block btn-warning">
         {% trans %}Heater status{% endtrans %}:<br>
         {% if data['heater_status'] == 'on' %}
@@ -45,12 +49,12 @@
       <span class="hidden-xs"><br></span>
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <button type="button" class="btn btn-block btn-link" id="set-time">
+          <button type="button" class="btn btn-block btn-link disabled" id="set-time">
             <h4><b><span id="time">24:00</span></b></h4>
           </button>
         </div>
         <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-0">
-          <button type="button" class="btn btn-block btn-link" id="set-date">
+          <button type="button" class="btn btn-block btn-link disabled" id="set-date">
             <h4><span id="date">23/08/2014</span></h4>
           </button>
         </div>
