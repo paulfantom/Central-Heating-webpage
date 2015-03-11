@@ -257,18 +257,18 @@ def heater():
                ]
 
     week = WeekForm()
-    week_change = False
+    init_tab = 1
     if week.validate_on_submit():
         i = 0
         for k in sorted(week.data):
             if week.data[k]:
                 values[2]['states'][i] = abs(values[2]['states'][i]-1)
             i+=1
-        week_change = True
+        init_tab = 3
 
-     # save to SQL
-     #if week.validate_on_submit() or timetable.validate_on_submit():
-     if week.validate_on_submit():
+    # save to SQL
+    #if week.validate_on_submit() or timetable.validate_on_submit():
+    if week.validate_on_submit():
         change_setting('schedule',json.dumps(schedule))
 
     return render_template("content/heater.html",
@@ -276,7 +276,7 @@ def heater():
                            tabs=values,
                            save=True,
                            week_form=week,
-                           week_changed=week_change,
+                           init_tab=init_tab,
                            title=gettext('Heater'))
 
 @app.route('/solar/')
