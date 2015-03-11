@@ -266,6 +266,10 @@ def heater():
             i+=1
         week_change = True
 
+     # save to SQL
+     #if week.validate_on_submit() or timetable.validate_on_submit():
+     if week.validate_on_submit():
+        change_setting('schedule',json.dumps(schedule))
 
     return render_template("content/heater.html",
                            active='heater',
