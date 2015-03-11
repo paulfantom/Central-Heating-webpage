@@ -35,3 +35,9 @@ def change_setting(name,value):
     del d['timestamp']
     db.session.add(Settings(**d))
     db.session.commit()
+
+def parse_timetable(input_json):
+    
+
+
+    return None
