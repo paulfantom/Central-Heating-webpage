@@ -1,8 +1,8 @@
 from flask_wtf import Form
 from wtforms.fields.html5 import DecimalRangeField
-from wtforms.fields import SubmitField
+from wtforms.fields import SubmitField, DateTimeField, DecimalField
 
-from wtforms.validators import NumberRange, Optional
+from wtforms.validators import Optional
 
 from flask.ext.babel import lazy_gettext as _
 from app import babel
@@ -26,3 +26,8 @@ class WeekForm(Form):
     day_5 = SubmitField(_('Friday'),validators=[Optional()])
     day_6 = SubmitField(_('Saturday'),validators=[Optional()])
     day_7 = SubmitField(_('Sunday'),validators=[Optional()])
+
+class RowForm(Form):
+    time_from   = DateTimeField(format="%H:%M")
+    time_to     = DateTimeField(format="%H:%M")
+    temperature = DecimalField(places=1,use_locale=True)
