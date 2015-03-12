@@ -84,5 +84,12 @@ DESCRIPTIONS = {
         'range' : [20,60],
         'unit'  : u'°C'
     },
+    'schedule_override_temp'   : {
+        'title' : gettext('Room temperature'),
+        'desc'  : gettext('Override scheduled room temperature for 1 hour'),
+        'range' : [15,30],
+        'step'  : 0.1,
+        'unit'  : u'°C'
+    },
     'schedule'                 : ''
 }

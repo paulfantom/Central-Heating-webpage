@@ -55,7 +55,7 @@ def dashboard():
                            active='dashboard',
                            title='',
                            user=user,
-                           refresh_rate=get_value('refresh_rate',Settings),
+                           refresh_rate=get_SQL_value('refresh_rate',Settings),
                            data=data)
 
 #@app.route('/set-room-temp', methods=['GET', 'POST'])
@@ -208,7 +208,7 @@ def scheme():
 @app.route('/water/')
 def water():
     # get setpoints from SQL
-    settings = get_last_row(Settings)
+    settings = get_SQL_last_row(Settings)
 
     order = ['tank_solar_max', 'tank_heater_max', 'tank_heater_min']
     data = refresh_data('water')
@@ -222,7 +222,7 @@ def water():
 @app.route('/circulation/')
 def circulation():
     # get setpoints from SQL
-    settings = get_last_row(Settings)
+    settings = get_SQL_last_row(Settings)
 
     order = ['circulation_temp','circulation_hysteresis','circulation_solar',
              'circulation_time_on','circulation_time_off']
@@ -235,7 +235,7 @@ def circulation():
 
 @app.route('/heater', methods=['GET', 'POST'])
 def heater():
-    schedule = json.loads(get_value('schedule',Settings))
+    schedule = json.loads(get_SQL_value('schedule',Settings))
     print(schedule['week'])
 
     # TODO write form for this:
@@ -294,7 +294,7 @@ def heater():
 @app.route('/solar/')
 def solar():
     # get setpoints from SQL
-    settings = get_last_row(Settings)
+    settings = get_SQL_last_row(Settings)
     order = ['solar_critical','tank_solar_max','solar_on','solar_off']
     data = refresh_data('solar')
     data += populate(order,settings)
@@ -304,7 +304,7 @@ def solar():
                            data=data,
                            title=gettext("Solar"))
 
-@app.route('/get_value-<name>', methods=['POST'])
+@app.route('/get_SQL_value-<name>', methods=['POST'])
 def refresh_data(name):
     # get from sensors SQL db
     data = [ {'title' : gettext('Current temperature'), 'value' : 11 }]
@@ -337,7 +337,7 @@ def set_value(name=None):
         name = 'schedule_override_temp'
 
     # get value from SQL
-    value = get_value(name,Settings)
+    value = get_SQL_value(name,Settings)
 
     val = populate(name)[0]
     if 'step' not in val:
@@ -372,7 +372,7 @@ def set_value(name=None):
 def options():
     options = OptionsForm()
 
-    data = get_last_row(Settings)
+    data = get_SQL_last_row(Settings)
     options.apparent.description = data['use_apparent_temperature']
     refresh = data['refresh_rate']
     hysteresis = data['room_hysteresis']

@@ -11,14 +11,14 @@ def get_query(db_model):
             return None
     return q
 
-def get_last_row(db_model=Settings):
+def get_SQL_last_row(db_model=Settings):
     q = get_query(db_model)
     d = {}
     for col in q.__table__.columns._data.keys():
         d[col] = getattr(q,col)
     return d
 
-def get_value(column,db_model=Settings):
+def get_SQL_value(column,db_model=Settings):
     q = get_query(db_model)
     try:
         return getattr(q,column)
