@@ -16,3 +16,15 @@ $(function(){
         $(this).parents('tr').remove();
       });
 });
+
+/*function update_value(field_id,rate) {
+  (setTimeout( function () {
+  $.ajax({
+        url: '/dashboard/get_data',
+        dataType: "json",
+        method: "POST",
+        success: function(result){
+            $(document.getElementById(field_id)).text(result[field_id])
+        }})
+},rate*1000)());
+};*/

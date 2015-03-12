@@ -205,33 +205,78 @@ def scheme():
                            data=values,
                            title=gettext('Scheme'))
 
+#@app.route('/water/1')
+#def water():
+#    # get setpoints from SQL
+#    settings = get_SQL_last_row(Settings)
+#
+#    order = ['tank_solar_max', 'tank_heater_max', 'tank_heater_min']
+#    data = refresh_data('tank_temperature_out')
+#    data += populate(order,settings)
+#
+#    return render_template("data_rows.html",
+#                           active='water',
+#                           refresh_rate=settings['refresh_rate'],
+#                           data=data,
+#                           title=gettext('Water'))
+#
+#@app.route('/solar/1')
+#def solar():
+#    # get setpoints from SQL
+#    settings = get_SQL_last_row(Settings)
+#    order = ['solar_critical','tank_solar_max','solar_on','solar_off']
+#    data = refresh_data('solar_temperature')
+#    data += populate(order,settings)
+#
+#    return render_template("data_rows.html",
+#                           active='solar',
+#                           refresh_rate=settings['refresh_rate'],
+#                           data=data,
+#                           title=gettext("Solar"))
+#
+#@app.route('/circulation/1')
+#def circulation():
+#    # get setpoints from SQL
+#    settings = get_SQL_last_row(Settings)
+#
+#    order = ['circulation_temp','circulation_hysteresis','circulation_solar',
+#             'circulation_time_on','circulation_time_off']
+#    data = populate(order,settings)
+#
+#    return render_template("data_rows.html",
+#                           active='circulation',
+#                           data=data,
+#                           title=gettext('Circulation'))
+
+
 @app.route('/water/')
-def water():
-    # get setpoints from SQL
-    settings = get_SQL_last_row(Settings)
-
-    order = ['tank_solar_max', 'tank_heater_max', 'tank_heater_min']
-    data = refresh_data('water')
-    data += populate(order,settings)
-
-    return render_template("data_rows.html",
-                           active='water',
-                           data=data,
-                           title=gettext('Water'))
-
+@app.route('/solar/')
 @app.route('/circulation/')
-def circulation():
-    # get setpoints from SQL
+def data_rows():
+    uri = request.base_url.replace(request.url_root,'').replace('/','')
     settings = get_SQL_last_row(Settings)
+    data = []
+    if uri == 'circulation':
+        order = ['circulation_temp','circulation_hysteresis',
+                 'circulation_solar', 'circulation_time_on',
+                 'circulation_time_off']
+        title = gettext('Circulation')
+    elif uri == 'solar':
+        order = ['solar_critical','tank_solar_max','solar_on','solar_off']
+        data  = refresh_data('solar_temperature')
+        title = gettext('Solar')
+    else:
+        order = ['tank_solar_max', 'tank_heater_max', 'tank_heater_min']
+        data  = refresh_data('tank_temperature_out')
+        title = gettext('Water')
 
-    order = ['circulation_temp','circulation_hysteresis','circulation_solar',
-             'circulation_time_on','circulation_time_off']
-    val = populate(order,settings)
 
+    data += populate(order,settings)
     return render_template("data_rows.html",
-                           active='circulation',
-                           data=val,
-                           title=gettext('Circulation'))
+                           active=uri,
+                           data=data,
+                           refresh_rate=settings['refresh_rate'],
+                           title=title)
 
 @app.route('/heater', methods=['GET', 'POST'])
 def heater():
@@ -291,26 +336,14 @@ def heater():
                            init_tab=init_tab,
                            title=gettext('Heater'))
 
-@app.route('/solar/')
-def solar():
-    # get setpoints from SQL
-    settings = get_SQL_last_row(Settings)
-    order = ['solar_critical','tank_solar_max','solar_on','solar_off']
-    data = refresh_data('solar')
-    data += populate(order,settings)
-
-    return render_template("data_rows.html",
-                           active='solar',
-                           data=data,
-                           title=gettext("Solar"))
-
-@app.route('/get_SQL_value-<name>', methods=['POST'])
+@app.route('/get_value_<name>', methods=['POST'])
 def refresh_data(name):
+    print(name)
     # get from sensors SQL db
-    data = [ {'title' : gettext('Current temperature'), 'value' : 11 }]
+    data = {'title' : gettext('Current temperature'), 'value' : 11, 'name' : name }
     if request.method == "POST":
-        print("OK")
-    return data
+        return json.dumps(data)
+    return([data])
 
 @app.route('/dashboard/get_data', methods=['POST'])
 def dashboard_data():

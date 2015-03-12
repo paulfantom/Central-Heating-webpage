@@ -32,6 +32,17 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+(setTimeout( function () {
+  $.ajax({
+        url: '/get_value_{{ row["name"] }}',
+        dataType: "json",
+        method: "POST",
+        success: function(result){
+            $(document.getElementById("{{ row['name'] }}-value")).text(result.value)
+        }})
+},{{refresh_rate|default(1.5)}}*60000)());
+</script>
 {%- endif %}
 {%- endfor %}
 {% endblock %}

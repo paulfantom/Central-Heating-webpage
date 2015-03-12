@@ -83,7 +83,7 @@ function update() {
         dataType: "json",
         method: "POST",
         success: function(result){
-            $("#humidity").text(result.humidity)
+            $('#humidity').text(result.humidity)
             $("#outside_temperature").text(result.outside_temperature)
             $("#apparent_temperature").text(result.apparent_temperature)
             $("#inside_temperature").text(result.inside_temperature)
@@ -91,7 +91,7 @@ function update() {
             $("#heater_status").text(result.heater_status)
             {#$("#solar_status").text(result.solar_status)#}
         }})
-},{{refresh_rate}}*60000)());
+},{{refresh_rate|default(1.5)}}*60000)());
 
 
 </script>
