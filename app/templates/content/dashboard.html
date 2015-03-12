@@ -9,9 +9,9 @@
     <div class="col-xs-12 col-sm-6">
       <a class="btn btn-block btn-link" href='change-schedule_override_temp' data-toggle="modal" data-target="#set-temp">
         <p>{% trans %}Room temperature{% endtrans %}:</p>
-        <h1 style="font-size: 62px"><b><span id="roomVal">{{ data['room_temp'] }}</span>&deg;C</b></h1>
+        <h1 style="font-size: 62px"><b><span id="inside_temperature">{{ data['inside_temperature'] }}</span>&deg;C</b></h1>
         <p>{% trans %}Apparent temperature{% endtrans %}:</p>
-        <h2><span id="feelVal">{{ data['feel_temp'] }}</span>&deg;C</h2>
+        <h2><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;C</h2>
       </a>
       <div class="modal fade" id="set-temp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog"><div class="modal-content"></div></div>
@@ -20,31 +20,23 @@
       <div class="text-center">
 <!--       <button type="button" class="btn btn-block btn-link"> -->
         <p>{% trans %}Outside temperature{% endtrans %}:</p>
-        <h2 id="temp_out">{{ data['out_temp'] }}&deg;C</h2>
+        <h2><span id="outside_temperature">{{ data['outside_temperature'] }}</span>&deg;C</h2>
 <!--       </button> -->
       </div>
     </div>
     <div class="col-xs-12 col-sm-6">
       <div class="text-center">
 <!--       <button type="button" class="btn btn-block btn-link"> -->
-        <p>{% trans %}Humidity{% endtrans %}:</p><h2><span id="humidity_value">{{ data['humidity'] }}</span>%</h2>
+        <p>{% trans %}Humidity{% endtrans %}:</p><h2><span id="humidity">{{ data['humidity'] }}</span>%</h2>
 <!--       </button> -->
       <div class="text-center">
       <button type="button" class="btn btn-block btn-warning">
         {% trans %}Heater status{% endtrans %}:<br>
-        {% if data['heater_status'] == 'on' %}
-          {% trans %}ON{% endtrans %}
-        {% else %}
-          {% trans %}OFF{% endtrans %}
-        {% endif %}
+        <span id="heater_status">{{ data['heater_status'] }}</span>
       </button>
       <button type="button" class="btn btn-block btn-info btn-day">
         {% trans %}Heater mode{% endtrans %}:<br>
-        {% if data['work_mode'] == 'normal' %}
-          {% trans %}Normal{% endtrans %}
-        {% else %}
-          {% trans %}Free day{% endtrans %}
-        {% endif %}
+        <span  id="work_mode">{{ data['work_mode'] }}</span>
       </button>
       <span class="hidden-xs"><br></span>
       <div class="row">
@@ -84,6 +76,23 @@ function update() {
   $('#time').text(time);
   $('#date').text(date);
 };
+
+(setTimeout( function () {
+  $.ajax({
+        url: '/dashboard/get_data',
+        dataType: "json",
+        method: "POST",
+        success: function(result){
+            $("#humidity").text(result.humidity)
+            $("#outside_temperature").text(result.outside_temperature)
+            $("#apparent_temperature").text(result.apparent_temperature)
+            $("#inside_temperature").text(result.inside_temperature)
+            $("#work_mode").text(result.work_mode)
+            $("#heater_status").text(result.heater_status)
+            {#$("#solar_status").text(result.solar_status)#}
+        }})
+},{{refresh_rate}}*60000)());
+
 
 </script>
 {% endblock %}

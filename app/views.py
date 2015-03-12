@@ -43,17 +43,19 @@ def get_locale():
 def dashboard():
 
     user='admin'
-    data = { "room_temp" : 20,
-             "feel_temp" : 21,
-             "humidity"  : 60,
-             "out_temp"  : 19,
+    data = { "inside_temperature" : 20,
+             "apparent_temperature" : 21,
+             "humidity"  : 50,
+             "outside_temperature"  : 10,
              "work_mode" : gettext('Normal'),
              "heater_status" : gettext('ON'),
              "solar_status"  : gettext('ON') }
+    #data = dashboard_data()
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
                            user=user,
+                           refresh_rate=get_value('refresh_rate',Settings),
                            data=data)
 
 #@app.route('/set-room-temp', methods=['GET', 'POST'])
@@ -209,7 +211,7 @@ def water():
     settings = get_last_row(Settings)
 
     order = ['tank_solar_max', 'tank_heater_max', 'tank_heater_min']
-    data = [ {'title' : gettext('Current temperature'), 'value' : 44 }]
+    data = refresh_data('water')
     data += populate(order,settings)
 
     return render_template("data_rows.html",
@@ -256,17 +258,16 @@ def heater():
                'states' : schedule['week']}
                ]
 
-''' #Validator (move it to client-side JS)
-    for i in range(len(list_FROM)):
-        if list_TO[i] < list_FROM[i]:
-            print("Error - hour_TO is earlier than hour_FROM")
-            break
-        for j in range(len(list_FROM)-i):
-            if list_FROM[j] < list_FROM[i] < list_TO[j]:
-                print("Error - conflicting ranges")
-            if list_FROM[j] < list_TO[i] < list_TO[j]:
-                print("Error - conflicting ranges")
-'''
+     #Validator (move it to client-side JS)
+#    for i in range(len(list_FROM)):
+#        if list_TO[i] < list_FROM[i]:
+#            print("Error - hour_TO is earlier than hour_FROM")
+#            break
+#        for j in range(len(list_FROM)-i):
+#            if list_FROM[j] < list_FROM[i] < list_TO[j]:
+#                print("Error - conflicting ranges")
+#            if list_FROM[j] < list_TO[i] < list_TO[j]:
+#                print("Error - conflicting ranges")
     week = WeekForm()
     init_tab = 1
     if week.validate_on_submit():
@@ -295,13 +296,34 @@ def solar():
     # get setpoints from SQL
     settings = get_last_row(Settings)
     order = ['solar_critical','tank_solar_max','solar_on','solar_off']
-    data = [ {'title' : gettext('Current temperature'), 'value' : 10 }]
+    data = refresh_data('solar')
     data += populate(order,settings)
 
     return render_template("data_rows.html",
                            active='solar',
                            data=data,
                            title=gettext("Solar"))
+
+@app.route('/get_value-<name>', methods=['POST'])
+def refresh_data(name):
+    # get from sensors SQL db
+    data = [ {'title' : gettext('Current temperature'), 'value' : 11 }]
+    if request.method == "POST":
+        print("OK")
+    return data
+
+@app.route('/dashboard/get_data', methods=['POST'])
+def dashboard_data():
+    data = { "inside_temperature" : 30,
+             "apparent_temperature" : 31,
+             "humidity"  : 90,
+             "outside_temperature"  : 20,
+             "work_mode" : gettext('Normal'),
+             "heater_status" : gettext('OFF'),
+             "solar_status"  : gettext('OFF') }
+    if request.method == "POST":
+        return json.dumps(data)
+    return(data)
 
 @app.route('/change-<name>', methods=['GET', 'POST'])
 @app.route('/options/change-<name>', methods=['GET', 'POST'])
