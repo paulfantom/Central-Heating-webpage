@@ -29,26 +29,28 @@
 <!--       <button type="button" class="btn btn-block btn-link"> -->
         <p>{% trans %}Humidity{% endtrans %}:</p><h2><span id="humidity">{{ data['humidity'] }}</span>%</h2>
 <!--       </button> -->
+      </div>
       <div class="text-center">
-      <button type="button" class="btn btn-block btn-warning">
-        {% trans %}Heater status{% endtrans %}:<br>
-        <span id="heater_status">{{ data['heater_status'] }}</span>
-      </button>
-      <button type="button" class="btn btn-block btn-info btn-day">
-        {% trans %}Heater mode{% endtrans %}:<br>
-        <span  id="work_mode">{{ data['work_mode'] }}</span>
-      </button>
-      <span class="hidden-xs"><br></span>
+        <button type="button" class="btn btn-block btn-warning">
+          {% trans %}Heater status{% endtrans %}:<br>
+          <span id="heater_status">{{ data['heater_status'] }}</span>
+        </button>
+        <button type="button" class="btn btn-block btn-info btn-day">
+          {% trans %}Heater mode{% endtrans %}:<br>
+          <span  id="work_mode">{{ data['work_mode'] }}</span>
+        </button>
+        <span class="hidden-xs"><br></span>
+      </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <button type="button" class="btn btn-block btn-link disabled" id="set-time">
+          <a class="btn btn-block btn-link disabled" id="set-time">
             <h4><b><span id="time">24:00</span></b></h4>
-          </button>
+          </a>
         </div>
         <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-0">
-          <button type="button" class="btn btn-block btn-link disabled" id="set-date">
+          <a class="btn btn-block btn-link disabled" id="set-date">
             <h4><span id="date">23/08/2014</span></h4>
-          </button>
+          </a>
         </div>
       </div>
     </div>

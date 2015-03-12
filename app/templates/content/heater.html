@@ -26,7 +26,7 @@
   </button>
 </div>
 <div class="collapse navbar-collapse" id="heater-navbar-collapse">
-  <ul class="nav nav-pills nav-justified">
+  <ul class="nav nav-pills nav-justified" role="tablist">
     {%- for tab in tabs -%}
     <li {%- if loop.index == init_tab %} class="active"{% endif %}>
       <a href="#{{ tab['id'] }}" role="tab" data-toggle="tab">{{ tab['title'] }}</a>
