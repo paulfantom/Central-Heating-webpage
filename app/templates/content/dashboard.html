@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid">
-  <span class="visible-lg visible-md">
-  <br>
-  </span>
+  <div class="hidden-xs hidden-sm">
+    <br>
+  </div>
   <div class="row">
     <div class="col-xs-12 col-sm-6">
       <a class="btn btn-block btn-link" href='change-schedule_override_temp' data-toggle="modal" data-target="#set-temp">
@@ -25,37 +24,40 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-6">
-      <div class="text-center">
+      <div class="text-center" style="margin: 8px !important;">
 <!--       <button type="button" class="btn btn-block btn-link"> -->
         <p>{% trans %}Humidity{% endtrans %}:</p><h2><span id="humidity">{{ data['humidity'] }}</span>%</h2>
 <!--       </button> -->
       </div>
       <div class="text-center">
-        <button type="button" class="btn btn-block btn-warning">
+        <button type="button" class="btn btn-block btn-warning heater-status">
           {% trans %}Heater status{% endtrans %}:<br>
           <span id="heater_status">{{ data['heater_status'] }}</span>
         </button>
-        <button type="button" class="btn btn-block btn-info btn-day">
+        <button type="button" class="btn btn-block btn-danger heater-mode">
           {% trans %}Heater mode{% endtrans %}:<br>
           <span  id="work_mode">{{ data['work_mode'] }}</span>
         </button>
         <span class="hidden-xs"><br></span>
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6">
+      <!--<div class="row">
+        <div class="col-sm-12 col-md-6">
           <a class="btn btn-block btn-link disabled" id="set-time">
             <h4><b><span id="time">24:00</span></b></h4>
           </a>
         </div>
-        <div class="col-xs-12 col-xs-offset-0 col-sm-6 col-sm-offset-0">
+        <div class="col-sm-12 col-md-6">
           <a class="btn btn-block btn-link disabled" id="set-date">
             <h4><span id="date">23/08/2014</span></h4>
           </a>
         </div>
+      </div> -->
+      <div class="text-center">
+          <h4><span id="time">24:00</span><br>
+        <br><span id="date">23/08/2015</span></h4>
       </div>
     </div>
   </div>
-</div>
 {#
 {% from 'modal.html' import modal2 %}
 {{ modal2("set-room-temp", 

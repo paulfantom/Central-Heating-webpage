@@ -28,7 +28,7 @@ def get_SQL_value(column,db_model=Settings):
         return None
 
 def change_setting(name,value):
-    d = get_last_row(Settings)
+    d = get_SQL_last_row(Settings)
     if name in d.keys():
         d[name] = value
     del d['index']

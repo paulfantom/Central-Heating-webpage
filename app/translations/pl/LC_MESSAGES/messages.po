@@ -67,15 +67,15 @@ msgstr "Temperatura kolektora"
 
 #: app/views.py:103 app/templates/content/dashboard.html:21
 msgid "Outside temperature"
-msgstr "Temperatura na zewnątrz"
+msgstr "Temp. na zewnątrz"
 
 #: app/views.py:107
 msgid "Inside temperature"
-msgstr "Temperatura wewnątrz"
+msgstr "Temp. wewnątrz"
 
 #: app/views.py:111 app/templates/content/dashboard.html:13
 msgid "Apparent temperature"
-msgstr "Temperatura odczuwalna"
+msgstr "Temp. odczuwalna"
 
 #: app/views.py:115 app/templates/content/dashboard.html:27
 msgid "Humidity"
@@ -291,7 +291,7 @@ msgstr "Opcje"
 
 #: app/templates/content/dashboard.html:11
 msgid "Room temperature"
-msgstr "Temperatura pokojowa"
+msgstr "Temp. pokojowa"
 
 #: app/templates/content/dashboard.html:30
 msgid "Heater status"

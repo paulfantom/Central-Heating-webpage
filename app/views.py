@@ -7,7 +7,7 @@ from app import app, babel, db
 import json
 
 from .forms import *
-from config import LANGUAGES
+from config import LANGUAGES, SERVER_IP
 from .system import *
 from .data import *
 
@@ -23,7 +23,8 @@ def apparent(toggle=False):
 
 @babel.localeselector
 def get_locale():
-    return request.accept_languages.best_match(LANGUAGES.keys())
+    #return request.accept_languages.best_match(LANGUAGES.keys())
+    return request.accept_languages.best_match(['pl'])
 
 #@app.route('/login', methods=['GET', 'POST'])
 #def login():
@@ -371,7 +372,7 @@ def set_value(name=None):
 
     # get value from SQL
     value = get_SQL_value(name,Settings)
-
+    
     val = populate(name)[0]
     if 'step' not in val:
         val['step'] = 1
@@ -392,8 +393,8 @@ def set_value(name=None):
         change_setting(name,val)
         if name is None:
             return redirect('/')
-
-        return redirect('/' + request.path.split('/')[1])
+        
+        return redirect('/' + request.path.split('/')[-2])
 
     return render_template("forms/modal-range.html",
                            action=request.path,
@@ -403,12 +404,18 @@ def set_value(name=None):
 
 @app.route('/options', methods=['GET', 'POST'])
 def options():
-    options = OptionsForm()
-
     data = get_SQL_last_row(Settings)
-    options.apparent.description = data['use_apparent_temperature']
     refresh = data['refresh_rate']
     hysteresis = data['room_hysteresis']
+    
+    if request.remote_addr == SERVER_IP:
+        return render_template("content/options.html",
+                               active='options',
+                               options = None,
+                               refresh_rate = refresh,
+                               hysteresis_value = hysteresis)
+    options = OptionsForm()
+    options.apparent.description = data['use_apparent_temperature']
 
     if options.validate_on_submit():
         if options.data['apparent'] is not None:
@@ -418,7 +425,7 @@ def options():
             reboot()
         if options.data['reboot_mcu']:
             reboot_mcu()
-
+    
     return render_template("content/options.html",
                            active='options',
                            options = options,

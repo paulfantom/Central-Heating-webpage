@@ -8,7 +8,7 @@
 <div class='container-fluid'>
   <div class="row clearfix">
     {% for origin in ['sensors','states'] %}
-    <div class="col-xs-12 col-md-6 text-center">
+    <div class="col-sm-12 col-md-6 text-center">
       <table class="table">
       {% for i in range(data[origin]|length) %}
         <tr>
@@ -23,7 +23,7 @@
   <br>
   <div class="row">
     {% for i in range(data['meters']['devices']|length) %}
-    <div class="col-xs-12 col-md-6">
+    <div class="col-sm-12 col-md-6">
       <p class="text-center"><b>{{ data['meters']['devices'][i]['title'] }}</b></p>
       <table class="table">
         {#<span name="{{data['meters']['devices'][i]['name']}}">#}

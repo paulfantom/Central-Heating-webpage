@@ -11,13 +11,13 @@
 <div class="container-fluid">
   <div class="row text-center"><br></div>
   <div class="row text-center">
-    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
+    <div class="col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
       <input type="button" class="btn btn-block btn-success" value="{% trans %}Reload Page{% endtrans %}" onClick="window.location.reload()"/>
     </div>
   </div>
   <div class="row text-center"><br></div>
   <div class="row text-center">
-    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
+    <div class="col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
       <a class="btn btn-block btn-primary" data-toggle="modal" href="options/change-refresh_rate" data-target="#refresh_rate">
         {% trans %}Refresh rate{% endtrans %}: <b><span id="refresh_rate-value">{{ refresh_rate }}</span> min</b>
       </a>
@@ -28,7 +28,7 @@
   </div> <!-- .modal -->
   <div class="row text-center"><br></div>
   <div class="row text-center">
-    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
+    <div class="col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
       <a class="btn btn-block btn-primary" data-toggle="modal" href="options/change-room_hysteresis" data-target="#hysteresis">
       {% trans %}Heating hysteresis{% endtrans %}: <span class="hysteresis-value">{{ hysteresis_value }}</span>{% trans %}°C{% endtrans %}
       </a>
@@ -36,37 +36,39 @@
         <div class="modal-dialog"><div class="modal-content"></div></div></div>
     </div>
   </div> <!-- .row -->
+  {%- if options %}
   <form method="post">
-  {{ options.hidden_tag() }}
-  {% for i in options %}
-    {% if i.name != "csrf_token" %}
+  {{- options.hidden_tag() }}
+  {%- for i in options %}
+    {%- if i.name != "csrf_token" %}
   <div class="row text-center"><br></div>
   <div class="row text-center">
-    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-lg-offset-3 col-lg-6">
-  {{ render_field(i) }}
+    <div class="col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+      {{ render_field(i) }}
     </div>
   </div>
-    {% endif %}
-  {% endfor %}
+  {%- endif %}
+  {%- endfor %}
   </form>
+  {%- endif %}
   <div class="row text-center"><br></div>
 
 </div> <!-- .container-fluid -->
 
 {% endblock %}
 
-{% macro render_field(field) -%}
-  {% if field.name == 'apparent' %}
-    {% if field.description %}
-      {% set t = 'btn-success' %}
-    {% else %}
-      {% set t = 'btn-warning' %}
-    {% endif %}
-    {% set buttonize = 'btn btn-block ' + t %}
-  {% elif field.name == 'reboot' or field.name == 'reboot_mcu' %}
-  {% set buttonize = 'btn btn-block btn-danger' %}
-  {% else %}
-  {% set buttonize = 'btn btn-block btn-primary'%}
-  {% endif %}
+{%- macro render_field(field) -%}
+  {%- if field.name == 'apparent' %}
+    {%- if field.description %}
+      {%- set t = 'btn-success' %}
+    {%- else %}
+      {%- set t = 'btn-warning' %}
+    {%- endif %}
+    {%- set buttonize = 'btn btn-block ' + t %}
+  {%- elif field.name == 'reboot' or field.name == 'reboot_mcu' %}
+  {%- set buttonize = 'btn btn-block btn-danger' %}
+  {%- else %}
+  {%- set buttonize = 'btn btn-block btn-primary'%}
+  {%- endif %}
   {{ field(class=buttonize) }}
-{%- endmacro %}
+{%- endmacro -%}

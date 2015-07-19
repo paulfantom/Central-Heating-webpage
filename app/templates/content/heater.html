@@ -17,7 +17,9 @@
 {% block content %}
 
 {# TODO unify id's #}
-<br>
+<div class="hidden-xs hidden-sm">
+  <br>
+</div>
 <div class="navbar-header">
   <button type="button" class="navbar-toggle btn btn-link btn-block"
           data-toggle="collapse" data-target="#heater-navbar-collapse">
@@ -25,6 +27,7 @@
     {% trans %}Menu{% endtrans %}
   </button>
 </div>
+
 <div class="collapse navbar-collapse" id="heater-navbar-collapse">
   <ul class="nav nav-pills nav-justified" role="tablist">
     {%- for tab in tabs -%}
@@ -96,23 +99,18 @@
       </div>
       {%- endif %}
     {% else %}
-    <br>
+    <div class="hidden-xs hidden-sm"><br></div>
     <div class="row">
-      <div class="well text-center col-lg-8 col-lg-offset-2">
+      <div class="well text-center col-lg-8 col-lg-offset-2" style="padding:10px !important">
         <form method="post">
           {{ week_form.hidden_tag() }}
-          <div class="btn-group btn-group-justified">
           {% for field in week_form if field.name != "csrf_token" %}
             {% if tabs[2]['states'][loop.index-1] == 1%}
             {% set a = ' active' %}{%else%}{% set a=''%}
             {% endif %}
           {#{{ field.label(class="btn btn-info btn-day"+a) }}#}
-            <div class="btn-group" role="group">
-              {{ field(class="btn btn-info btn-day"+a,
-                       style="min-height:70px") }}
-            </div>
+              {{ field(class="btn btn-info btn-day"+a) }}
           {% endfor %}
-          </div>
         </form>
       </div>
     </div>
