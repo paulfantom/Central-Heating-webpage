@@ -1,0 +1,8 @@
+dependencies:
+- flask
+- flask-wtf
+- flask-babel
+- flask-sqlalchemy
+- wtforms
+- jinja
+- sqlalchemy
