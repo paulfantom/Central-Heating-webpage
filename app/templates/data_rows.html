@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-
 {%- if title is defined -%}
 <div class="row">
-  <h3 class="text-center">{{ title }}</h3>
+  <h4 class="text-center"><b>{{ title }}</b></h4>
 </div>
 {%- endif -%}
 {%- for row in data %}
