@@ -16,14 +16,20 @@
     <div class="container-fluid">
       <div class="row text-center">
         <div class="input-group">
-          <span class="input-group-addon"><b>{{slider['min']}}</b></span>
+          <!--<span class="input-group-addon"><b>{{slider['min']}}</b></span>-->
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="changeValue(- {{slider['step']}})"><b>-</b></button>
+          </span>
           {{ form.hidden_tag() }}
           {{ form.slider(class="form-control",
                          value=slider['value'],
                          min=slider['min'],
                          max=slider['max'],
-                         step=slider['step']) }}
-          <span class="input-group-addon"><b>{{slider['max']}}</b></span>
+                         step=slider['step'])}}
+          <!--<span class="input-group-addon"><b>{{slider['max']}}</b></span>-->
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="changeValue({{slider['step']}})"><b>+</b></button>
+          </span>
         </div> <!-- .input-group -->
       </div> <!-- .row -->
       <div class="row text-center">
@@ -40,6 +46,12 @@
     $(document).ready(function() {
       setTimeout(function() { $("#close").click(); }, 60000);
     });
+    function changeValue(add){
+      var f = add + parseFloat(document.querySelector('#{{form.slider.id}}').value);
+      f = f.toFixed(1);
+      document.querySelector('#{{form.slider.id}}').value = f;    
+      document.querySelector('output[name="out"]').value = f;
+    }
   </script>
   </body>
 </html>
