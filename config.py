@@ -4,7 +4,7 @@ import os
 from flask.ext.babel import gettext
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-SERVER_IP = "127.0.0.2"
+SERVER_IP = "127.0.0.1"
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 

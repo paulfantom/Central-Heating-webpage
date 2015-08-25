@@ -1,4 +1,3 @@
-+ fix KeyError val['range'][0] in dashboard temperature set
 + heater schedule form + validation
 + SQL sensors data db connection
 + user login
