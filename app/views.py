@@ -7,7 +7,7 @@ from app import app, babel, db
 import json
 
 from .forms import *
-from config import LANGUAGES, SERVER_IP
+from config import LANGUAGES, SERVER_IP, BABEL_DEFAULT_LOCALE
 from .system import *
 from .data import *
 

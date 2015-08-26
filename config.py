@@ -16,6 +16,8 @@ LANGUAGES = {
     'pl': 'Polski'
 }
 
+BABEL_DEFAULT_LOCALE = 'pl'
+
 DESCRIPTIONS = {
     'circulation_time_off'     : {
         'title' : gettext('OFF time'),

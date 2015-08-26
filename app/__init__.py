@@ -2,6 +2,7 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.babel import Babel
 from os import path
+from config import BABEL_DEFAULT_LOCALE
 
 app = Flask(__name__)
 app.config.from_object('config')
