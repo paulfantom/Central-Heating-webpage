@@ -5,6 +5,7 @@ from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
 from app import app, babel, db
 import json
+from mqtt import SENSORS_DATA
 
 from .forms import *
 from config import LANGUAGES, SERVER_IP, BABEL_DEFAULT_LOCALE
@@ -44,14 +45,19 @@ def get_locale():
 def dashboard():
 
     user='admin'
-    data = { "inside_temperature" : 20,
-             "apparent_temperature" : 21,
-             "humidity"  : 50,
-             "outside_temperature"  : 10,
-             "work_mode" : gettext('Normal'),
-             "heater_status" : gettext('ON'),
-             "solar_status"  : gettext('ON') }
-    #data = dashboard_data()
+    #if apparent:
+    #   #temp = SENSORS_DATA["room/1/temp_feel"]
+    #   temp = SENSORS_DATA["room/1/temp_real"]
+    #else: 
+    #    temp = SENSORS_DATA["room/1/temp_real"]
+    #data = { "inside_temperature" : temp,
+    #         "apparent_temperature" : SENSORS_DATA["room/1/temp_real"], #FIXME real -> feel
+    #         "humidity"  : SENSORS_DATA["room/1/humidity"],
+    #         "outside_temperature"  : SENSORS_DATA["outside/temp"],
+    #         "work_mode" : gettext('Normal'),
+    #         "heater_status" : gettext('ON'),
+    #         "solar_status"  : gettext('ON') }
+    data = dashboard_data()
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
@@ -348,13 +354,22 @@ def refresh_data(name):
 
 @app.route('/dashboard/get_data', methods=['POST'])
 def dashboard_data():
-    data = { "inside_temperature" : 30,
-             "apparent_temperature" : 31,
-             "humidity"  : 90,
-             "outside_temperature"  : 20,
+    try: feel = SENSORS_DATA["room/1/temp_feel"]
+    except KeyError: feel = -1
+    try: inTemp = SENSORS_DATA["room/1/temp_real"]
+    except KeyError: inTemp = -1
+    try: humidity = SENSORS_DATA["room/1/humidity"]
+    except KeyError: humidity = -1
+    try: outTemp = SENSORS_DATA["outside/temp"]
+    except KeyError: outTemp = -99
+
+    data = { "inside_temperature" : inTemp,
+             "apparent_temperature" : feel,
+             "humidity"  : humidity,
+             "outside_temperature"  : outTemp,
              "work_mode" : gettext('Normal'),
-             "heater_status" : gettext('OFF'),
-             "solar_status"  : gettext('OFF') }
+             "heater_status" : gettext('ON'),
+             "solar_status"  : gettext('ON') }
     if request.method == "POST":
         return json.dumps(data)
     return(data)

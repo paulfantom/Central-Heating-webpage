@@ -6,3 +6,4 @@ dependencies:
 - wtforms
 - jinja
 - sqlalchemy
+- paho.mqtt
