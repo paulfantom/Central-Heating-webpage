@@ -45,25 +45,12 @@ def get_locale():
 def dashboard():
 
     user='admin'
-    #if apparent:
-    #   #temp = SENSORS_DATA["room/1/temp_feel"]
-    #   temp = SENSORS_DATA["room/1/temp_real"]
-    #else: 
-    #    temp = SENSORS_DATA["room/1/temp_real"]
-    #data = { "inside_temperature" : temp,
-    #         "apparent_temperature" : SENSORS_DATA["room/1/temp_real"], #FIXME real -> feel
-    #         "humidity"  : SENSORS_DATA["room/1/humidity"],
-    #         "outside_temperature"  : SENSORS_DATA["outside/temp"],
-    #         "work_mode" : gettext('Normal'),
-    #         "heater_status" : gettext('ON'),
-    #         "solar_status"  : gettext('ON') }
-    data = dashboard_data()
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
                            user=user,
                            refresh_rate=get_SQL_value('refresh_rate',Settings),
-                           data=data)
+                           data=dashboard_data())
 
 #@app.route('/set-room-temp', methods=['GET', 'POST'])
 def room_temp():
