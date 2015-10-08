@@ -34,7 +34,7 @@
 <script type="text/javascript">
 (setInterval( function () {
   $.ajax({
-        url: '/get_value_sensors_{{ row["name"] }}',
+        url: '/get/sensors/{{ row["name"] }}',
         dataType: "json",
         method: "POST",
         success: function(result){

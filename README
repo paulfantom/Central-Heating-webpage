@@ -7,3 +7,4 @@ dependencies:
 - jinja
 - sqlalchemy
 - paho.mqtt
+- mysqldb

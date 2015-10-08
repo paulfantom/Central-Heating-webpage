@@ -1,6 +1,7 @@
+from paho.mqtt.publish import single as mqtt_send
 from .models import *
 from app import db
-from config import DESCRIPTIONS
+from config import DESCRIPTIONS,SERVER_IP
 
 def get_query(db_model):
     try:
@@ -28,15 +29,31 @@ def get_SQL_value(db_model=IndexMqtt,column='payload'):
     except TypeError:
         return None
 
-def change_setting(name,value):
-    d = get_SQL_last_row(IndexMqtt)
-    if name in d.keys():
-        d[name] = value
-    del d['index']
-    del d['timestamp']
-    db.session.add(Settings(**d))
-    db.session.commit()
+def change_setting(value,name,category=None):
+     solarControlID = 'solarControl'
+     print("<Category %r>" % category)
+     print("<Name %r>" % name)
+     print("<Value %r>" % value)
+     n = solarControlID + '/'
+     if category == 'circulation': category = 'circulate'
+     if category is not None:
+         n = n + category + '/'
+     n = n + 'settings/' + name
+     print(n)
+     #name = 'solarControl/heater/critical'
+     mqtt_send(name, str(value), hostname=SERVER_IP)
 
+
+#def change_setting(name,value):
+#    d = get_SQL_last_row(IndexMqtt)
+#    if name in d.keys():
+#        d[name] = value
+#    del d['index']
+#    del d['timestamp']
+#    db.session.add(Settings(**d))
+#    db.session.commit()
+
+#{ 'mon' : { 'from' : TIME, 'to' : TIME, 'temp' : FLOAT }, 'tue' : ..... , 'deafult' : FLOAT }
 def parse_timetable(input_json):
     out = []
 
@@ -45,7 +62,7 @@ def parse_timetable(input_json):
                'states' : input_json['week']})
     return out
 
-def populate(order,dataset=None,keys=None):
+def get_description(order,dataset=None,keys=None):
     if keys is None:
         keys = ['range', 'unit', 'desc', 'step', 'title']
     if type(order) != list:
@@ -69,9 +86,9 @@ def populate(order,dataset=None,keys=None):
         data.append(d)
     return data
 
-def get_data(datatype='sensors',which='all'):
+def get_full_data(dataset='sensors',which='all'):
     values = {}
-    if (datatype == 'sensors'):
+    if (dataset == 'sensors'):
         if (which == 'outside' or which == 'all'):
             values['outside'] = {'real_temp' : round(float(get_SQL_value(OutsideTemp)),1)}
         if (which == 'room' or which == 'all'):
@@ -110,22 +127,138 @@ def get_data(datatype='sensors',which='all'):
     else:
         if(which == 'circulation' or which == 'all'):
             values['circulation'] = {
-                   'interval' : int(get_SQL_value(SolarControlCirculateInterval)),
-                   'time_on' : int(get_SQL_value(SolarControlCirculateTimeOn))}
+                   'interval' : int(get_SQL_value(SolarControlCirculateSettingsInterval)),
+                   'time_on' : int(get_SQL_value(SolarControlCirculateSettingsTimeOn))}
         if(which == 'heater' or which == 'all'):
             values['heater'] = {
-                   'critical' : float(get_SQL_value(SolarControlHeaterCritical)),
-                   'expected' : float(get_SQL_value(SolarControlHeaterExpected)),
-                   'hysteresis' : float(get_SQL_value(SolarControlHeaterHysteresis)),
-                   'schedule' : get_SQL_value(SolarControlHeaterScheduleOn)} #FIXME
+                   'critical' : float(get_SQL_value(SolarControlHeaterSettingsCritical)),
+                   'expected' : float(get_SQL_value(SolarControlHeaterSettingsExpected)),
+                   'hysteresis' : float(get_SQL_value(SolarControlHeaterSettingsHysteresis)),
+                   'schedule' : get_SQL_value(SolarControlHeaterSettingsScheduleOn)} #FIXME
         if(which == 'solar' or which == 'all'):
             values['solar'] = {
-                   'critical' : float(get_SQL_value(SolarControlSolarCritical)),
-                   'temp_on' : float(get_SQL_value(SolarControlSolarOn)),
-                   'temp_off' : float(get_SQL_value(SolarControlSolarOff))} 
+                   'critical' : float(get_SQL_value(SolarControlSolarSettingsCritical)),
+                   'on' : float(get_SQL_value(SolarControlSolarSettingsOn)),
+                   'off' : float(get_SQL_value(SolarControlSolarSettingsOff))} 
         if(which == 'tank' or which == 'all'):
             values['tank'] = {
-                   'heater_max' : float(get_SQL_value(SolarControlTankHeaterMax)),
-                   'heater_min' : float(get_SQL_value(SolarControlTankHeaterMin)),
-                   'solar_max' : float(get_SQL_value(SolarControlTankSolarMax))}
+                   'heater_max' : float(get_SQL_value(SolarControlTankSettingsHeaterMax)),
+                   'heater_min' : float(get_SQL_value(SolarControlTankSettingsHeaterMin)),
+                   'solar_max' : float(get_SQL_value(SolarControlTankSettingsSolarMax))}
     return values
+
+#def get_full_data(dataset='sensors',which='all'):
+#    values = {}
+#    if (dataset == 'sensors'):
+#        if (which == 'outside' or which == 'all'):
+#            values['outside'] = {}
+#            for key in ['real_temp']: values['outside'][key] = round(get_data(key,'outside',dataset),1)
+#        if (which == 'room' or which == 'all'):
+#            values['room'] =  {'inside_temperature'   : round(float(get_SQL_value(Room1TempReal)),1),
+#                               'apparent_temperature' : round(float(get_SQL_value(Room1TempFeel)),1),
+#                               'humidity'      : int(float(get_SQL_value(Room1Humidity))),
+#                               'pressure'      : int(float(get_SQL_value(Room1Pressure)))}
+#        if (which == 'solar' or which == 'all'):
+#            temps = []
+#            temps.append(round(float(get_SQL_value(SolarControlSolarTempIn)),1))
+#            temps.append(round(float(get_SQL_value(SolarControlSolarTempOut)),1))
+#            values['solar'] = {'temp'     : round(float(get_SQL_value(SolarControlSolarTemp)),1),
+#                               'temp_in'  : temps[0],
+#                               'temp_out' : temps[1],
+#                               'temp_diff': temps[0] - temps[1],
+#                               'flow'     : int(get_SQL_value(SolarControlSolarPump))}
+#        if (which == 'heater' or which == 'all'):
+#            temps = []
+#            temps.append(round(float(get_SQL_value(SolarControlHeaterTempIn)),1))
+#            temps.append(round(float(get_SQL_value(SolarControlHeaterTempOut)),1))
+#            values['heater'] = {'temp_in'  : temps[0],
+#                                'temp_out' : temps[1],
+#                                'temp_diff': temps[0] - temps[1]}
+#        if (which == 'tank' or which == 'all'):
+#            values['tank'] = {'temp_up' : round(float(get_SQL_value(SolarControlTankTempUp)),1)} 
+#        if (which == 'state' or which == 'all' or which == 'heater' or which == 'solar'):
+#            actuators = int(get_SQL_value(SolarControlActuators))
+#            status = []
+#            for i in range(0,6):
+#                status.append(actuators&(2**i) != 0)
+#            values['state'] = {'burner'       : status[3],
+#                               'solar_switch' : status[0],
+#                               'heater_switch': status[2],
+#                               'solar_pump'   : status[1],
+#                               'circulation'  : status[4]}
+#    else:
+#        if(which == 'circulation' or which == 'all'):
+#            values['circulation'] = {
+#                   'interval' : int(get_SQL_value(SolarControlCirculateInterval)),
+#                   'time_on' : int(get_SQL_value(SolarControlCirculateTimeOn))}
+#        if(which == 'heater' or which == 'all'):
+#            values['heater'] = {
+#                   'critical' : float(get_SQL_value(SolarControlHeaterCritical)),
+#                   'expected' : float(get_SQL_value(SolarControlHeaterExpected)),
+#                   'hysteresis' : float(get_SQL_value(SolarControlHeaterHysteresis)),
+#                   'schedule' : get_SQL_value(SolarControlHeaterScheduleOn)} #FIXME
+#        if(which == 'solar' or which == 'all'):
+#            values['solar'] = {
+#                   'critical' : float(get_SQL_value(SolarControlSolarCritical)),
+#                   'temp_on' : float(get_SQL_value(SolarControlSolarOn)),
+#                   'temp_off' : float(get_SQL_value(SolarControlSolarOff))} 
+#        if(which == 'tank' or which == 'all'):
+#            values['tank'] = {
+#                   'heater_max' : float(get_SQL_value(SolarControlTankHeaterMax)),
+#                   'heater_min' : float(get_SQL_value(SolarControlTankHeaterMin)),
+#                   'solar_max' : float(get_SQL_value(SolarControlTankSolarMax))}
+#    return values
+
+# TODO something cleaner???
+def get_data(name,category,dataset='sensors'):
+    if dataset == 'sensors':
+        if category == 'outside':
+            if name == 'real_temp': return float(get_SQL_value(OutsideTemp))
+        if category == 'room':
+            if name == 'inside_temperature'  : return float(get_SQL_value(Room1TempReal))
+            if name == 'apparent_temperature': return float(get_SQL_value(Room1TempFeel))
+            if name == 'humidity'            : return float(get_SQL_value(Room1Humidity))
+            if name == 'pressure'            : return int(float(get_SQL_value(Room1Pressure)))
+        if category == 'solar':
+            if name == 'temp': return float(get_SQL_value(SolarControlSolarTemp))
+            if name == 'flow': return int(get_SQL_value(SolarControlSolarPump)) 
+            temps = []
+            temps.append(float(get_SQL_value(SolarControlSolarTempIn)))
+            temps.append(float(get_SQL_value(SolarControlSolarTempOut)))
+            if name == 'temp_in'  : return temps[0]
+            if name == 'temp_out' : return temps[1]
+            if name == 'temp_diff': return temps[0] - temps[1]
+        if category == 'heater':
+            temps = []
+            temps.append(float(get_SQL_value(SolarControlHeaterTempIn)))
+            temps.append(float(get_SQL_value(SolarControlHeaterTempOut)))
+            if name == 'temp_in'  : return temps[0]
+            if name == 'temp_out' : return temps[1]
+            if name == 'temp_diff': return temps[0] - temps[1]
+        if category == 'tank':
+            if name == 'temp_up' : return float(get_SQL_value(SolarControlTankTempUp)) 
+        if category == 'state':
+            actuators = int(get_SQL_value(SolarControlActuators))
+            if name == 'burner'       : return (actuators&(2**3) != 0)
+            if name == 'solar_switch' : return (actuators&(2**0) != 0)
+            if name == 'heater_switch': return (actuators&(2**2) != 0)
+            if name == 'solar_pump'   : return (actuators&(2**1) != 0)
+            if name == 'circulation'  : return (actuators&(2**4) != 0)
+    else:
+        if category == 'circulation':
+            if name == 'interval': return int(get_SQL_value(SolarControlCirculateInterval))
+            if name == 'time_on' : return int(get_SQL_value(SolarControlCirculateTimeOn))
+        if category == 'heater':
+            if name == 'critical'  : return float(get_SQL_value(SolarControlHeaterCritical))
+            if name == 'expected'  : return float(get_SQL_value(SolarControlHeaterExpected))
+            if name == 'hysteresis': return float(get_SQL_value(SolarControlHeaterHysteresis))
+            if name == 'schedule'  : return get_SQL_value(SolarControlHeaterScheduleOn) #FIXME
+        if category == 'solar':
+            if name == 'critical': return float(get_SQL_value(SolarControlSolarCritical))
+            if name == 'temp_on' : return float(get_SQL_value(SolarControlSolarOn))
+            if name == 'temp_off': return float(get_SQL_value(SolarControlSolarOff)) 
+        if category == 'tank':
+            if name == 'heater_max': return float(get_SQL_value(SolarControlTankHeaterMax))
+            if name == 'heater_min': return float(get_SQL_value(SolarControlTankHeaterMin))
+            if name == 'solar_max' : return float(get_SQL_value(SolarControlTankSolarMax))
+    return None

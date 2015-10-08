@@ -55,18 +55,6 @@ class Room1Pressure(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class Room1Temp2(db.Model):
-    __tablename__ = 'room_1_temp_2'
-
-    id = db.Column(db.Integer, primary_key=True)
-    _dtepoch = db.Column(db.String)
-    _dtiso = db.Column(db.Text)
-    topic = db.Column(db.Text)
-    _dthhmm = db.Column(db.Text)
-    payload = db.Column(db.Text)
-    _dthhmmss = db.Column(db.Text)
-
-
 class Room1TempReal(db.Model):
     __tablename__ = 'room_1_temp_real'
 
@@ -103,8 +91,8 @@ class SolarControlActuators(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlCirculateInterval(db.Model):
-    __tablename__ = 'solarControl_circulate_interval'
+class SolarControlCirculationSettingsInterval(db.Model):
+    __tablename__ = 'solarControl_circulate_settings_interval'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -115,7 +103,7 @@ class SolarControlCirculateInterval(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlCirculatePump(db.Model):
+class SolarControlCirculationPump(db.Model):
     __tablename__ = 'solarControl_circulate_pump'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -127,8 +115,8 @@ class SolarControlCirculatePump(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlCirculateTimeOn(db.Model):
-    __tablename__ = 'solarControl_circulate_time_on'
+class SolarControlCirculationSettingsTimeOn(db.Model):
+    __tablename__ = 'solarControl_circulate_settings_time_on'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -139,8 +127,8 @@ class SolarControlCirculateTimeOn(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlHeaterCritical(db.Model):
-    __tablename__ = 'solarControl_heater_critical'
+class SolarControlHeaterSettingsCritical(db.Model):
+    __tablename__ = 'solarControl_heater_settings_critical'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -151,8 +139,8 @@ class SolarControlHeaterCritical(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlHeaterExpected(db.Model):
-    __tablename__ = 'solarControl_heater_expected'
+class SolarControlHeaterSettingsExpected(db.Model):
+    __tablename__ = 'solarControl_heater_settings_expected'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -163,8 +151,8 @@ class SolarControlHeaterExpected(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlHeaterHeatingOn(db.Model):
-    __tablename__ = 'solarControl_heater_heating_on'
+class SolarControlHeaterSettingsHeatingOn(db.Model):
+    __tablename__ = 'solarControl_heater_settings_heating_on'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -175,8 +163,8 @@ class SolarControlHeaterHeatingOn(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlHeaterHysteresis(db.Model):
-    __tablename__ = 'solarControl_heater_hysteresis'
+class SolarControlHeaterSettingsHysteresis(db.Model):
+    __tablename__ = 'solarControl_heater_settings_hysteresis'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -187,8 +175,8 @@ class SolarControlHeaterHysteresis(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlHeaterScheduleOff(db.Model):
-    __tablename__ = 'solarControl_heater_schedule_off'
+class SolarControlHeaterSettingsScheduleOff(db.Model):
+    __tablename__ = 'solarControl_heater_settings_schedule_off'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -199,8 +187,8 @@ class SolarControlHeaterScheduleOff(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlHeaterScheduleOn(db.Model):
-    __tablename__ = 'solarControl_heater_schedule_on'
+class SolarControlHeaterSettingsScheduleOn(db.Model):
+    __tablename__ = 'solarControl_heater_settings_schedule_on'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -235,8 +223,8 @@ class SolarControlHeaterTempOut(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlSolarCritical(db.Model):
-    __tablename__ = 'solarControl_solar_critical'
+class SolarControlSolarSettingsCritical(db.Model):
+    __tablename__ = 'solarControl_solar_settings_critical'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -247,8 +235,8 @@ class SolarControlSolarCritical(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlSolarFlowPidKd(db.Model):
-    __tablename__ = 'solarControl_solar_flow_pid_Kd'
+class SolarControlSolarSettingsFlowPwmSMax(db.Model):
+    __tablename__ = 'solarControl_solar_settings_flow_pwm_s_max'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -259,8 +247,8 @@ class SolarControlSolarFlowPidKd(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlSolarFlowPidKi(db.Model):
-    __tablename__ = 'solarControl_solar_flow_pid_Ki'
+class SolarControlSolarSettingsFlowPwmSMin(db.Model):
+    __tablename__ = 'solarControl_solar_settings_flow_pwm_s_min'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -271,8 +259,8 @@ class SolarControlSolarFlowPidKi(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlSolarFlowPidKp(db.Model):
-    __tablename__ = 'solarControl_solar_flow_pid_Kp'
+class SolarControlSolarSettingsFlowPwmTMax(db.Model):
+    __tablename__ = 'solarControl_solar_settings_flow_pwm_t_max'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -283,8 +271,8 @@ class SolarControlSolarFlowPidKp(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlSolarFlowPwmSMax(db.Model):
-    __tablename__ = 'solarControl_solar_flow_pwm_s_max'
+class SolarControlSolarSettingsFlowPwmTMin(db.Model):
+    __tablename__ = 'solarControl_solar_settings_flow_pwm_t_min'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -295,8 +283,8 @@ class SolarControlSolarFlowPwmSMax(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlSolarFlowPwmSMin(db.Model):
-    __tablename__ = 'solarControl_solar_flow_pwm_s_min'
+class SolarControlSolarSettingsOff(db.Model):
+    __tablename__ = 'solarControl_solar_settings_off'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -307,44 +295,8 @@ class SolarControlSolarFlowPwmSMin(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlSolarFlowPwmTMax(db.Model):
-    __tablename__ = 'solarControl_solar_flow_pwm_t_max'
-
-    id = db.Column(db.Integer, primary_key=True)
-    _dtepoch = db.Column(db.String)
-    _dtiso = db.Column(db.Text)
-    topic = db.Column(db.Text)
-    _dthhmm = db.Column(db.Text)
-    payload = db.Column(db.Text)
-    _dthhmmss = db.Column(db.Text)
-
-
-class SolarControlSolarFlowPwmTMin(db.Model):
-    __tablename__ = 'solarControl_solar_flow_pwm_t_min'
-
-    id = db.Column(db.Integer, primary_key=True)
-    _dtepoch = db.Column(db.String)
-    _dtiso = db.Column(db.Text)
-    topic = db.Column(db.Text)
-    _dthhmm = db.Column(db.Text)
-    payload = db.Column(db.Text)
-    _dthhmmss = db.Column(db.Text)
-
-
-class SolarControlSolarOff(db.Model):
-    __tablename__ = 'solarControl_solar_off'
-
-    id = db.Column(db.Integer, primary_key=True)
-    _dtepoch = db.Column(db.String)
-    _dtiso = db.Column(db.Text)
-    topic = db.Column(db.Text)
-    _dthhmm = db.Column(db.Text)
-    payload = db.Column(db.Text)
-    _dthhmmss = db.Column(db.Text)
-
-
-class SolarControlSolarOn(db.Model):
-    __tablename__ = 'solarControl_solar_on'
+class SolarControlSolarSettingsOn(db.Model):
+    __tablename__ = 'solarControl_solar_settings_on'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -403,8 +355,8 @@ class SolarControlSolarTempOut(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlTankHeaterMax(db.Model):
-    __tablename__ = 'solarControl_tank_heater_max'
+class SolarControlTankSettingsHeaterMax(db.Model):
+    __tablename__ = 'solarControl_tank_settings_heater_max'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -415,8 +367,8 @@ class SolarControlTankHeaterMax(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlTankHeaterMin(db.Model):
-    __tablename__ = 'solarControl_tank_heater_min'
+class SolarControlTankSettingsHeaterMin(db.Model):
+    __tablename__ = 'solarControl_tank_settings_heater_min'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)
@@ -427,8 +379,8 @@ class SolarControlTankHeaterMin(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
-class SolarControlTankSolarMax(db.Model):
-    __tablename__ = 'solarControl_tank_solar_max'
+class SolarControlTankSettingsSolarMax(db.Model):
+    __tablename__ = 'solarControl_tank_settings_solar_max'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)

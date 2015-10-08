@@ -83,7 +83,7 @@ def room_temp():
 
 @app.route('/status')
 def status():
-    sensors = get_data('sensors','all')
+    sensors = get_full_data('sensors','all')
     data = {'sensors' : [
               {'title'  : gettext('Outside temperature'), 'name' : 'outside_temp',
                'unit'   : u'°C', 'value' : sensors['outside']['real_temp']},
@@ -135,7 +135,7 @@ def status():
 def scheme():
     return render_template("/content/scheme.html",
                            active='scheme',
-                           data=get_data('sensors','all'),
+                           data=get_full_data('sensors','all'),
                            title=gettext('Scheme'))
 
 @app.route('/tank/')
@@ -156,7 +156,7 @@ def data_rows():
         data  = refresh_data('tank','temp_up')
         title = gettext('Water')
     
-    data += populate(order,get_data('settings',uri))
+    data += get_description(order,get_full_data('settings',uri))
     return render_template("data_rows.html",
                            active=uri,
                            data=data,
@@ -222,9 +222,18 @@ def heater():
                            init_tab=init_tab,
                            title=gettext('Heater'))
 
-@app.route('/get_value_<category>_<subcategory>_<name>', methods=['POST'])
+#@app.route('/get_value_<category>_<subcategory>_<name>', methods=['POST'])
+@app.route('/get/<category>/<subcategory>_<name>', methods=['POST'])
+@app.route('/get/<category>/<subcategory>/<name>', methods=['POST'])
 def refresh_data(subcategory,name,category='sensors'):
-    data = {'title' : gettext('Current temperature'), 'value' : get_data(category,subcategory)[subcategory][name], 'name' : subcategory+'_'+name }
+    #failsafe
+    if '_' in subcategory:
+        t = subcategory.split('_')
+        subcategory = t[0]
+        for i in t[1:]:
+            name = i + '_' + name
+    #data = {'title' : gettext('Current temperature'), 'value' : get_full_data(category,subcategory)[subcategory][name], 'name' : subcategory+'_'+name }
+    data = {'title' : gettext('Current temperature'), 'value' : round(get_data(name,subcategory,category),1), 'name' : subcategory+'_'+name }
     if request.method == "POST":
         return json.dumps(data)
     return([data])
@@ -244,21 +253,40 @@ def dashboard_data():
     return(data)
 
 @app.route('/change-<name>', methods=['GET', 'POST'])
-@app.route('/options/change-<name>', methods=['GET', 'POST'])
-@app.route('/heater/change-<name>', methods=['GET', 'POST'])
-@app.route('/solar/change-<name>', methods=['GET', 'POST'])
-@app.route('/tank/change-<name>', methods=['GET', 'POST'])
-@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
-def set_value(name=None):
+@app.route('/<category>/change-<name>', methods=['GET', 'POST'])
+#@app.route('/options/change-<name>', methods=['GET', 'POST'])
+#@app.route('/heater/change-<name>', methods=['GET', 'POST'])
+#@app.route('/solar/change-<name>', methods=['GET', 'POST'])
+#@app.route('/tank/change-<name>', methods=['GET', 'POST'])
+#@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
+def set_value(name=None,category=None):
     # get those data from SQL(name):
+    print(name)
+
     if name is None:
         name = 'schedule_override_temp'
 
+    subcategory = None
+    if '_' in name:
+        t = name.split('_')
+        subcategory = t[0]
+        for i in t[2:]:
+            name = i + '_' + name
+
     # get value from SQL
     #value = get_SQL_value()
-    value = None
+    value = 2
     
-    val = populate(name)[0]
+    #val = get_description(order,get_data('settings',uri))
+    val = {}
+    val['step'] = 1
+    val['unit'] = 'deg'
+    val['value'] = 0
+    val['range'] = [0,100]
+    val['title'] = "test"
+    val['desc'] = "ldkasdgjbddfsakn"
+    
+    #val = get_description(name)[0]
     if 'step' not in val:
         val['step'] = 1
     slider = {'min'   : val['range'][0],
@@ -268,14 +296,14 @@ def set_value(name=None):
               'unit'  : val['unit']}
 
     description = {key:val[key] for key in ['title','desc']}
-
+    
     form = RangeForm()
     form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
 
     if form.validate_on_submit():
         val = request.form['slider']
         # save to SQL
-        change_setting(name,val)
+        change_setting(val,name,category)
         if name is None:
             return redirect('/')
         
