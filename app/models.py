@@ -1,87 +1,451 @@
-# -*- coding: UTF-8 -*-
-
+# coding: utf-8
 from app import db
-from time import strftime
 
-class Settings(db.Model):
-    index = db.Column(db.Integer, primary_key=True, unique=True)
-    timestamp = db.Column(db.String(20))
-    # CIRCULATION
-    circulation_time_off = db.Column(db.Integer)
-    circulation_time_on = db.Column(db.Float(1))
-    circulation_solar = db.Column(db.Integer)
-    circulation_hysteresis = db.Column(db.Float(1))
-    circulation_temp = db.Column(db.Integer)
-    # SOLAR
-    solar_off = db.Column(db.Float(1))
-    solar_on = db.Column(db.Float(1))
-    solar_critical = db.Column(db.Integer)
-    # TANK
-    tank_solar_max = db.Column(db.Float(1))
-    tank_heater_max = db.Column(db.Float(1))
-    tank_heater_min = db.Column(db.Float(1))
-    # ROOM TEMPERATURE
-    room_hysteresis = db.Column(db.Float(1))
-    schedule = db.Column(db.Text)
-    schedule_override_temp = db.Column(db.Float(1))
-    use_apparent_temperature = db.Column(db.Boolean)
-    # OTHER
-    refresh_rate = db.Column(db.Float(1))
+class SolarControlHeaterSchedule(db.Model):
+    __tablename__ = 'solarControl_heater_schedule'
 
-    def __repr__(self):
-        return '<Index %r>' % self.index
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
 
-    def __init__(self, circulation_time_off=None, circulation_time_on=None,
-                 circulation_solar=None, circulation_hysteresis=None,
-                 circulation_temp=None, solar_off=None, solar_on=None,
-                 solar_critical=None, tank_solar_max=None,
-                 tank_heater_max=None, tank_heater_min=None,
-                 room_hysteresis=None, schedule=None,
-                 schedule_override_temp=None, use_apparent_temperature=None,
-                 refresh_rate=None):
-        self.timestamp = strftime("%Y-%m-%dT%H:%M:%S")
-        # populate all columns
-        l = locals()
-        for arg in l:
-            setattr(self,arg,l[arg])
+class IndexMqtt(db.Model):
+    __tablename__ = 'index_mqtt'
+
+    topic = db.Column(db.Text, primary_key=True)
+    ts = db.Column(db.DateTime, nullable=False, server_default=db.text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
-#class Data(db.Model):
-    #index = db.Column(db.Integer, primary_key=True, unique=True)
-    #timestamp = db.Column(db.String(20))
+class OutsideTemp(db.Model):
+    __tablename__ = 'outside_temp'
 
-    #solar_temperature = db.Column(db.Float(1))
-    #outside_temperature = db.Column(db.Float(1))
-    #inside_temperature = db.Column(db.Float(1))
-    #apparent_temperature = db.Column(db.Float(1))
-    ## STATES
-    #burner_state = db.Column(db.Boolean)
-    #heater_pump_state = db.Column(db.Boolean)
-    #solar_pump_state = db.Column(db.Boolean)
-    #circulation_pump_state = db.Column(db.Boolean)
-    #solar_system_valve = db.Column(db.Boolean)
-    #heater_system_valve = db.Column(db.Boolean)
-    ## SOLAR METER
-    #solar_temperature_in   = db.Column(db.Float(2))
-    #solar_temperature_out  = db.Column(db.Float(2))
-    #solar_temperature_diff = db.Column(db.Float(2))
-    #solar_flow             = db.Column(db.Integer)
-    #solar_energy           = db.Column(db.Integer)
-    #solar_volume           = db.Column(db.Float(2))
-    #solar_consumption      = db.Column(db.Float(1))
-    ## HEATER METER
-    #heater_temperature_in   = db.Column(db.Float(2))
-    #heater_temperature_out  = db.Column(db.Float(2))
-    #heater_temperature_diff = db.Column(db.Float(2))
-    #heater_flow             = db.Column(db.Integer)
-    #heater_energy           = db.Column(db.Integer)
-    #heater_volume           = db.Column(db.Float(2))
-    #heater_consumption      = db.Column(db.Float(1))
-    ## TANK METER
-    #tank_temperature_in   = db.Column(db.Float(2))
-    #tank_temperature_out  = db.Column(db.Float(2))
-    #tank_temperature_diff = db.Column(db.Float(2))
-    #tank_flow             = db.Column(db.Integer)
-    #tank_energy           = db.Column(db.Integer)
-    #tank_volume           = db.Column(db.Float(2))
-    #tank_consumption      = db.Column(db.Float(1))
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class Room1Humidity(db.Model):
+    __tablename__ = 'room_1_humidity'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class Room1Pressure(db.Model):
+    __tablename__ = 'room_1_pressure'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class Room1Temp2(db.Model):
+    __tablename__ = 'room_1_temp_2'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class Room1TempReal(db.Model):
+    __tablename__ = 'room_1_temp_real'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class Room1TempFeel(db.Model):
+    __tablename__ = 'room_1_temp_feel'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlActuators(db.Model):
+    __tablename__ = 'solarControl_actuators'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlCirculateInterval(db.Model):
+    __tablename__ = 'solarControl_circulate_interval'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlCirculatePump(db.Model):
+    __tablename__ = 'solarControl_circulate_pump'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlCirculateTimeOn(db.Model):
+    __tablename__ = 'solarControl_circulate_time_on'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlHeaterCritical(db.Model):
+    __tablename__ = 'solarControl_heater_critical'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlHeaterExpected(db.Model):
+    __tablename__ = 'solarControl_heater_expected'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlHeaterHeatingOn(db.Model):
+    __tablename__ = 'solarControl_heater_heating_on'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlHeaterHysteresis(db.Model):
+    __tablename__ = 'solarControl_heater_hysteresis'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlHeaterScheduleOff(db.Model):
+    __tablename__ = 'solarControl_heater_schedule_off'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlHeaterScheduleOn(db.Model):
+    __tablename__ = 'solarControl_heater_schedule_on'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlHeaterTempIn(db.Model):
+    __tablename__ = 'solarControl_heater_temp_in'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlHeaterTempOut(db.Model):
+    __tablename__ = 'solarControl_heater_temp_out'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarCritical(db.Model):
+    __tablename__ = 'solarControl_solar_critical'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarFlowPidKd(db.Model):
+    __tablename__ = 'solarControl_solar_flow_pid_Kd'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarFlowPidKi(db.Model):
+    __tablename__ = 'solarControl_solar_flow_pid_Ki'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarFlowPidKp(db.Model):
+    __tablename__ = 'solarControl_solar_flow_pid_Kp'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarFlowPwmSMax(db.Model):
+    __tablename__ = 'solarControl_solar_flow_pwm_s_max'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarFlowPwmSMin(db.Model):
+    __tablename__ = 'solarControl_solar_flow_pwm_s_min'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarFlowPwmTMax(db.Model):
+    __tablename__ = 'solarControl_solar_flow_pwm_t_max'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarFlowPwmTMin(db.Model):
+    __tablename__ = 'solarControl_solar_flow_pwm_t_min'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarOff(db.Model):
+    __tablename__ = 'solarControl_solar_off'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarOn(db.Model):
+    __tablename__ = 'solarControl_solar_on'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarPump(db.Model):
+    __tablename__ = 'solarControl_solar_pump'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarTemp(db.Model):
+    __tablename__ = 'solarControl_solar_temp'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarTempIn(db.Model):
+    __tablename__ = 'solarControl_solar_temp_in'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlSolarTempOut(db.Model):
+    __tablename__ = 'solarControl_solar_temp_out'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlTankHeaterMax(db.Model):
+    __tablename__ = 'solarControl_tank_heater_max'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlTankHeaterMin(db.Model):
+    __tablename__ = 'solarControl_tank_heater_min'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlTankSolarMax(db.Model):
+    __tablename__ = 'solarControl_tank_solar_max'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
+class SolarControlTankTempUp(db.Model):
+    __tablename__ = 'solarControl_tank_temp_up'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)

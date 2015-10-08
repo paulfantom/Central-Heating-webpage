@@ -5,7 +5,6 @@ from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
 from app import app, babel, db
 import json
-from mqtt import SENSORS_DATA
 
 from .forms import *
 from config import LANGUAGES, SERVER_IP, BABEL_DEFAULT_LOCALE
@@ -43,13 +42,13 @@ def get_locale():
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
-
     user='admin'
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
                            user=user,
-                           refresh_rate=get_SQL_value('refresh_rate',Settings),
+#                           refresh_rate=get_SQL_value(MQTTData('refresh_rate')),
+                           refresh_rate=1,
                            data=dashboard_data())
 
 #@app.route('/set-room-temp', methods=['GET', 'POST'])
@@ -57,7 +56,7 @@ def room_temp():
     # get those data from SQL(name):
     slider = {'min'   : 10,
               'max'   : 80,
-              'value' : 17,
+              'value' : round(float(get_SQL_value(SolarControlHeaterExpected)),1),
               'step'  : 0.1,
               'unit'  : u'°C'}
     description = {'title'  : gettext('Example modal'),
@@ -84,197 +83,90 @@ def room_temp():
 
 @app.route('/status')
 def status():
-    values = {'sensors' : [
-                  {'title'  : gettext('Solar temperature'),
-                   'name'   : 'solar_temp',
-                   'unit'   : u'°C',
-                   'value'  : 100.0 },
-                  {'title'  : gettext('Outside temperature'),
-                   'name'   : 'outside_temp',
-                   'unit'   : u'°C',
-                   'value'  : 26.5 },
-                  {'title'  : gettext('Inside temperature'),
-                   'name'   : 'room_temp',
-                   'unit'   : u'°C',
-                   'value'  : 22.1 },
-                  {'title'  : gettext('Apparent temperature'),
-                   'name'   : 'apparent_temp',
-                   'unit'   : u'°C',
-                   'value'  : 23.1 },
-                  {'title'  : gettext('Humidity'),
-                   'name'   : 'humidity',
-                   'unit'   : u'%',
-                   'value'  : 50 }],
-              'meters'  : {
-                  'labels'  : {'temp_in'  : gettext('Input temperature'),
-                               'temp_out' : gettext('Output temperature'),
-                               'temp_diff': gettext('Temperature difference'),
-                               'flow'     : gettext('Flow'),
-                               'energy'   : gettext('Energy'),
-                               'consume'  : gettext('Consumption')},
-                  'order'   : ['temp_in','temp_out','temp_diff','flow','energy','consume'],
-                  'units'   : [u'°C',    u'°C',     u'°C',      u'm³/h',u'kWh', u'???'],
-                  'devices' : [{'title'    : gettext('Solar'),
-                                'name'     : 'solar',
-                                'temp_in'  : 40.1,
-                                'temp_out' : 30.2,
-                                'temp_diff': 0.9,
-                                'flow'     : 0,
-                                'energy'   : 0,
-                                'consume'  : 0},
-                               {'title'    : gettext('Tank'),
-                                'name'     : 'tank',
-                                'temp_in'  : 40.1,
-                                'temp_out' : 30.2,
-                                'temp_diff': 0.9,
-                                'flow'     : 0,
-                                'energy'   : 0,
-                                'consume'  : 0},
-                               {'title'    : gettext('Heater'),
-                                'name'     : 'heater',
-                                'temp_in'  : 40.1,
-                                'temp_out' : 30.2,
-                                'temp_diff': 0.9,
-                                'flow'     : 0,
-                                'energy'   : 0,
-                                'consume'  : 0}]},
-              'states'  : [
-                  {'title'  : gettext('Burner'),
-                   'name'    : 'burner',
-                   'value' : 'ON' },
-                  {'title'  : gettext('Heater pump'),
-                   'name'    : 'heater_pump',
-                   'value' : 'ON' },
-                  {'title'  : gettext('Solar pump'),
-                   'name'    : 'solar_pump',
-                   'value' : 'ON' },
-                  {'title'  : gettext('Solar system actuator'),
-                   'name'    : 'solar_switch',
-                   'value' : 'ON' },
-                  {'title'  : gettext('DHW/CH actuator'),
-                   'name'    : 'heater_switch',
-                   'value' : gettext('DHW') } ]}
+    sensors = get_data('sensors','all')
+    data = {'sensors' : [
+              {'title'  : gettext('Outside temperature'), 'name' : 'outside_temp',
+               'unit'   : u'°C', 'value' : sensors['outside']['real_temp']},
+              {'title'  : gettext('Inside temperature'), 'name' : 'inside_temperature',
+               'unit'   : u'°C', 'value' : sensors['room']['inside_temperature'] },
+              {'title'  : gettext('Apparent temperature'), 'name' : 'apparent_temperature',
+               'unit'   : u'°C', 'value' : sensors['room']['apparent_temperature'] },
+              {'title'  : gettext('Humidity'), 'name' : 'humidity',
+               'unit'   : u'%',  'value' : sensors['room']['humidity'] },
+              {'title'  : gettext('Pressure'), 'name' : 'pressure',
+               'unit'   : u'hPa', 'value' : sensors['room']['pressure'] },
+              {'title'  : gettext('Solar temperature'), 'name' : 'solar_temp',
+               'unit'   : u'°C', 'value' : sensors['solar']['temp']},
+              {'title'  : gettext('Solar input'), 'name' : 'solar_in',
+               'unit'   : u'°C', 'value' : sensors['solar']['temp_in'] },
+              {'title'  : gettext('Solar output'), 'name' : 'solar_out',
+               'unit'   : u'°C', 'value' : sensors['solar']['temp_out'] },
+              {'title'  : gettext('Solar difference'), 'name' : 'solar_diff',
+               'unit'   : u'°C', 'value' : sensors['solar']['temp_diff'] },
+              {'title'  : gettext('Tank'), 'name' : 'tank_up',
+               'unit'   : u'°C', 'value' : sensors['tank']['temp_up']  },
+              {'title'  : gettext('Heater input'), 'name' : 'heater_in',
+               'unit'   : u'°C', 'value' : sensors['heater']['temp_in'] },
+              {'title'  : gettext('Heater output'), 'name' : 'heater_out',
+               'unit'   : u'°C', 'value' : sensors['heater']['temp_out'] },
+              {'title'  : gettext('Heater diffrence'), 'name' : 'heater_diff',
+               'unit'   : u'°C', 'value' : sensors['heater']['temp_diff'] }],
+          'states'  : [
+              {'title' : gettext('Burner'), 'name' : 'burner',
+               'value' : gettext('ON') if sensors['state']['burner'] else gettext('OFF') },
+              {'title' : gettext('DHW/CH actuator'), 'name' : 'heater_switch',
+               'value' : gettext('DHW') if sensors['state']['heater_switch'] else gettext('CH') },
+              {'title' : gettext('Solar pump'), 'name' : 'solar_pump',
+               'value' : gettext('ON') if sensors['state']['solar_pump'] else gettext('OFF') },
+              {'title' : gettext('Solar system actuator'), 'name' : 'solar_switch',
+               'value' : gettext('ON') if sensors['state']['solar_switch'] else gettext('OFF') },
+              {'title' : gettext('Solar circuit flow'), 'name' : 'solar_flow',
+               'value' : sensors['solar']['flow'] },
+              {'title' : gettext('Circulation'), 'name' : 'circulation',
+               'value' : gettext('ON') if sensors['state']['circulation'] else gettext(gettext('OFF')) } ]
+              }
     title=gettext('Sensors data')
     return render_template("/content/status.html",
                            active='status',
-                           data=values,
+                           data=data,
                            title=title)
 
 @app.route('/scheme')
 def scheme():
-    values = {'solar_temp'    : 100.0,
-              'outside_temp'  : 26.5,
-              'room_temp'     : 22.1,
-              'room_humidity' : 50,
-              'apparent_temp' : 23.1,
-              'solar_meter'   :
-                  {'temp_in'  : 40.1,
-                   'temp_out' : 30.2,
-                   'temp_diff': 0.9,
-                   'flow'     : 0,
-                   'energy'   : 0,
-                   'consume'  : 0},
-              'heater_meter'  :
-                  {'temp_in'  : 40.1,
-                   'temp_out' : 30.2,
-                   'temp_diff': 0.9,
-                   'flow'     : 0,
-                   'energy'   : 0,
-                   'consume'  : 0},
-              'tank_meter'    :
-                  {'temp_in'  : 40.1,
-                   'temp_out' : 30.2,
-                   'temp_diff': 0.9,
-                   'flow'     : 0,
-                   'energy'   : 0,
-                   'consume'  : 0},
-              'state'         :
-                  {'burner'       : False,
-                   'heater_pump'  : False,
-                   'solar_pump'   : False,
-                   'solar_switch' : False,
-                   'heater_switch': False}}
     return render_template("/content/scheme.html",
                            active='scheme',
-                           data=values,
+                           data=get_data('sensors','all'),
                            title=gettext('Scheme'))
 
-#@app.route('/water/1')
-#def water():
-#    # get setpoints from SQL
-#    settings = get_SQL_last_row(Settings)
-#
-#    order = ['tank_solar_max', 'tank_heater_max', 'tank_heater_min']
-#    data = refresh_data('tank_temperature_out')
-#    data += populate(order,settings)
-#
-#    return render_template("data_rows.html",
-#                           active='water',
-#                           refresh_rate=settings['refresh_rate'],
-#                           data=data,
-#                           title=gettext('Water'))
-#
-#@app.route('/solar/1')
-#def solar():
-#    # get setpoints from SQL
-#    settings = get_SQL_last_row(Settings)
-#    order = ['solar_critical','tank_solar_max','solar_on','solar_off']
-#    data = refresh_data('solar_temperature')
-#    data += populate(order,settings)
-#
-#    return render_template("data_rows.html",
-#                           active='solar',
-#                           refresh_rate=settings['refresh_rate'],
-#                           data=data,
-#                           title=gettext("Solar"))
-#
-#@app.route('/circulation/1')
-#def circulation():
-#    # get setpoints from SQL
-#    settings = get_SQL_last_row(Settings)
-#
-#    order = ['circulation_temp','circulation_hysteresis','circulation_solar',
-#             'circulation_time_on','circulation_time_off']
-#    data = populate(order,settings)
-#
-#    return render_template("data_rows.html",
-#                           active='circulation',
-#                           data=data,
-#                           title=gettext('Circulation'))
-
-
-@app.route('/water/')
+@app.route('/tank/')
 @app.route('/solar/')
 @app.route('/circulation/')
 def data_rows():
     uri = request.base_url.replace(request.url_root,'').replace('/','')
-    settings = get_SQL_last_row(Settings)
     data = []
     if uri == 'circulation':
-        order = ['circulation_temp','circulation_hysteresis',
-                 'circulation_solar', 'circulation_time_on',
-                 'circulation_time_off']
+        order = ['time_on', 'interval']
         title = gettext('Circulation')
     elif uri == 'solar':
-        order = ['solar_critical','tank_solar_max','solar_on','solar_off']
-        data  = refresh_data('solar_temperature')
+        order = ['critical','temp_on','temp_off']
+        data  = refresh_data('solar','temp')
         title = gettext('Solar')
-    else:
-        order = ['tank_solar_max', 'tank_heater_max', 'tank_heater_min']
-        data  = refresh_data('tank_temperature_out')
+    elif uri == 'tank':
+        order = ['solar_max', 'heater_max', 'heater_min']
+        data  = refresh_data('tank','temp_up')
         title = gettext('Water')
-
-
-    data += populate(order,settings)
+    
+    data += populate(order,get_data('settings',uri))
     return render_template("data_rows.html",
                            active=uri,
                            data=data,
-                           refresh_rate=settings['refresh_rate'],
+                           refresh_rate=1,
+                           #refresh_rate=settings['refresh_rate'],
                            title=title)
 
 @app.route('/heater', methods=['GET', 'POST'])
 def heater():
-    schedule = json.loads(get_SQL_value('schedule',Settings))
+    schedule = json.loads(get_SQL_value(MQTTData('schedule')))
     print(schedule['week'])
 
     # TODO write form for this:
@@ -330,32 +222,22 @@ def heater():
                            init_tab=init_tab,
                            title=gettext('Heater'))
 
-@app.route('/get_value_<name>', methods=['POST'])
-def refresh_data(name):
-    print(name)
-    # get from sensors SQL db
-    data = {'title' : gettext('Current temperature'), 'value' : 11, 'name' : name }
+@app.route('/get_value_<category>_<subcategory>_<name>', methods=['POST'])
+def refresh_data(subcategory,name,category='sensors'):
+    data = {'title' : gettext('Current temperature'), 'value' : get_data(category,subcategory)[subcategory][name], 'name' : subcategory+'_'+name }
     if request.method == "POST":
         return json.dumps(data)
     return([data])
 
 @app.route('/dashboard/get_data', methods=['POST'])
 def dashboard_data():
-    try: feel = SENSORS_DATA["room/1/temp_feel"]
-    except KeyError: feel = -1
-    try: inTemp = SENSORS_DATA["room/1/temp_real"]
-    except KeyError: inTemp = -1
-    try: humidity = SENSORS_DATA["room/1/humidity"]
-    except KeyError: humidity = -1
-    try: outTemp = SENSORS_DATA["outside/temp"]
-    except KeyError: outTemp = -99
-
-    data = { "inside_temperature" : inTemp,
-             "apparent_temperature" : feel,
-             "humidity"  : humidity,
-             "outside_temperature"  : outTemp,
-             "work_mode" : gettext('Normal'),
-             "heater_status" : gettext('ON'),
+    int(get_SQL_value(SolarControlActuators))
+    data = { "inside_temperature" : round(float(get_SQL_value(Room1TempReal)),1),
+             "apparent_temperature" : round(float(get_SQL_value(Room1TempFeel)),1),
+             "humidity"  : int(float(get_SQL_value(Room1Humidity))),
+             "outside_temperature"  : round(float(get_SQL_value(OutsideTemp)),1),
+             "work_mode" : 'Normal',
+             "heater_status" : 'ON' if (int(get_SQL_value(SolarControlActuators))&2**3 !=0) else 'OFF',
              "solar_status"  : gettext('ON') }
     if request.method == "POST":
         return json.dumps(data)
@@ -365,7 +247,7 @@ def dashboard_data():
 @app.route('/options/change-<name>', methods=['GET', 'POST'])
 @app.route('/heater/change-<name>', methods=['GET', 'POST'])
 @app.route('/solar/change-<name>', methods=['GET', 'POST'])
-@app.route('/water/change-<name>', methods=['GET', 'POST'])
+@app.route('/tank/change-<name>', methods=['GET', 'POST'])
 @app.route('/circulation/change-<name>', methods=['GET', 'POST'])
 def set_value(name=None):
     # get those data from SQL(name):
@@ -373,7 +255,8 @@ def set_value(name=None):
         name = 'schedule_override_temp'
 
     # get value from SQL
-    value = get_SQL_value(name,Settings)
+    #value = get_SQL_value()
+    value = None
     
     val = populate(name)[0]
     if 'step' not in val:
@@ -406,9 +289,12 @@ def set_value(name=None):
 
 @app.route('/options', methods=['GET', 'POST'])
 def options():
-    data = get_SQL_last_row(Settings)
-    refresh = data['refresh_rate']
-    hysteresis = data['room_hysteresis']
+    #data = get_SQL_last_row(Settings)
+    data = None
+    #refresh = data['refresh_rate']
+    refresh = 1
+    #hysteresis = data['room_hysteresis']
+    hysteresis = float(get_SQL_value(SolarControlHeaterHysteresis))
     
     if request.remote_addr != SERVER_IP:
         print(request.remote_addr)
@@ -435,25 +321,3 @@ def options():
                            options = options,
                            refresh_rate = refresh,
                            hysteresis_value = hysteresis)
-
-def populate(order,SQL_data=None,keys=None):
-    if keys is None:
-        keys = ['range', 'unit', 'desc', 'step', 'title']
-    if type(order) != list:
-        order = [order]
-
-    data = []
-    for name in order:
-        d = {}
-        d['name'] = name
-        try:
-            d['value'] = SQL_data[name]
-        except TypeError:
-            pass
-        for k in keys:
-            try:
-                d[k] = app.config['DESCRIPTIONS'][name][k]
-            except KeyError:
-                pass
-        data.append(d)
-    return data

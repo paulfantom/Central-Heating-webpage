@@ -20,23 +20,5 @@
     </div> <!-- .col -->
     {% endfor %}
   </div> <!-- .row -->
-  <br>
-  <div class="row">
-    {% for i in range(data['meters']['devices']|length) %}
-    <div class="col-sm-12 col-md-6">
-      <p class="text-center"><b>{{ data['meters']['devices'][i]['title'] }}</b></p>
-      <table class="table">
-        {#<span name="{{data['meters']['devices'][i]['name']}}">#}
-        {% for trow in data['meters']['order'] %}
-        <tr>
-          <td class="text-center"><p>{{ data['meters']['labels'][trow] }}</p></td>
-          <td class="text-center"><p>{{ data['meters']['devices'][i][trow] }} {{ data['meters']['units'][loop.index-1] }}</p></td>
-        </tr>
-        {% endfor %}
-        {#</span>#}
-      </table>
-    </div> <!-- .col -->
-    {% endfor %}
-  </div> <!-- .row -->
 </div> <!-- .container-fluid -->
 {% endblock %}

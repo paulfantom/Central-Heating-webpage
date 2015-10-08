@@ -8,9 +8,9 @@
     <div class="col-xs-12 col-sm-6">
       <a class="btn btn-block btn-link" href='change-schedule_override_temp' data-toggle="modal" data-target="#set-temp">
         <p>{% trans %}Room temperature{% endtrans %}:</p>
-        <h1 style="font-size: 62px"><b><span id="inside_temperature">{{ data['inside_temperature'] }}</span>&deg;C</b></h1>
+        <h1 style="font-size: 62px"><b><span id="inside_temperature">{{ data['inside_temperature'] }}</span>&deg;</b></h1>
         <p>{% trans %}Apparent temperature{% endtrans %}:</p>
-        <h2><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;C</h2>
+        <h2><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;</h2>
       </a>
       <div class="modal fade" id="set-temp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog"><div class="modal-content"></div></div>
@@ -19,7 +19,7 @@
       <div class="text-center">
 <!--       <button type="button" class="btn btn-block btn-link"> -->
         <p>{% trans %}Outside temperature{% endtrans %}:</p>
-        <h2><span id="outside_temperature">{{ data['outside_temperature'] }}</span>&deg;C</h2>
+        <h2><span id="outside_temperature">{{ data['outside_temperature'] }}</span>&deg;</h2>
 <!--       </button> -->
       </div>
     </div>
@@ -30,7 +30,7 @@
 <!--       </button> -->
       </div>
       <div class="text-center">
-        <button type="button" class="btn btn-block btn-warning heater-status">
+        <button type="button" class="btn btn-block btn-warning heater-status {% if data['heater_status'] == gettext('ON') %}active{% endif %}">
           {% trans %}Heater status{% endtrans %}:<br>
           <span id="heater_status">{{ data['heater_status'] }}</span>
         </button>
@@ -81,7 +81,7 @@ function update() {
   $('#date').text(date);
 };
 
-(setTimeout( function () {
+(setInterval( function () {
   $.ajax({
         url: '/dashboard/get_data',
         dataType: "json",
