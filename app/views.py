@@ -11,7 +11,6 @@ from config import LANGUAGES, SERVER_IP, BABEL_DEFAULT_LOCALE
 from .system import *
 from .data import *
 
-
 def apparent(toggle=False):
     #get apparent temperature switch state from SQL
     apparent = True
@@ -261,8 +260,6 @@ def dashboard_data():
 #@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
 def set_value(name=None,category=None):
     # get those data from SQL(name):
-    print(name)
-
     if name is None:
         name = 'schedule_override_temp'
 
@@ -273,25 +270,16 @@ def set_value(name=None,category=None):
         for i in t[2:]:
             name = i + '_' + name
 
-    # get value from SQL
-    #value = get_SQL_value()
-    value = 2
-    
     #val = get_description(order,get_data('settings',uri))
-    val = {}
-    val['step'] = 1
-    val['unit'] = 'deg'
-    val['value'] = 0
-    val['range'] = [0,100]
-    val['title'] = "test"
-    val['desc'] = "ldkasdgjbddfsakn"
+    val = get_description(name,category)[0]
+    val['value'] = get_data(name,category,'settings')
     
     #val = get_description(name)[0]
     if 'step' not in val:
         val['step'] = 1
     slider = {'min'   : val['range'][0],
               'max'   : val['range'][1],
-              'value' : value,
+              'value' : val['value'],
               'step'  : val['step'],
               'unit'  : val['unit']}
 

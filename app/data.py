@@ -31,17 +31,17 @@ def get_SQL_value(db_model=IndexMqtt,column='payload'):
 
 def change_setting(value,name,category=None):
      solarControlID = 'solarControl'
-     print("<Category %r>" % category)
-     print("<Name %r>" % name)
-     print("<Value %r>" % value)
-     n = solarControlID + '/'
+     #print("<Category %r>" % category)
+     #print("<Name %r>" % name)
+     #print("<Value %r>" % value)
+     uri = solarControlID + '/'
      if category == 'circulation': category = 'circulate'
      if category is not None:
-         n = n + category + '/'
-     n = n + 'settings/' + name
-     print(n)
+         uri = uri + category + '/'
+     uri = uri + 'settings/' + name
+     print(uri)
      #name = 'solarControl/heater/critical'
-     mqtt_send(name, str(value), hostname=SERVER_IP)
+     mqtt_send(uri, str(value), hostname=SERVER_IP)
 
 
 #def change_setting(name,value):
@@ -68,7 +68,12 @@ def get_description(order,dataset=None,keys=None):
     if type(order) != list:
         order = [order]
     
-    category = dataset.keys()[0]
+    if dataset is not None: 
+        try:
+            category = dataset.keys()[0]
+        except AttributeError:
+            category = dataset
+    
     data = []
     for name in order:
         d = {}
@@ -76,10 +81,9 @@ def get_description(order,dataset=None,keys=None):
         try:
             d['value'] = dataset[category][name]
         except TypeError:
-            pass
+            d['value'] = 0
         for k in keys:
             try:
-                #d[k] = app.config['DESCRIPTIONS'][category][name][k]
                 d[k] = DESCRIPTIONS[category][name][k]
             except KeyError:
                 pass
@@ -127,8 +131,8 @@ def get_full_data(dataset='sensors',which='all'):
     else:
         if(which == 'circulation' or which == 'all'):
             values['circulation'] = {
-                   'interval' : int(get_SQL_value(SolarControlCirculateSettingsInterval)),
-                   'time_on' : int(get_SQL_value(SolarControlCirculateSettingsTimeOn))}
+                   'interval' : int(get_SQL_value(SolarControlCirculationSettingsInterval)),
+                   'time_on' : int(get_SQL_value(SolarControlCirculationSettingsTimeOn))}
         if(which == 'heater' or which == 'all'):
             values['heater'] = {
                    'critical' : float(get_SQL_value(SolarControlHeaterSettingsCritical)),
@@ -138,8 +142,8 @@ def get_full_data(dataset='sensors',which='all'):
         if(which == 'solar' or which == 'all'):
             values['solar'] = {
                    'critical' : float(get_SQL_value(SolarControlSolarSettingsCritical)),
-                   'on' : float(get_SQL_value(SolarControlSolarSettingsOn)),
-                   'off' : float(get_SQL_value(SolarControlSolarSettingsOff))} 
+                   'temp_on' : float(get_SQL_value(SolarControlSolarSettingsOn)),
+                   'temp_off' : float(get_SQL_value(SolarControlSolarSettingsOff))} 
         if(which == 'tank' or which == 'all'):
             values['tank'] = {
                    'heater_max' : float(get_SQL_value(SolarControlTankSettingsHeaterMax)),
@@ -189,8 +193,8 @@ def get_full_data(dataset='sensors',which='all'):
 #    else:
 #        if(which == 'circulation' or which == 'all'):
 #            values['circulation'] = {
-#                   'interval' : int(get_SQL_value(SolarControlCirculateInterval)),
-#                   'time_on' : int(get_SQL_value(SolarControlCirculateTimeOn))}
+#                   'interval' : int(get_SQL_value(SolarControlCirculationInterval)),
+#                   'time_on' : int(get_SQL_value(SolarControlCirculationTimeOn))}
 #        if(which == 'heater' or which == 'all'):
 #            values['heater'] = {
 #                   'critical' : float(get_SQL_value(SolarControlHeaterCritical)),
@@ -246,19 +250,19 @@ def get_data(name,category,dataset='sensors'):
             if name == 'circulation'  : return (actuators&(2**4) != 0)
     else:
         if category == 'circulation':
-            if name == 'interval': return int(get_SQL_value(SolarControlCirculateInterval))
-            if name == 'time_on' : return int(get_SQL_value(SolarControlCirculateTimeOn))
+            if name == 'interval': return int(get_SQL_value(SolarControlCirculationSettingsInterval))
+            if name == 'time_on' : return int(get_SQL_value(SolarControlCirculationSettingsTimeOn))
         if category == 'heater':
-            if name == 'critical'  : return float(get_SQL_value(SolarControlHeaterCritical))
-            if name == 'expected'  : return float(get_SQL_value(SolarControlHeaterExpected))
-            if name == 'hysteresis': return float(get_SQL_value(SolarControlHeaterHysteresis))
-            if name == 'schedule'  : return get_SQL_value(SolarControlHeaterScheduleOn) #FIXME
+            if name == 'critical'  : return float(get_SQL_value(SolarControlHeaterSettingsCritical))
+            if name == 'expected'  : return float(get_SQL_value(SolarControlHeaterSettingsExpected))
+            if name == 'hysteresis': return float(get_SQL_value(SolarControlHeaterSettingsHysteresis))
+            if name == 'schedule'  : return get_SQL_value(SolarControlHeaterSettingsScheduleOn) #FIXME
         if category == 'solar':
-            if name == 'critical': return float(get_SQL_value(SolarControlSolarCritical))
-            if name == 'temp_on' : return float(get_SQL_value(SolarControlSolarOn))
-            if name == 'temp_off': return float(get_SQL_value(SolarControlSolarOff)) 
+            if name == 'critical': return float(get_SQL_value(SolarControlSolarSettingsCritical))
+            if name == 'temp_on' : return float(get_SQL_value(SolarControlSolarSettingsOn))
+            if name == 'temp_off': return float(get_SQL_value(SolarControlSolarSettingsOff)) 
         if category == 'tank':
-            if name == 'heater_max': return float(get_SQL_value(SolarControlTankHeaterMax))
-            if name == 'heater_min': return float(get_SQL_value(SolarControlTankHeaterMin))
-            if name == 'solar_max' : return float(get_SQL_value(SolarControlTankSolarMax))
+            if name == 'heater_max': return float(get_SQL_value(SolarControlTankSettingsHeaterMax))
+            if name == 'heater_min': return float(get_SQL_value(SolarControlTankSettingsHeaterMin))
+            if name == 'solar_max' : return float(get_SQL_value(SolarControlTankSettingsSolarMax))
     return None
