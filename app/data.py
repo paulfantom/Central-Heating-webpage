@@ -123,6 +123,7 @@ def get_full_data(dataset='sensors',which='all'):
             status = []
             for i in range(0,6):
                 status.append(actuators&(2**i) != 0)
+            print(bin(actuators))
             values['state'] = {'burner'       : status[3],
                                'solar_switch' : status[0],
                                'heater_switch': status[2],

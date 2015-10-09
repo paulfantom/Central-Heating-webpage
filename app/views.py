@@ -47,15 +47,16 @@ def dashboard():
                            title='',
                            user=user,
 #                           refresh_rate=get_SQL_value(MQTTData('refresh_rate')),
-                           refresh_rate=1,
+                           refresh_rate=0.5,
                            data=dashboard_data())
 
+@app.route('/change-schedule_override_temp', methods=['GET', 'POST'])
 #@app.route('/set-room-temp', methods=['GET', 'POST'])
 def room_temp():
     # get those data from SQL(name):
-    slider = {'min'   : 10,
-              'max'   : 80,
-              'value' : round(float(get_SQL_value(SolarControlHeaterExpected)),1),
+    slider = {'min'   : 15,
+              'max'   : 28,
+              'value' : round(float(get_SQL_value(SolarControlHeaterSettingsExpected)),1),
               'step'  : 0.1,
               'unit'  : u'°C'}
     description = {'title'  : gettext('Example modal'),
@@ -159,14 +160,15 @@ def data_rows():
     return render_template("data_rows.html",
                            active=uri,
                            data=data,
-                           refresh_rate=1,
+                           refresh_rate=0.5,
                            #refresh_rate=settings['refresh_rate'],
                            title=title)
 
 @app.route('/heater', methods=['GET', 'POST'])
 def heater():
-    schedule = json.loads(get_SQL_value(MQTTData('schedule')))
-    print(schedule['week'])
+    #schedule = json.loads(get_SQL_value(MQTTData('schedule')))
+    schedule = {'week' : 2, 'work' : '10', 'free' : 20, 'other' : 15}
+#    print(schedule['week'])
 
     # TODO write form for this:
     values = [{'title' : gettext('Work day'),
@@ -239,30 +241,27 @@ def refresh_data(subcategory,name,category='sensors'):
 
 @app.route('/dashboard/get_data', methods=['POST'])
 def dashboard_data():
-    int(get_SQL_value(SolarControlActuators))
-    data = { "inside_temperature" : round(float(get_SQL_value(Room1TempReal)),1),
-             "apparent_temperature" : round(float(get_SQL_value(Room1TempFeel)),1),
-             "humidity"  : int(float(get_SQL_value(Room1Humidity))),
-             "outside_temperature"  : round(float(get_SQL_value(OutsideTemp)),1),
-             "work_mode" : 'Normal',
-             "heater_status" : 'ON' if (int(get_SQL_value(SolarControlActuators))&2**3 !=0) else 'OFF',
-             "solar_status"  : gettext('ON') }
+    data = { "inside_temperature"   : round(get_data('inside_temperature','room'),1),
+             "apparent_temperature" : round(get_data('apparent_temperature','room'),1),
+             "humidity"  : int(get_data('humidity','room')),
+             "pressure"  : int(get_data('pressure','room')),
+             "outside_temperature"  : round(get_data('real_temp','outside'),1),
+             "tank_temp_up" : round(get_data('temp_up','tank'),1),
+             "heater_schedule" : 'Normal',
+             "heater_status" : gettext('ON') if get_data('burner','state') else gettext('OFF'),
+             "solar_status"  : gettext('ON') if get_data('solar_pump','state') else gettext('OFF') }
     if request.method == "POST":
         return json.dumps(data)
     return(data)
 
-@app.route('/change-<name>', methods=['GET', 'POST'])
+#@app.route('/change-<name>', methods=['GET', 'POST'])
 @app.route('/<category>/change-<name>', methods=['GET', 'POST'])
 #@app.route('/options/change-<name>', methods=['GET', 'POST'])
 #@app.route('/heater/change-<name>', methods=['GET', 'POST'])
 #@app.route('/solar/change-<name>', methods=['GET', 'POST'])
 #@app.route('/tank/change-<name>', methods=['GET', 'POST'])
 #@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
-def set_value(name=None,category=None):
-    # get those data from SQL(name):
-    if name is None:
-        name = 'schedule_override_temp'
-
+def set_value(name,category=None):
     subcategory = None
     if '_' in name:
         t = name.split('_')
@@ -308,9 +307,9 @@ def options():
     #data = get_SQL_last_row(Settings)
     data = None
     #refresh = data['refresh_rate']
-    refresh = 1
+    refresh = 0.5
     #hysteresis = data['room_hysteresis']
-    hysteresis = float(get_SQL_value(SolarControlHeaterHysteresis))
+    hysteresis = float(get_SQL_value(SolarControlHeaterSettingsHysteresis))
     
     if request.remote_addr != SERVER_IP:
         print(request.remote_addr)

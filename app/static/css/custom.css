@@ -16,20 +16,36 @@
     border-color: #AC2925;
 }
 
-.heater-mode {
+.heater-schedule {
     background-color: #398439;
     border-color: #398439;
 }
 
-.heater-mode:hover,   .heater-mode:focus,
-.heater-status:hover, .heater-status:focus {
-    background-color: transparent;
+.heater-schedule:hover, .heater-schedule:focus,
+.heater-status:hover,   .heater-status:focus 
+.solar-status:hover,    .solar-status:focus{
+    /*background-color: transparent;*/
     border-color: #428BCA;
 }
 
 .heater-status {
     background-color: #337AB7;
     border-color: #2E6DA4;
+}
+
+.heater-status.active {
+    background-color: #C9302C;
+    border-color: #AC2925;
+}
+
+.heater-status.active:hover, .heater-status.active:focus {
+    background-color: #C9302C;
+    border-color: #AC2925;
+}
+
+.solar-status.active, .solar-status.active:hover, .solar-status.active:focus {
+    background-color: #EC971F;
+    border-color: #D58512;
 }
 
 /*.content {

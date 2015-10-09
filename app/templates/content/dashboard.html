@@ -11,33 +11,58 @@
         <h1 style="font-size: 62px"><b><span id="inside_temperature">{{ data['inside_temperature'] }}</span>&deg;</b></h1>
         <p>{% trans %}Apparent temperature{% endtrans %}:</p>
         <h2><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;</h2>
+        <p>{% trans %}Humidity{% endtrans %}:</p>
+        <h2><span id="humidity">{{ data['humidity'] }}</span>%</h2>
       </a>
       <div class="modal fade" id="set-temp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog"><div class="modal-content"></div></div>
       </div> <!-- .modal -->
       <span class="hidden-xs hidden-sm"><br></span>
       <div class="text-center">
-<!--       <button type="button" class="btn btn-block btn-link"> -->
-        <p>{% trans %}Outside temperature{% endtrans %}:</p>
-        <h2><span id="outside_temperature">{{ data['outside_temperature'] }}</span>&deg;</h2>
-<!--       </button> -->
+        <p>{% trans %}Pressure{% endtrans %}:</p>
+        <h2><span id="pressure">{{ data['pressure'] }}</span> hPa</h2>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6">
       <div class="text-center" style="margin: 8px !important;">
-<!--       <button type="button" class="btn btn-block btn-link"> -->
-        <p>{% trans %}Humidity{% endtrans %}:</p><h2><span id="humidity">{{ data['humidity'] }}</span>%</h2>
-<!--       </button> -->
+        <p>{% trans %}Outside temperature{% endtrans %}:</p>
+        <h2><span id="outside_temperature">{{ data['outside_temperature'] }}</span>&deg;</h2>
       </div>
       <div class="text-center">
-        <button type="button" class="btn btn-block btn-warning heater-status {% if data['heater_status'] == gettext('ON') %}active{% endif %}">
-          {% trans %}Heater status{% endtrans %}:<br>
-          <span id="heater_status">{{ data['heater_status'] }}</span>
-        </button>
-        <button type="button" class="btn btn-block btn-danger heater-mode">
-          {% trans %}Heater mode{% endtrans %}:<br>
-          <span  id="work_mode">{{ data['work_mode'] }}</span>
-        </button>
+        <p>{% trans %}Water temperature{% endtrans %}:</p>
+        <h2><span id="tank_temp_up">{{ data['tank_temp_up']|default('--') }}</span>&deg;</h2>
+      </div>
+      <div class="text-center">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6">
+            <button type="button" class="btn btn-block btn-info heater-status {%if data['heater_status'] == gettext('ON') %}active{%endif%}">
+              {% trans %}Heater{% endtrans %}:<br>
+              <span id="heater_status">{{ data['heater_status'] }}</span>
+            </button>
+            <div class="visible-xs"><br></div>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <button type="button" class="btn btn-block btn-success heater-schedule {%if data['heater_schedule'] == gettext('ON') %}active{%endif%}">
+              {% trans %}Schedule{% endtrans %}:<br>
+              <span  id="work_mode">{{ data['heater_schedule'] }}</span>
+            </button>
+          </div>
+        </div> <!-- .row -->
+        <br>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-sm-offset-6">
+            <button type="button" class="btn btn-block btn-info solar-status {%if data['solar_status'] == gettext('ON') %}active{%endif%}">
+              {% trans %}Solar{% endtrans %}:<br>
+              <span  id="solar_status">{{ data['solar_status'] }}</span>
+            </button>
+          </div>
+          {#<div class="col-xs-6">
+            <button type="button" class="btn btn-block btn-info ???-status {%if data['???_status'] == gettext('ON') %}active{%endif%}">
+              {% trans %}????{% endtrans %}:<br>
+              <span  id="solar_status">{{ data['solar_status'] }}</span>
+            </button>
+          </div>#}
+        </div> <!-- .row -->
         <span class="hidden-xs"><br></span>
       </div>
       <!--<div class="row">
@@ -53,8 +78,9 @@
         </div>
       </div> -->
       <div class="text-center">
-          <h4><span id="time">24:00</span><br>
-        <br><span id="date">23/08/2015</span></h4>
+        <!-- <h4><span id="time">24:00</span><br>
+        <br><span id="date">23/08/2015</span></h4> -->
+        <h4><span id="time">24:00</span> - <span id="date">23/08/2015</span></h4>
       </div>
     </div>
   </div>
@@ -94,9 +120,15 @@ function update() {
             $("#work_mode").text(result.work_mode)
             $("#heater_status").text(result.heater_status)
             {#$("#solar_status").text(result.solar_status)#}
+            if(result.heater_status == "{%trans%}ON{%endtrans%}" ){
+                $("#heater_status").parent().addClass('active')
+            } else {
+                $("#heater_status").parent().removeClass('active')
+            }
         }})
 },{{refresh_rate|default(1.5)}}*60000)());
 
+{# {% if data['heater_status'] == gettext('ON') %}active{% endif %} #}
 
 </script>
 {% endblock %}
