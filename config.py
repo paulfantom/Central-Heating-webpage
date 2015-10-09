@@ -6,7 +6,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 SERVER_IP = "127.0.0.1"
 MYSQL_USER = 'mqttwarn'
-MYSQL_PASS = 'password'
+MYSQL_PASS = ''
 
 #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://' + MYSQL_USER + ':' + MYSQL_PASS + '@localhost/mqtt_data'
@@ -34,6 +34,21 @@ DESCRIPTIONS = {
             'desc'  : gettext('Set pump mixing time in water consumption mode'),
             'range' : [1,300],
             'unit'  : ' s'
+        }},
+    'heater' : {
+        'critical' : {
+            'title' : gettext('Critical'),
+            'desc'  : gettext('Set heater critical temperature'),
+            'range' : [40,100],
+            'step'  : 1,
+            'unit'  : u'°C'
+        },
+        'hysteresis' : {
+            'title' : gettext('Hysteresis'),
+            'desc'  : gettext('Set heater hysteresis for central heating'),
+            'range' : [0,2],
+            'step'  : 0.01,
+            'unit'  : u'°C'
         }},
     'solar': {
         'temp_off' : {

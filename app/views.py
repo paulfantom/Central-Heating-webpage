@@ -138,6 +138,7 @@ def scheme():
                            data=get_full_data('sensors','all'),
                            title=gettext('Scheme'))
 
+@app.route('/heater/')
 @app.route('/tank/')
 @app.route('/solar/')
 @app.route('/circulation/')
@@ -155,6 +156,9 @@ def data_rows():
         order = ['solar_max', 'heater_max', 'heater_min']
         data  = refresh_data('tank','temp_up')
         title = gettext('Water')
+    elif uri == 'heater':
+        order = ['critical', 'hysteresis']
+        title = gettext('Heater')
     
     data += get_description(order,get_full_data('settings',uri))
     return render_template("data_rows.html",
@@ -164,8 +168,8 @@ def data_rows():
                            #refresh_rate=settings['refresh_rate'],
                            title=title)
 
-@app.route('/heater', methods=['GET', 'POST'])
-def heater():
+@app.route('/schedule', methods=['GET', 'POST'])
+def schedule():
     #schedule = json.loads(get_SQL_value(MQTTData('schedule')))
     schedule = {'week' : 2, 'work' : '10', 'free' : 20, 'other' : 15}
 #    print(schedule['week'])
