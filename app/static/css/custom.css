@@ -16,36 +16,33 @@
     border-color: #AC2925;
 }
 
+.heater {
+    display: block;
+    width: 100%;
+    padding: 6px, 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857;
+    text-align: center;
+    vertical-align: middle;
+    color: #FFF,
+    border: 1px solid transparent;
+    overflow: visible;
+}
+
 .heater-schedule {
-    background-color: #398439;
-    border-color: #398439;
-}
-
-.heater-schedule:hover, .heater-schedule:focus,
-.heater-status:hover,   .heater-status:focus 
-.solar-status:hover,    .solar-status:focus{
-    /*background-color: transparent;*/
-    border-color: #428BCA;
-}
-
-.heater-status {
     background-color: #337AB7;
     border-color: #2E6DA4;
 }
 
-.heater-status.active {
-    background-color: #C9302C;
-    border-color: #AC2925;
+.heater-status {
+    background-color: #449D44;
+    border-color: #398439;
 }
 
-.heater-status.active:hover, .heater-status.active:focus {
+.heater.active {
     background-color: #C9302C;
     border-color: #AC2925;
-}
-
-.solar-status.active, .solar-status.active:hover, .solar-status.active:focus {
-    background-color: #EC971F;
-    border-color: #D58512;
 }
 
 /*.content {

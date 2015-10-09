@@ -248,8 +248,8 @@ def dashboard_data():
              "outside_temperature"  : round(get_data('real_temp','outside'),1),
              "tank_temp_up" : round(get_data('temp_up','tank'),1),
              "heater_schedule" : 'Normal',
-             "heater_status" : gettext('ON') if get_data('burner','state') else gettext('OFF'),
-             "solar_status"  : gettext('ON') if get_data('solar_pump','state') else gettext('OFF') }
+             "heater_status" : gettext('ON') if get_data('burner','state') else gettext('OFF')}
+#             "solar_status"  : gettext('ON') if get_data('solar_pump','state') else gettext('OFF') }
     if request.method == "POST":
         return json.dumps(data)
     return(data)
