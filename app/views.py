@@ -170,8 +170,18 @@ def data_rows():
 
 @app.route('/schedule', methods=['GET', 'POST'])
 def schedule():
+    schedule = get_data('schedule','heater','settings')
+    schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
+    for day in ('work','free'):
+      for d in range(len(schedule[day])):
+         for when in ('from', 'to'):
+           schedule[day][d][when] = schedule[day][d][when].zfill(4)
+#        schedule[day][d]['from'] = int(schedule[day][d]['from'])
+#        schedule[day][d]['to'] = int(schedule[day][d]['to'])
+#        schedule[day][d]['temp'] = float(schedule[day][d]['temp'])
+    print(schedule)
     #schedule = json.loads(get_SQL_value(MQTTData('schedule')))
-    schedule = {'week' : 2, 'work' : '10', 'free' : 20, 'other' : 15}
+    #schedule = {'week' : 2, 'work' : '10', 'free' : 20, 'other' : 15}
 #    print(schedule['week'])
 
     # TODO write form for this:
@@ -219,8 +229,10 @@ def schedule():
     if week.validate_on_submit():
         change_setting('schedule',json.dumps(schedule))
 
-    return render_template("content/heater.html",
-                           active='heater',
+    print(values)
+
+    return render_template("content/schedule.html",
+                           active='schedule',
                            tabs=values,
                            save=True,
                            week_form=week,
@@ -313,7 +325,8 @@ def options():
     #refresh = data['refresh_rate']
     refresh = 0.5
     #hysteresis = data['room_hysteresis']
-    hysteresis = float(get_SQL_value(SolarControlHeaterSettingsHysteresis))
+    hysteresis = get_data('hysteresis','heater','settings')
+    #hysteresis = float(get_SQL_value(SolarControlHeaterSettingsHysteresis))
     
     if request.remote_addr != SERVER_IP:
         print(request.remote_addr)

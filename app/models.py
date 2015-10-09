@@ -1,8 +1,8 @@
 # coding: utf-8
 from app import db
 
-class SolarControlHeaterSchedule(db.Model):
-    __tablename__ = 'solarControl_heater_schedule'
+class SolarControlHeaterSettingsSchedule(db.Model):
+    __tablename__ = 'solarControl_heater_settings_schedule'
 
     id = db.Column(db.Integer, primary_key=True)
     _dtepoch = db.Column(db.String)

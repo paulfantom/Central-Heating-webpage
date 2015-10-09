@@ -257,7 +257,7 @@ def get_data(name,category,dataset='sensors'):
             if name == 'critical'  : return float(get_SQL_value(SolarControlHeaterSettingsCritical))
             if name == 'expected'  : return float(get_SQL_value(SolarControlHeaterSettingsExpected))
             if name == 'hysteresis': return float(get_SQL_value(SolarControlHeaterSettingsHysteresis))
-            if name == 'schedule'  : return get_SQL_value(SolarControlHeaterSettingsScheduleOn) #FIXME
+            if name == 'schedule'  : return get_SQL_value(SolarControlHeaterSettingsSchedule)
         if category == 'solar':
             if name == 'critical': return float(get_SQL_value(SolarControlSolarSettingsCritical))
             if name == 'temp_on' : return float(get_SQL_value(SolarControlSolarSettingsOn))
