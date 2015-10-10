@@ -1,22 +1,6 @@
-{% macro row(len) %}
-<tr>
-{%- for i in range(len) %}
-  <td class="text-center">
-    <button class="btn btn-link btn-block" id="value_{{ loop.index }}">00</button>
-  </td>
-{%- endfor %}
-  <td class="text-right">
-    <button class="btn btn-danger" id="remove_row_{{ loop.index }}" onclick="deleteRow()">
-      <span class="glyphicon glyphicon-minus"></span>
-    </button>
-  </td>
-</tr>
-{% endmacro %}
-
 {% extends "base.html" %}
 {% block content %}
 
-{# TODO unify id's #}
 <div class="hidden-xs hidden-sm">
   <br>
 </div>
@@ -59,20 +43,22 @@
               <th class="text-right"></th>
             </tr>
           {% for row in tab['table']['data'] %}
-            <tr>
+            <tr id="{{ tab['id'] }}_row_{{ loop.index }}">
 {#              {%- for i in range(tab['table']['col_names']|length) %}#}
               <td class="text-center">
-                <button class="btn btn-link btn-block">{{ row['from'][0:2] }}:{{ row['from'][2:4] }}</button>
+                <button class="btn btn-link btn-block" name='from'>
+                  <span name='hour'>{{ row['from'][0] }}</span>:<span name='minute'>{{ "{0:02d}".format(row['from'][1]) }}</span></button>
               </td>
               <td class="text-center">
-                <button class="btn btn-link btn-block">{{ row['to'][0:2] }}:{{ row['to'][2:4] }}</button>
+                <button class="btn btn-link btn-block" name='to'>
+                  <span name='hour'>{{ row['to'][0] }}</span>:<span name='minute'>{{ "{0:02d}".format(row['to'][1]) }}</span></button>
               </td>
               <td class="text-center">
-                <button class="btn btn-link btn-block">{{ row['temp'][0:4] }}</button>
+                <button class="btn btn-link btn-block" name='temp'>{{ "{0:0.1f}".format(row['temp']) }}</button>
               </td>
 {#              {%- endfor %}#}
               <td class="text-right">
-                <button class="btn btn-danger delete-row">
+                <button class="btn btn-danger" onclick="removeRow('#{{ tab['id'] }}_row_{{ loop.index }}')">
                   <span class="glyphicon glyphicon-minus"></span>
                 </button>
               </td>
@@ -85,7 +71,7 @@
             {%- endfor %}
             <td class="text-center">
               <button class="btn btn-link btn-block" id="change_default">
-                {{ tab['table']['footer'][-1] }}
+                {{ "{0:0.1f}".format(tab['table']['footer'][-1]) }}
               </button>
             </td>
             <td class="text-right">

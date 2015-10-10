@@ -79,6 +79,18 @@ class Room1TempFeel(db.Model):
     _dthhmmss = db.Column(db.Text)
 
 
+class Room1UseApparent(db.Model):
+    __tablename__ = 'room_1_use_apparent'
+
+    id = db.Column(db.Integer, primary_key=True)
+    _dtepoch = db.Column(db.String)
+    _dtiso = db.Column(db.Text)
+    topic = db.Column(db.Text)
+    _dthhmm = db.Column(db.Text)
+    payload = db.Column(db.Text)
+    _dthhmmss = db.Column(db.Text)
+
+
 class SolarControlActuators(db.Model):
     __tablename__ = 'solarControl_actuators'
 

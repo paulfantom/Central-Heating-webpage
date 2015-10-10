@@ -7,10 +7,17 @@
   <div class="row">
     <div class="col-xs-12 col-sm-6">
       <a class="btn btn-block btn-link" href='change-schedule_override_temp' data-toggle="modal" data-target="#set-temp">
+        {% if data['use_apparent'] %}
+        <p>{% trans %}Apparent temperature{% endtrans %}:</p>
+        <h1 style="font-size: 62px"><b><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;</b></h1>
+        <p>{% trans %}Room temperature{% endtrans %}:</p>
+        <h2><span id="inside_temperature">{{ data['inside_temperature'] }}</span>&deg;</h2>
+        {% else %}
         <p>{% trans %}Room temperature{% endtrans %}:</p>
         <h1 style="font-size: 62px"><b><span id="inside_temperature">{{ data['inside_temperature'] }}</span>&deg;</b></h1>
         <p>{% trans %}Apparent temperature{% endtrans %}:</p>
         <h2><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;</h2>
+        {% endif %}
         <p>{% trans %}Humidity{% endtrans %}:</p>
         <h2><span id="humidity">{{ data['humidity'] }}</span>%</h2>
       </a>
@@ -86,16 +93,22 @@ function update() {
         method: "POST",
         success: function(result){
             $('#humidity').text(result.humidity)
+            $('#pressure').text(result.pressure)
             $("#outside_temperature").text(result.outside_temperature)
             $("#apparent_temperature").text(result.apparent_temperature)
             $("#inside_temperature").text(result.inside_temperature)
+            $("#tank_temp_up").text(result.tank_temp_up)
             $("#heater_schedule").text(result.heater_schedule)
             $("#heater_status").text(result.heater_status)
-            {#$("#solar_status").text(result.solar_status)#}
             if(result.heater_status == "{%trans%}ON{%endtrans%}" ){
                 $("#heater_status").parent().addClass('active')
             } else {
                 $("#heater_status").parent().removeClass('active')
+            }
+            if(result.heater_schedule == "{%trans%}free{%endtrans%}" ){
+                $("#heater_schedule").parent().addClass('active')
+            } else {
+                $("#heater_schedule").parent().removeClass('active')
             }
         }})
 },{{refresh_rate|default(1.5)}}*60000)());

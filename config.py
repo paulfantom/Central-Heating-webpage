@@ -4,6 +4,7 @@ import os
 from flask.ext.babel import gettext
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+MQTT_ID = 'webclient'
 SERVER_IP = "127.0.0.1"
 MYSQL_USER = 'mqttwarn'
 MYSQL_PASS = ''
@@ -91,12 +92,12 @@ DESCRIPTIONS = {
             'unit'  : u'°C'
         }},
 
-   'schedule_override_temp'   : {
-       'title' : gettext('Room temperature'),
-       'desc'  : gettext('Override scheduled room temperature for 1 hour'),
-       'range' : [15,30],
-       'step'  : 0.1,
-       'unit'  : u'°C'
-   },
-   'schedule'                 : ''
+    'schedule' : {
+        'override_temp': {
+            'title' : gettext('Room temperature'),
+            'desc'  : gettext('Override scheduled room temperature for 1 hour'),
+            'range' : [15,28],
+            'step'  : 0.1,
+            'unit'  : u'°C'
+        }}
 }

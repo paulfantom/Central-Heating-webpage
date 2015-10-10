@@ -1,21 +1,20 @@
 // adding row to table
 function addRow(table){
+  t_name = table.replace("-table","");
+  count = $(table+' tbody tr').length;
   $(table+' > tbody').last().append('\
-    <tr>\
-      <td class="text-center"><button class="btn btn-link btn-block">00:00</button></td>\
-      <td class="text-center"><button class="btn btn-link btn-block">00:00</button></td>\
-      <td class="text-center"><button class="btn btn-link btn-block">17</button></td>\
-      <td class="text-right"><button class="btn btn-danger delete-row">\
+    <tr id='+t_name.replace("#","")+'_row_'+count+'>\
+      <td class="text-center"><button class="btn btn-link btn-block">0:00</button></td>\
+      <td class="text-center"><button class="btn btn-link btn-block">0:00</button></td>\
+      <td class="text-center"><button class="btn btn-link btn-block">17.0</button></td>\
+      <td class="text-right"><button class="btn btn-danger" onclick="removeRow(\''+t_name+'_row_'+count+'\')">\
       <span class="glyphicon glyphicon-minus"></span></button></td>\
-    </tr>');};
+    </tr>');
+};
 
-// removing row from table
-$(function(){
-      $('table').on('click','tr button.delete-row',function(e){
-         e.preventDefault();
-        $(this).parents('tr').remove();
-      });
-});
+function removeRow(row){
+  $(row).remove();
+};
 
 /*function update_value(field_id,rate) {
   (setTimeout( function () {

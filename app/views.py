@@ -50,11 +50,11 @@ def dashboard():
                            refresh_rate=0.5,
                            data=dashboard_data())
 
-@app.route('/change-schedule_override_temp', methods=['GET', 'POST'])
+#@app.route('/change-schedule_override_temp', methods=['GET', 'POST'])
 #@app.route('/set-room-temp', methods=['GET', 'POST'])
 def room_temp():
     # get those data from SQL(name):
-    slider = {'min'   : 15,
+    slider = {'min'   : 17,
               'max'   : 28,
               'value' : round(float(get_SQL_value(SolarControlHeaterSettingsExpected)),1),
               'step'  : 0.1,
@@ -171,18 +171,9 @@ def data_rows():
 @app.route('/schedule', methods=['GET', 'POST'])
 def schedule():
     schedule = get_data('schedule','heater','settings')
+    #schedule = schedule.replace('\\','').replace('\'','"')
+    #schedule = json.loads(schedule)
     schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
-    for day in ('work','free'):
-      for d in range(len(schedule[day])):
-         for when in ('from', 'to'):
-           schedule[day][d][when] = schedule[day][d][when].zfill(4)
-#        schedule[day][d]['from'] = int(schedule[day][d]['from'])
-#        schedule[day][d]['to'] = int(schedule[day][d]['to'])
-#        schedule[day][d]['temp'] = float(schedule[day][d]['temp'])
-    print(schedule)
-    #schedule = json.loads(get_SQL_value(MQTTData('schedule')))
-    #schedule = {'week' : 2, 'work' : '10', 'free' : 20, 'other' : 15}
-#    print(schedule['week'])
 
     # TODO write form for this:
     values = [{'title' : gettext('Work day'),
@@ -259,6 +250,7 @@ def refresh_data(subcategory,name,category='sensors'):
 def dashboard_data():
     data = { "inside_temperature"   : round(get_data('inside_temperature','room'),1),
              "apparent_temperature" : round(get_data('apparent_temperature','room'),1),
+             "use_apparent" : get_data('use_apparent','room','settings'),
              "humidity"  : int(get_data('humidity','room')),
              "pressure"  : int(get_data('pressure','room')),
              "outside_temperature"  : round(get_data('real_temp','outside'),1),
@@ -270,7 +262,7 @@ def dashboard_data():
         return json.dumps(data)
     return(data)
 
-#@app.route('/change-<name>', methods=['GET', 'POST'])
+@app.route('/change-<name>', methods=['GET', 'POST'])
 @app.route('/<category>/change-<name>', methods=['GET', 'POST'])
 #@app.route('/options/change-<name>', methods=['GET', 'POST'])
 #@app.route('/heater/change-<name>', methods=['GET', 'POST'])
@@ -278,16 +270,22 @@ def dashboard_data():
 #@app.route('/tank/change-<name>', methods=['GET', 'POST'])
 #@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
 def set_value(name,category=None):
-    subcategory = None
-    if '_' in name:
+    if name.startswith('schedule'):
+       category = 'schedule'
+       name = 'override_temp'
+    elif '_' in name:
         t = name.split('_')
         subcategory = t[0]
         for i in t[2:]:
             name = i + '_' + name
-
+   
+    print(name)
     #val = get_description(order,get_data('settings',uri))
     val = get_description(name,category)[0]
-    val['value'] = get_data(name,category,'settings')
+    if name == 'override_temp':
+        val['value'] = get_data('expected','heater','settings')
+    else:
+        val['value'] = get_data(name,category,'settings')
     
     #val = get_description(name)[0]
     if 'step' not in val:
@@ -305,8 +303,12 @@ def set_value(name,category=None):
 
     if form.validate_on_submit():
         val = request.form['slider']
-        # save to SQL
-        change_setting(val,name,category)
+        #save to SQL
+        if name == 'override_temp':
+            #FIXME insert new into schedule
+            change_setting(val,'expected','heater')
+        else:
+            change_setting(val,name,category)
         if name is None:
             return redirect('/')
         
@@ -321,7 +323,8 @@ def set_value(name,category=None):
 @app.route('/options', methods=['GET', 'POST'])
 def options():
     #data = get_SQL_last_row(Settings)
-    data = None
+    data = {}
+    data['use_apparent'] = get_data('use_apparent','room','settings')
     #refresh = data['refresh_rate']
     refresh = 0.5
     #hysteresis = data['room_hysteresis']
@@ -340,9 +343,9 @@ def options():
     options.apparent.description = data['use_apparent_temperature']
 
     if options.validate_on_submit():
-        if options.data['apparent'] is not None:
+        if options.data['use_apparent'] is not None:
             options.apparent.description = not options.apparent.description
-            change_setting('use_apparent_temperature',options.apparent.description)
+            change_setting('room',options.apparent.description)
         if options.data['reboot']:
             reboot()
         if options.data['reboot_mcu']:

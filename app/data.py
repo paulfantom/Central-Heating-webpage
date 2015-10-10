@@ -1,7 +1,7 @@
 from paho.mqtt.publish import single as mqtt_send
 from .models import *
 from app import db
-from config import DESCRIPTIONS,SERVER_IP
+from config import DESCRIPTIONS,SERVER_IP,MQTT_ID
 
 def get_query(db_model):
     try:
@@ -38,10 +38,14 @@ def change_setting(value,name,category=None):
      if category == 'circulation': category = 'circulate'
      if category is not None:
          uri = uri + category + '/'
-     uri = uri + 'settings/' + name
+     if name == 'room':
+        uri = uri + '/1/use_apparent'
+        value = int(value)
+     else:
+        uri = uri + 'settings/' + name
      print(uri)
      #name = 'solarControl/heater/critical'
-     mqtt_send(uri, str(value), hostname=SERVER_IP)
+     mqtt_send(uri, str(value), hostname=SERVER_IP, client_id=MQTT_ID)
 
 
 #def change_setting(name,value):
@@ -250,6 +254,8 @@ def get_data(name,category,dataset='sensors'):
             if name == 'solar_pump'   : return (actuators&(2**1) != 0)
             if name == 'circulation'  : return (actuators&(2**4) != 0)
     else:
+        if category == 'room':
+            if name == 'use_apparent' : return bool(int(get_SQL_value(Room1UseApparent)))
         if category == 'circulation':
             if name == 'interval': return int(get_SQL_value(SolarControlCirculationSettingsInterval))
             if name == 'time_on' : return int(get_SQL_value(SolarControlCirculationSettingsTimeOn))
