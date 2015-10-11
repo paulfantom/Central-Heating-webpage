@@ -37,6 +37,13 @@ DESCRIPTIONS = {
             'unit'  : ' s'
         }},
     'heater' : {
+        'expected': {
+            'title' : gettext('Expected room temperature'),
+            'desc'  : gettext('Override scheduled room temperature for 1 hour'),
+            'range' : [15,28],
+            'step'  : 0.1,
+            'unit'  : u'°C'
+        },
         'critical' : {
             'title' : gettext('Critical'),
             'desc'  : gettext('Set heater critical temperature'),

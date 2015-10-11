@@ -148,7 +148,7 @@ def data_rows():
         data  = refresh_data('tank','temp_up')
         title = gettext('Water')
     elif uri == 'heater':
-        order = ['critical', 'hysteresis']
+        order = ['expected', 'critical', 'hysteresis']
         title = gettext('Heater')
     
     data += get_description(order,get_full_data('settings',uri))
@@ -288,8 +288,9 @@ def refresh_data(subcategory,name,category='sensors'):
         subcategory = t[0]
         for i in t[1:]:
             name = i + '_' + name
-    #data = {'title' : gettext('Current temperature'), 'value' : get_full_data(category,subcategory)[subcategory][name], 'name' : subcategory+'_'+name }
-    data = {'title' : gettext('Current temperature'), 'value' : round(get_data(name,subcategory,category),1), 'name' : subcategory+'_'+name }
+    data = {'title' : gettext('Current temperature'), 
+            'value' : round(get_data(name,subcategory,category),1), 
+            'name' : subcategory+'_'+name }
     if request.method == "POST":
         return json.dumps(data)
     return([data])
@@ -298,7 +299,6 @@ def refresh_data(subcategory,name,category='sensors'):
 def dashboard_data():
     day = datetime.today().weekday() 
     schedule_day = bool(int(get_data('schedule','heater','settings')['week'][day]))
-    print(schedule_day)    
     data = { "inside_temperature"   : round(get_data('inside_temperature','room'),1),
              "apparent_temperature" : round(get_data('apparent_temperature','room'),1),
              "use_apparent" : get_data('use_apparent','room','settings'),
@@ -321,8 +321,8 @@ def dashboard_data():
 #@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
 def set_value(name,category=None):
     if name.startswith('schedule'):
-       category = 'schedule'
-       name = 'override_temp'
+       category = 'heater'
+       name = 'expected'
     elif '_' in name:
         t = name.split('_')
         subcategory = t[0]
@@ -332,10 +332,11 @@ def set_value(name,category=None):
     print(name)
     #val = get_description(order,get_data('settings',uri))
     val = get_description(name,category)[0]
-    if name == 'override_temp':
-        val['value'] = get_data('expected','heater','settings')
-    else:
-        val['value'] = get_data(name,category,'settings')
+    #if name == 'override_temp':
+    #    val['value'] = get_data('expected','heater','settings')
+    #else:
+    #    val['value'] = get_data(name,category,'settings')
+    val['value'] = get_data(name,category,'settings')
     
     #val = get_description(name)[0]
     if 'step' not in val:
@@ -354,9 +355,13 @@ def set_value(name,category=None):
     if form.validate_on_submit():
         val = request.form['slider']
         #save to SQL
-        if name == 'override_temp':
+        if name == 'expected' and category == 'heater':
             #FIXME insert new into schedule
-            change_setting(val,'expected','heater')
+            schedule = get_data('schedule','heater','settings')
+            time = list(datetime.today().timetuple())[0:6]
+            schedule['override'] = {'temp' : float(val), 'start' : time, 'duration': 30}
+            s = '"' + json.dumps(schedule) + '"'
+            change_setting(s,'schedule','heater')
         else:
             change_setting(val,name,category)
         if name is None:
