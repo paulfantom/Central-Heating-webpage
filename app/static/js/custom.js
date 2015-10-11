@@ -27,3 +27,14 @@ function removeRow(row){
         }})
 },rate*1000)());
 };*/
+
+function new_schedule(csrf_token){
+    //'/schedule/change'
+    /*$.ajax({
+        url: '/schedule/change',
+        dataType: "json",
+        method: "POST",
+        success: 
+    }*/
+
+};

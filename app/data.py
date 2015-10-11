@@ -2,6 +2,7 @@ from paho.mqtt.publish import single as mqtt_send
 from .models import *
 from app import db
 from config import DESCRIPTIONS,SERVER_IP,MQTT_ID
+from json import loads as json_loads
 
 def get_query(db_model):
     try:
@@ -263,7 +264,12 @@ def get_data(name,category,dataset='sensors'):
             if name == 'critical'  : return float(get_SQL_value(SolarControlHeaterSettingsCritical))
             if name == 'expected'  : return float(get_SQL_value(SolarControlHeaterSettingsExpected))
             if name == 'hysteresis': return float(get_SQL_value(SolarControlHeaterSettingsHysteresis))
-            if name == 'schedule'  : return get_SQL_value(SolarControlHeaterSettingsSchedule)
+            if name == 'schedule'  :
+                schedule = get_SQL_value(SolarControlHeaterSettingsSchedule)
+                schedule = schedule.replace('\\','').replace('\'','"')
+                if schedule[0] == '"':
+                    schedule = schedule[1:-1]
+                return json_loads(schedule)
         if category == 'solar':
             if name == 'critical': return float(get_SQL_value(SolarControlSolarSettingsCritical))
             if name == 'temp_on' : return float(get_SQL_value(SolarControlSolarSettingsOn))

@@ -5,20 +5,12 @@ from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
 from app import app, babel, db
 import json
+from datetime import datetime
 
 from .forms import *
 from config import LANGUAGES, SERVER_IP, BABEL_DEFAULT_LOCALE
 from .system import *
 from .data import *
-
-def apparent(toggle=False):
-    #get apparent temperature switch state from SQL
-    apparent = True
-
-    if toggle:
-        apparent = not apparent
-
-    return apparent
 
 @babel.localeselector
 def get_locale():
@@ -52,34 +44,33 @@ def dashboard():
 
 #@app.route('/change-schedule_override_temp', methods=['GET', 'POST'])
 #@app.route('/set-room-temp', methods=['GET', 'POST'])
-def room_temp():
-    # get those data from SQL(name):
-    slider = {'min'   : 17,
-              'max'   : 28,
-              'value' : round(float(get_SQL_value(SolarControlHeaterSettingsExpected)),1),
-              'step'  : 0.1,
-              'unit'  : u'°C'}
-    description = {'title'  : gettext('Example modal'),
-                   'info'   : gettext('move it'),
-                   's_info' : gettext('Temperature') + ':',
-                   'cancel' : gettext('Cancel'),
-                   'submit' : gettext('Save')}
-
-
-    form = RangeForm()
-    from wtforms.validators import NumberRange
-    form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
-
-    if form.validate_on_submit():
-        val = request.form['slider']
-        print(val)
-        return redirect('/')
-
-    return render_template("forms/modal-range.html",
-                           action=request.path,
-                           slider=slider,
-                           desc=description,
-                           form=form)
+#def room_temp():
+#    # get those data from SQL(name):
+#    slider = {'min'   : 17,
+#              'max'   : 28,
+#              'value' : round(float(get_SQL_value(SolarControlHeaterSettingsExpected)),1),
+#              'step'  : 0.1,
+#              'unit'  : u'°C'}
+#    description = {'title'  : gettext('Example modal'),
+#                   'info'   : gettext('move it'),
+#                   's_info' : gettext('Temperature') + ':',
+#                   'cancel' : gettext('Cancel'),
+#                   'submit' : gettext('Save')}
+#
+#    form = RangeForm()
+#    from wtforms.validators import NumberRange
+#    form.slider.validate(form,[NumberRange(slider['min'],slider['max'])])
+#
+#    if form.validate_on_submit():
+#        val = request.form['slider']
+#        print(val)
+#        return redirect('/')
+#
+#    return render_template("forms/modal-range.html",
+#                           action=request.path,
+#                           slider=slider,
+#                           desc=description,
+#                           form=form)
 
 @app.route('/status')
 def status():
@@ -131,12 +122,12 @@ def status():
                            data=data,
                            title=title)
 
-@app.route('/scheme')
-def scheme():
-    return render_template("/content/scheme.html",
-                           active='scheme',
-                           data=get_full_data('sensors','all'),
-                           title=gettext('Scheme'))
+#@app.route('/scheme')
+#def scheme():
+#    return render_template("/content/scheme.html",
+#                           active='scheme',
+#                           data=get_full_data('sensors','all'),
+#                           title=gettext('Scheme'))
 
 @app.route('/heater/')
 @app.route('/tank/')
@@ -168,12 +159,65 @@ def data_rows():
                            #refresh_rate=settings['refresh_rate'],
                            title=title)
 
-@app.route('/schedule', methods=['GET', 'POST'])
+@app.route('/schedule/change', methods=['POST'])
+def schedule_validate():
+    print("----------POST----------")
+    print(request.data)
+    print("----------POST----------")
+    return schedule()
+
+@app.route('/schedule', methods=['GET','POST'])
 def schedule():
     schedule = get_data('schedule','heater','settings')
     #schedule = schedule.replace('\\','').replace('\'','"')
     #schedule = json.loads(schedule)
-    schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
+    #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
+
+    # TODO write form for this:
+    values = [{'title' : gettext('Work day'),
+               'id'    : 'work_day',
+               'table' : {
+                   'title'     : gettext('Heating schedule'),
+                   'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
+                   'data'      : schedule['work'],
+                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
+              {'title' : gettext('Free day'),
+               'id'    : 'free_day',
+               'table' : {
+                   'title'     : gettext('Heating schedule'),
+                   'col_names' : ['OD','DO',u'T [°C]'],
+                   'data'      : schedule['free'],
+                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
+              {'title'  : gettext('Week'),
+               'id'     : 'week',
+               'states' : schedule['week']}
+               ]
+
+     #Validator (move it to client-side JS)
+#    for i in range(len(list_FROM)):
+#        if list_TO[i] < list_FROM[i]:
+#            print("Error - hour_TO is earlier than hour_FROM")
+#            break
+#        for j in range(len(list_FROM)-i):
+#            if list_FROM[j] < list_FROM[i] < list_TO[j]:
+#                print("Error - conflicting ranges")
+#            if list_FROM[j] < list_TO[i] < list_TO[j]:
+#                print("Error - conflicting ranges")
+
+    return render_template("content/schedule.html",
+                           active='schedule',
+                           tabs=values,
+                           save=True,
+                           init_tab=1,
+                           title=gettext('Heater'))
+
+
+@app.route('/schedule_old', methods=['GET','POST'])
+def schedule_old():
+    schedule = get_data('schedule','heater','settings')
+    #schedule = schedule.replace('\\','').replace('\'','"')
+    #schedule = json.loads(schedule)
+    #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
 
     # TODO write form for this:
     values = [{'title' : gettext('Work day'),
@@ -207,22 +251,26 @@ def schedule():
 #                print("Error - conflicting ranges")
     week = WeekForm()
     init_tab = 1
+    print(week.data)
     if week.validate_on_submit():
         i = 0
+        v = []
         for k in sorted(week.data):
+            v.append(week.data[k])
             if week.data[k]:
                 values[2]['states'][i] = abs(values[2]['states'][i]-1)
             i+=1
+        print(v)
         init_tab = 3
 
     # save to SQL
     #if week.validate_on_submit() or timetable.validate_on_submit():
     if week.validate_on_submit():
-        change_setting('schedule',json.dumps(schedule))
+        pass
+        #print(schedule)
+        #change_setting('schedule',json.dumps(schedule))
 
-    print(values)
-
-    return render_template("content/schedule.html",
+    return render_template("content/schedule_old.html",
                            active='schedule',
                            tabs=values,
                            save=True,
@@ -248,6 +296,9 @@ def refresh_data(subcategory,name,category='sensors'):
 
 @app.route('/dashboard/get_data', methods=['POST'])
 def dashboard_data():
+    day = datetime.today().weekday() 
+    schedule_day = bool(int(get_data('schedule','heater','settings')['week'][day]))
+    print(schedule_day)    
     data = { "inside_temperature"   : round(get_data('inside_temperature','room'),1),
              "apparent_temperature" : round(get_data('apparent_temperature','room'),1),
              "use_apparent" : get_data('use_apparent','room','settings'),
@@ -255,9 +306,8 @@ def dashboard_data():
              "pressure"  : int(get_data('pressure','room')),
              "outside_temperature"  : round(get_data('real_temp','outside'),1),
              "tank_temp_up" : round(get_data('temp_up','tank'),1),
-             "heater_schedule" : 'Normal',
+             "heater_schedule" : gettext('Free') if schedule_day else gettext('Normal'),
              "heater_status" : gettext('ON') if get_data('burner','state') else gettext('OFF')}
-#             "solar_status"  : gettext('ON') if get_data('solar_pump','state') else gettext('OFF') }
     if request.method == "POST":
         return json.dumps(data)
     return(data)
