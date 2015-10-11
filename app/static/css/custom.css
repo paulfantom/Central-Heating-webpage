@@ -108,18 +108,15 @@ input[type=range]::-webkit-slider-runnable-track {
   height: 8.4px;
   cursor: pointer;
   animate: 0.2s;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  background: #3071a9;
+  background: #337AB7;
   border-radius: 1.3px;
-  border: 0.2px solid #010101;
 }
 input[type=range]::-webkit-slider-thumb {
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  border: 1px solid #000000;
   height: 36px;
   width: 36px;
-  border-radius: 3px;
-  background: #ffffff;
+  border-radius: 4px;
+  background: #286090;
+  border-color: #204D74; 
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -14px;
@@ -132,18 +129,15 @@ input[type=range]::-moz-range-track {
   height: 8.4px;
   cursor: pointer;
   animate: 0.2s;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  background: #3071a9;
+  background: #337AB7;
   border-radius: 1.3px;
-  border: 0.2px solid #010101;
 }
 input[type=range]::-moz-range-thumb {
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  border: 1px solid #000000;
   height: 36px;
   width: 36px;
-  border-radius: 3px;
-  background: #ffffff;
+  border-radius: 4px;
+  background: #286090;
+  border-color: #204D74;
   cursor: pointer;
 }
 input[type=range]::-ms-track {
@@ -157,29 +151,24 @@ input[type=range]::-ms-track {
   color: transparent;
 }
 input[type=range]::-ms-fill-lower {
-  background: #2a6495;
-  border: 0.2px solid #010101;
-  border-radius: 2.6px;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #337AB7;
+  border-radius: 1.3px;
 }
 input[type=range]::-ms-fill-upper {
-  background: #3071a9;
-  border: 0.2px solid #010101;
-  border-radius: 2.6px;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #337AB7;
+  border-radius: 1.3px;
 }
 input[type=range]::-ms-thumb {
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  border: 1px solid #000000;
   height: 36px;
   width: 36px;
-  border-radius: 3px;
-  background: #ffffff;
+  border-radius: 4px;
+  background: #286090;
+  border-color: #204D74;
   cursor: pointer;
 }
-input[type=range]:focus::-ms-fill-lower {
-  background: #3071a9;
+/*input[type=range]:focus::-ms-fill-lower {
+  background: #337AB7;
 }
 input[type=range]:focus::-ms-fill-upper {
-  background: #367ebd;
-}
+  background: #337AB7;
+}*/
