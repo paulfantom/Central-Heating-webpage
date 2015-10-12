@@ -180,8 +180,8 @@ def schedule_validate():
     print("----------POST----------")
     return schedule()
 
-@app.route('/schedule_new', methods=['GET','POST'])
-def schedule_new():
+@app.route('/schedule', methods=['GET','POST'])
+def schedule():
     schedule = get_data('schedule','heater','settings')
     #schedule = schedule.replace('\\','').replace('\'','"')
     #schedule = json.loads(schedule)
@@ -224,54 +224,6 @@ def schedule_new():
                            save=True,
                            init_tab=1,
                            title=gettext('Heater'))
-
-
-
-@app.route('/schedule', methods=['GET','POST'])
-def schedule():
-    schedule = get_data('schedule','heater','settings')
-    #schedule = schedule.replace('\\','').replace('\'','"')
-    #schedule = json.loads(schedule)
-    #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
-
-    # TODO write form for this:
-    values = [{'title' : gettext('Work day'),
-               'id'    : 'work_day',
-               'table' : {
-                   'title'     : gettext('Heating schedule'),
-                   'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
-                   'data'      : schedule['work'],
-                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
-              {'title' : gettext('Free day'),
-               'id'    : 'free_day',
-               'table' : {
-                   'title'     : gettext('Heating schedule'),
-                   'col_names' : ['OD','DO',u'T [°C]'],
-                   'data'      : schedule['free'],
-                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
-              {'title'  : gettext('Week'),
-               'id'     : 'week',
-               'states' : schedule['week']}
-               ]
-
-     #Validator (move it to client-side JS)
-#    for i in range(len(list_FROM)):
-#        if list_TO[i] < list_FROM[i]:
-#            print("Error - hour_TO is earlier than hour_FROM")
-#            break
-#        for j in range(len(list_FROM)-i):
-#            if list_FROM[j] < list_FROM[i] < list_TO[j]:
-#                print("Error - conflicting ranges")
-#            if list_FROM[j] < list_TO[i] < list_TO[j]:
-#                print("Error - conflicting ranges")
-
-    return render_template("content/schedule.html",
-                           active='schedule',
-                           tabs=values,
-                           save=True,
-                           init_tab=1,
-                           title=gettext('Heater'))
-
 
 @app.route('/schedule_old', methods=['GET','POST'])
 def schedule_old():

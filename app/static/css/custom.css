@@ -25,6 +25,10 @@ html,body {
     line-height: inherit;
 }
 
+.row-schedule {
+    margin-bottom : 5px;
+}
+
 .btn-day {
     min-width: 130px;
     min-height: 55px;

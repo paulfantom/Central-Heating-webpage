@@ -1,18 +1,34 @@
 // adding row to table
-function addRow(table){
-  t_name = table.replace("-table","");
-  count = $(table+' tbody tr').length;
-  $(table+' > tbody').last().append('\
-    <tr id='+t_name.replace("#","")+'_row_'+count+'>\
-      <td class="text-center"><button class="btn btn-link btn-block">0:00</button></td>\
-      <td class="text-center"><button class="btn btn-link btn-block">0:00</button></td>\
-      <td class="text-center"><button class="btn btn-link btn-block">17.0</button></td>\
-      <td class="text-right"><button class="btn btn-danger" onclick="removeRow(\''+t_name+'_row_'+count+'\')">\
-      <span class="glyphicon glyphicon-minus"></span></button></td>\
-    </tr>');
-};
+function addRow(container){
+  var dt = new Date();
+  var time = dt.getHours() + ":" + ("0"+dt.getMinutes()).slice(-2);
+  var count = $(container+' > .row').length - 1 ;
+  var row_name =  container.replace("-rows","-row-") + count.toString();
+  $(container).last().append('\
+    <div class="row row-schedule clearfix" id="'+row_name.substring(1)+'">\
+      <div class="col-xs-3 col-sm-4 text-center">\
+        <input type="text" class="form-control clockpicker text-center btn btn-link" name="from" value="'+time+'">\
+      </div>\
+      <div class="col-xs-3 col-sm-4 text-center">\
+        <input type="text" class="form-control clockpicker text-center btn btn-link" name="to" value="'+time+'">\
+      </div>\
+      <div class="col-xs-2 col-sm-3 text-center">\
+        <input type="text" class="form-control text-center btn btn-link" name="temp" value="20:00">\
+      </div>\
+      <div class="col-xs-1 text-right">\
+        <button class="btn btn-danger" onclick="removeRow(\''+row_name+'\')">\
+          <span class="glyphicon glyphicon-minus"></span>\
+        </button>\
+      </div>\
+    </div> <!-- '+row_name+' -->');
+  $('.clockpicker').clockpicker({
+    placement: "bottom",
+    autoclose: "true"
+  });
+}
 
 function removeRow(row){
+  console.log(row);
   $(row).remove();
 };
 

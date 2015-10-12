@@ -16,7 +16,7 @@
   <ul class="nav nav-pills nav-justified" role="tablist">
     {%- for tab in tabs -%}
     <li {%- if loop.index == init_tab %} class="active"{% endif %}>
-      <a href="#{{ tab['id'] }}" role="tab" data-toggle="tab">{{ tab['title'] }}</a>
+      <a href="#{{ tab['id'] }}-tab" role="tab" data-toggle="tab">{{ tab['title'] }}</a>
     </li>
     {%- endfor -%}
   </ul>
@@ -26,11 +26,12 @@
 <div class="tab-content">
 {%- for tab in tabs %}
   {%- if loop.index == init_tab %}
-  <div class="tab-pane fade in active" id="{{ tab['id'] }}">
+  <div class="tab-pane fade in active" id="{{ tab['id'] }}-tab">
   {%- else %}
-  <div class="tab-pane fade" id="{{ tab['id'] }}">
+  <div class="tab-pane fade" id="{{ tab['id'] }}-tab">
   {%- endif %}
     <div class="container-fluid">
+      <div id="{{ tab['id'] }}-rows">
     {%- if tab['table'] is defined %}
       <div class="row">
         <div class="col-xs text-center">
@@ -49,7 +50,7 @@
       </div>
       {% set hours = ['from','to'] %}
       {% for row in tab['table']['data'] %}
-      <div class="row clearfix" style="margin-bottom: 4px;" id="{{ tab['id'] }}_row_{{ loop.index }}">
+      <div class="row row-schedule clearfix" id="{{ tab['id'] }}-row-{{ loop.index }}">
         {% for i in hours %}
         <div class="col-xs-3 col-sm-4 text-center">
           <input type="text" class="form-control clockpicker text-center btn btn-link" value="{{ row[i][0] }}:{{ '{0:02d}'.format(row[i][1]) }}">
@@ -59,13 +60,14 @@
           <button class="btn btn-link btn-block" name='temp'>{{ "{0:0.1f}".format(row['temp']) }}</button>
         </div>
         <div class="col-xs-1 text-right">
-          <button class="btn btn-danger" onclick="removeRow('#{{ tab['id'] }}_row_{{ loop.index }}')">
+          <button class="btn btn-danger" onclick="removeRow('#{{ tab['id'] }}-row-{{ loop.index }}')">
             <span class="glyphicon glyphicon-minus"></span>
           </button>
         </div>
-      </div> <!-- {{ tab['id'] }}_row_{{ loop.index }} -->
+      </div> <!-- #{{ tab['id'] }}_row_{{ loop.index }} -->
       {%- endfor %}
-      <div class="row clearfix">
+      </div>
+      <div class="row row-schedule clearfix">
         <div class="col-xs-6 col-sm-8 text-right">
           <h5>
           {%- for i in range(tab['table']['col_names']|length-1) %}
@@ -79,7 +81,7 @@
           </button>
         </div>
         <div class="col-xs-1 text-right">
-          <button class="btn btn-success" onclick="addRow('#{{ tab['id'] }}-table')">
+          <button class="btn btn-success" onclick="addRow('#{{ tab['id'] }}-rows')">
             <span class="glyphicon glyphicon-plus"></span>
           </button>
         </div>
