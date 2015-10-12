@@ -162,9 +162,70 @@ def data_rows():
 @app.route('/schedule/change', methods=['POST'])
 def schedule_validate():
     print("----------POST----------")
-    print(request.data)
+    data = request.get_json(force=True)
+    #TODO exceptions
+    try:
+        data['other'] = round(float(data['other']),2)
+        for i in range(7):
+            data['week'][i] = int(bool(int(data['week'][i])))
+        for day in ('work','free'):
+            for i in range(len(data[day])):
+                for when in ('from', 'to'):
+                    for j in (0,1):
+                        data[day][i][when][j] = int(data[day][i][when][j])
+                data[day][i]['temp'] = round(float(data[day][i]['temp']),2)
+    except Exception:
+        data = "SOMETHING WENT WRONG"
+    print(data)
     print("----------POST----------")
     return schedule()
+
+@app.route('/schedule_new', methods=['GET','POST'])
+def schedule_new():
+    schedule = get_data('schedule','heater','settings')
+    #schedule = schedule.replace('\\','').replace('\'','"')
+    #schedule = json.loads(schedule)
+    #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
+
+    # TODO write form for this:
+    values = [{'title' : gettext('Work day'),
+               'id'    : 'work_day',
+               'table' : {
+                   'title'     : gettext('Heating schedule'),
+                   'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
+                   'data'      : schedule['work'],
+                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
+              {'title' : gettext('Free day'),
+               'id'    : 'free_day',
+               'table' : {
+                   'title'     : gettext('Heating schedule'),
+                   'col_names' : ['OD','DO',u'T [°C]'],
+                   'data'      : schedule['free'],
+                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
+              {'title'  : gettext('Week'),
+               'id'     : 'week',
+               'states' : schedule['week']}
+               ]
+
+     #Validator (move it to client-side JS)
+#    for i in range(len(list_FROM)):
+#        if list_TO[i] < list_FROM[i]:
+#            print("Error - hour_TO is earlier than hour_FROM")
+#            break
+#        for j in range(len(list_FROM)-i):
+#            if list_FROM[j] < list_FROM[i] < list_TO[j]:
+#                print("Error - conflicting ranges")
+#            if list_FROM[j] < list_TO[i] < list_TO[j]:
+#                print("Error - conflicting ranges")
+
+    return render_template("content/schedule_new.html",
+                           active='schedule',
+                           tabs=values,
+                           save=True,
+                           init_tab=1,
+                           title=gettext('Heater'))
+
+
 
 @app.route('/schedule', methods=['GET','POST'])
 def schedule():
