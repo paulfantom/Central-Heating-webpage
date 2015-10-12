@@ -13,7 +13,7 @@ function addRow(container){
         <input type="text" class="form-control clockpicker text-center btn btn-link" name="to" value="'+time+'">\
       </div>\
       <div class="col-xs-2 col-sm-3 text-center">\
-        <input type="text" class="form-control text-center btn btn-link" name="temp" value="20:00">\
+        <input type="text" class="form-control text-center btn btn-link" name="temp" value="20.0">\
       </div>\
       <div class="col-xs-1 text-right">\
         <button class="btn btn-danger" onclick="removeRow(\''+row_name+'\')">\
@@ -48,33 +48,26 @@ function new_schedule(csrf_token){
     //'/schedule/change'
     var data = {};
     var json = [];
-    $('#work_day-table tbody tr').each(function(){
+    $('#work_day-rows > .row-schedule').each(function(){
         var obj = {};
-        var $td=$(this).find('td');
-        var val = [parseInt($td.eq(0).find('span').eq(0).text()),
-                   parseInt($td.eq(0).find('span').eq(1).text())];
-        obj['from'] = val;
-        val = [parseInt($td.eq(1).find('span').eq(0).text()),
-               parseInt($td.eq(1).find('span').eq(1).text())];
-        obj['to'] = val;
-        val = parseFloat( $td.eq(2).text() ).toFixed(2);
-        obj['temp'] = val;
+        var $fields=$(":input", this);
+        obj['from'] = $fields.eq(0).val();
+        obj['to'] = $fields.eq(1).val();
+        obj['temp'] = $fields.eq(2).val();
         json.push(obj);
     });
     data['work'] = json;
     json = [];
-    $('#free_day-table tbody tr').each(function(){
+    $('#free_day-rows > .row-schedule').each(function(){
         var obj = {};
-        var $td=$(this).find('td');
-        obj['from'] = [$td.eq(0).find('span').eq(0).text(),
-                       $td.eq(0).find('span').eq(1).text()];
-        obj['to']   = [$td.eq(1).find('span').eq(0).text(),
-                       $td.eq(1).find('span').eq(1).text()];
-        obj['temp'] =  parseFloat($td.eq(2).text());
+        var $fields=$(":input", this);
+        obj['from'] = $fields.eq(0).val();
+        obj['to'] = $fields.eq(1).val();
+        obj['temp'] = $fields.eq(2).val();
         json.push(obj);
-    }); 
+    });
     data['free'] = json;
-    data['other'] = parseFloat($('#work_day-table tfoot tr').find('td').eq(2).text());
+    data['other'] = $('#change_default').val();
     data['week'] = [0,0,0,0,0,1,1];
     console.log(JSON.stringify(data));
     $.post('/schedule/change',JSON.stringify(data),"json");
