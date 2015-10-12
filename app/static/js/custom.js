@@ -12,10 +12,10 @@ function addRow(container){
       <div class="col-xs-3 col-sm-4 text-center">\
         <input type="text" class="form-control clockpicker text-center btn btn-link" name="to" value="'+time+'">\
       </div>\
-      <div class="col-xs-2 col-sm-3 text-center">\
+      <div class="col-xs-3 col-sm-3 text-center">\
         <input type="text" class="form-control text-center btn btn-link" name="temp" value="20.0">\
       </div>\
-      <div class="col-xs-1 text-right">\
+      <div class="col-xs-3 col-sm-1 text-center">\
         <button class="btn btn-danger" onclick="removeRow(\''+row_name+'\')">\
           <span class="glyphicon glyphicon-minus"></span>\
         </button>\

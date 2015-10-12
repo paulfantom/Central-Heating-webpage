@@ -29,6 +29,11 @@ html,body {
     margin-bottom : 5px;
 }
 
+.row-schedule > .text-center {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
 .btn-day {
     min-width: 130px;
     min-height: 55px;
