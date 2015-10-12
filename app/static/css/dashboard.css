@@ -71,7 +71,7 @@ p,h1,h2,h3,h4,h5,h6 {
   display:none;
   float:  left;
   height: auto;
-  min-width:45px;
+  min-width:50px;
 }
 @media (min-width: 100px) {
   .sidebar {
