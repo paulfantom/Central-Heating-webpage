@@ -28,13 +28,13 @@ p,h1,h2,h3,h4,h5,h6 {
   -ms-transform:rotate(90deg);*/
 }
 
-.modal {
-  background-color: #111;
+.modal, .popover{
+  background-color: #111 !important;
 }
-.modal-header {
-  background-color: #333;
+.modal-header, .popover-title {
+  background-color: #333 !important;
 }
-.modal-body {
+.modal-body, .popover-content, .clockpicker-popover .popover-content{
   background-color: #555;
 }
 .modal-footer {
@@ -43,6 +43,24 @@ p,h1,h2,h3,h4,h5,h6 {
 .well {
   background-color: #222;
 }
+
+.clockpicker-tick {
+  color: #fff;
+}
+
+.clockpicker-canvas-fg {
+  fill: #c9302c;
+}
+
+.clockpicker-canvas-bg { 
+  fill: #d9534f;
+}
+
+.clockpicker-plate {
+  background-color: #444;
+  border-color: #111;
+}
+
 .close {
   color: #fff !important;
   opacity: .7 !important;

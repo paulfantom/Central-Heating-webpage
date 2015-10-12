@@ -110,6 +110,7 @@ h1, .h1, h2, .h2, h3, .h3 {
     width: auto !important;
 }
 
+
 input[type=range] {
   -webkit-appearance: none;
   margin: 0 0;
