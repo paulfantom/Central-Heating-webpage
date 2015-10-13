@@ -38,6 +38,16 @@ html,body {
     color: #FFF;
 }
 
+.clockpicker:hover, .clockpicker:focus,
+.changetemp:hover, .changetemp:focus {
+    color: #FFF;
+}
+
+input[readonly].clockpicker,
+input[readonly].changetemp {
+    background-color: transparent;
+}
+
 .btn-day {
     min-width: 130px;
     min-height: 55px;

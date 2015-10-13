@@ -54,11 +54,11 @@
         <div class="row row-schedule clearfix" id="{{ tab['id'] }}-row-{{ loop.index }}">
           {% for i in hours %}
           <div class="col-xs-3 col-sm-4 text-center">
-            <input type="text" class="form-control clockpicker text-center btn btn-link" value="{{ row[i][0] }}:{{ '{0:02d}'.format(row[i][1]) }}">
+            <input type="text" readonly="true" class="form-control clockpicker text-center btn btn-link" value="{{ row[i][0] }}:{{ '{0:02d}'.format(row[i][1]) }}">
           </div>
           {% endfor %}
           <div class="col-xs-3 col-sm-3 text-center">
-            <input type="text" class="form-control text-center btn btn-link changetemp" value="{{ '{0:0.1f}'.format(row['temp']) }}">
+            <input type="text" readonly="true" class="form-control text-center btn btn-link changetemp" value="{{ '{0:0.1f}'.format(row['temp']) }}">
           </div>
           <div class="col-xs-3 col-sm-1 text-center">
             <button class="btn btn-danger" onclick="removeRow('#{{ tab['id'] }}-row-{{ loop.index }}')">
@@ -77,7 +77,7 @@
             </h5>
           </div> 
           <div class="col-xs-3 col-sm-3 text-center">
-            <input type="text" class="form-control text-center btn btn-link changetemp" id="change_default" value="{{ '{0:0.1f}'.format(tab['table']['footer'][-1]) }}">
+            <input type="text" readonly="true" class="form-control text-center btn btn-link changetemp" id="change_default" value="{{ '{0:0.1f}'.format(tab['table']['footer'][-1]) }}">
           </div>
           <div class="col-xs-3 col-sm-1 text-center">
             <button class="btn btn-success" onclick="addRow('#{{ tab['id'] }}-rows')">

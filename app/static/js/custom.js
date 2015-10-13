@@ -7,13 +7,13 @@ function addRow(container){
   $(container).last().append('\
     <div class="row row-schedule clearfix" id="'+row_name.substring(1)+'">\
       <div class="col-xs-3 col-sm-4 text-center">\
-        <input type="text" class="form-control clockpicker text-center btn btn-link" name="from" value="'+time+'">\
+        <input type="text" readonly="true" class="form-control clockpicker text-center btn btn-link" name="from" value="'+time+'">\
       </div>\
       <div class="col-xs-3 col-sm-4 text-center">\
-        <input type="text" class="form-control clockpicker text-center btn btn-link" name="to" value="'+time+'">\
+        <input type="text" readonly="true" class="form-control clockpicker text-center btn btn-link" name="to" value="'+time+'">\
       </div>\
       <div class="col-xs-3 col-sm-3 text-center">\
-        <input type="text" class="form-control text-center btn btn-link changetemp" name="temp" value="20.0">\
+        <input type="text" readonly="true" class="form-control text-center btn btn-link changetemp" name="temp" value="20.0">\
       </div>\
       <div class="col-xs-3 col-sm-1 text-center">\
         <button class="btn btn-danger" onclick="removeRow(\''+row_name+'\')">\
