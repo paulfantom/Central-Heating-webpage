@@ -187,8 +187,15 @@ def schedule_validate():
 
 @app.route('/schedule', methods=['GET','POST'])
 def schedule():
+    save = True
     schedule = get_data('schedule','heater','settings')
-    
+    if schedule is None:
+        save=False
+        schedule = {"week":[0,0,0,0,0,0,0],
+                    "work":[{"to":[0,0],"from":[0,0],"temp":0}],
+                    "free":[{"to":[0,0],"from":[0,0],"temp":0}],
+                    "other":0}
+ 
     try:
         diff = datetime.now() - datetime(*schedule['override']['start'])
         duration =  schedule['override']['duration']
@@ -233,7 +240,7 @@ def schedule():
     return render_template("content/schedule_new.html",
                            active='schedule',
                            tabs=values,
-                           save=True,
+                           save=save,
                            init_tab=1,
                            override=override_temp,
                            title=gettext('Heater'))
@@ -323,8 +330,11 @@ def refresh_data(subcategory,name,category='sensors'):
 
 @app.route('/dashboard/get_data', methods=['POST'])
 def dashboard_data():
-    day = datetime.today().weekday() 
-    schedule_day = bool(int(get_data('schedule','heater','settings')['week'][day]))
+    day = datetime.today().weekday()
+    try: 
+        schedule_day = bool(int(get_data('schedule','heater','settings')['week'][day]))
+    except TypeError:
+        schedule_day = False
     data = { "inside_temperature"   : round(get_data('inside_temperature','room'),1),
              "apparent_temperature" : round(get_data('apparent_temperature','room'),1),
              "use_apparent" : get_data('use_apparent','room','settings'),

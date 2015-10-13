@@ -1,3 +1,4 @@
+from pymysql.err import OperationalError as OperationalError
 from paho.mqtt.publish import single as mqtt_send
 from .models import *
 from app import db
@@ -22,7 +23,10 @@ def get_SQL_last_row(db_model=IndexMqtt):
     return d
 
 def get_SQL_value(db_model=IndexMqtt,column='payload'):
-    q = get_query(db_model)
+    try:
+        q = get_query(db_model)
+    except Exception:
+        return 0
     try:
         return getattr(q,column)
     except AttributeError:
@@ -144,7 +148,7 @@ def get_full_data(dataset='sensors',which='all'):
                    'critical' : float(get_SQL_value(SolarControlHeaterSettingsCritical)),
                    'expected' : float(get_SQL_value(SolarControlHeaterSettingsExpected)),
                    'hysteresis' : float(get_SQL_value(SolarControlHeaterSettingsHysteresis)),
-                   'schedule' : get_SQL_value(SolarControlHeaterSettingsScheduleOn)} #FIXME
+                   'schedule' : str(get_SQL_value(SolarControlHeaterSettingsSchedule))} #TODO parse to JSON
         if(which == 'solar' or which == 'all'):
             values['solar'] = {
                    'critical' : float(get_SQL_value(SolarControlSolarSettingsCritical)),
@@ -266,6 +270,8 @@ def get_data(name,category,dataset='sensors'):
             if name == 'hysteresis': return float(get_SQL_value(SolarControlHeaterSettingsHysteresis))
             if name == 'schedule'  :
                 schedule = get_SQL_value(SolarControlHeaterSettingsSchedule)
+                if schedule == 0:
+                    return None
                 schedule = schedule.replace('\\','').replace('\'','"')
                 if schedule[0] == '"':
                     schedule = schedule[1:-1]
