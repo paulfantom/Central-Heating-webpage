@@ -34,6 +34,10 @@ html,body {
     padding-right: 4px;
 }
 
+.row-schedule > div > input {
+    color: #FFF;
+}
+
 .btn-day {
     min-width: 130px;
     min-height: 55px;
