@@ -161,13 +161,12 @@ def data_rows():
 
 @app.route('/schedule/change', methods=['POST'])
 def schedule_validate():
-    print("----------POST----------")
+    print("----SCHEDULE RECEIVED---")
     data = request.get_json(force=True)
     #TODO exceptions
     print(data)
-    #try:
-    if True:
-        #data['other'] = round(float(data['other']),2)
+    try:
+        data['other'] = round(float(data['other']),2)
         for i in range(7):
             data['week'][i] = int(bool(int(data['week'][i])))
         for day in ('work','free'):
@@ -178,18 +177,18 @@ def schedule_validate():
                     for j in (0,1):
                         data[day][i][when].append(int(time[j]))
                 data[day][i]['temp'] = round(float(data[day][i]['temp']),2)
-    #except Exception:
-    #    data = "SOMETHING WENT WRONG"
-    print(data)
-    print("----------POST----------")
-    return schedule()
+    except (KeyError,IndexError):
+        pass
+        #return schedule(error=True)
+    
+    change_setting('"'+json.dumps(data,separators=(',', ':'))+'"','schedule','heater')
+    print("--NEW SCHEDULE POSTED--")
+    #return schedule()
 
 @app.route('/schedule', methods=['GET','POST'])
 def schedule():
     schedule = get_data('schedule','heater','settings')
-    #schedule = schedule.replace('\\','').replace('\'','"')
-    #schedule = json.loads(schedule)
-    #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
+    
     try:
         diff = datetime.now() - datetime(*schedule['override']['start'])
         duration =  schedule['override']['duration']

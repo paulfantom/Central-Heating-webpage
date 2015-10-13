@@ -22,6 +22,14 @@ LANGUAGES = {
 
 BABEL_DEFAULT_LOCALE = 'pl'
 
+WEEKDAYS = [gettext('Monday'),
+            gettext('Tuesday'),
+            gettext('Wednesday'),
+            gettext('Thursday'),
+            gettext('Friday'),
+            gettext('Saturday'),
+            gettext('Sunday')]
+
 DESCRIPTIONS = {
     'circulation': {
         'interval' : {

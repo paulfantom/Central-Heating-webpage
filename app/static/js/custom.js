@@ -70,7 +70,7 @@ function sendSchedule(csrf_token){
     data['free'] = json;
     data['other'] = $('#change_default').val();
     var states = [];
-    $('#week-rows > .well > button').each(function(){
+    $('#week-tab').find('.well > button').each(function(){
         if ($(this).hasClass('active') || $(this).hasClass('focus active')) {
             states.push(1);
         } else {

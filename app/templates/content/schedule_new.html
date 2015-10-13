@@ -67,6 +67,7 @@
           </div>
         </div> <!-- .row-schedule -->
         {%- endfor %}
+      </div> <!-- {{ tab['id'] }}-rows --> 
         <div class="row row-schedule clearfix">
           <div class="col-xs-6 col-sm-8 text-center">
             <h5>
@@ -91,7 +92,6 @@
           </div>
         </div>
         {%- endif %}
-      </div>
       {% else %}
       <div class="hidden-xs hidden-sm"><br></div>
       <div class="well text-center col-lg-8 col-lg-offset-2" style="padding:10px !important">
