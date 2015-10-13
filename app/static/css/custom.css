@@ -40,6 +40,7 @@ html,body {
     margin: 5px;
 }
 
+.btn-day.focus.active,
 .btn-day.active {
     background-color: #C9302C;
     border-color: #AC2925;

@@ -28,7 +28,7 @@ function addRow(container){
   });
   $('.changetemp').plusminus({
     placement: "bottom",
-    align: "top",
+    align: "right",
     step: 0.25,
     precision: 2,
     min: 15,
@@ -37,24 +37,16 @@ function addRow(container){
 }
 
 function removeRow(row){
-  console.log(row);
   $(row).remove();
 };
 
-/*function update_value(field_id,rate) {
-  (setTimeout( function () {
-  $.ajax({
-        url: '/dashboard/get_data',
-        dataType: "json",
-        method: "POST",
-        success: function(result){
-            $(document.getElementById(field_id)).text(result[field_id])
-        }})
-},rate*1000)());
-};*/
+function toggleButton(button){
+  
+};
 
-function new_schedule(csrf_token){
+function sendSchedule(csrf_token){
     //'/schedule/change'
+    setTimeout(function(){
     var data = {};
     var json = [];
     $('#work_day-rows > .row-schedule').each(function(){
@@ -77,7 +69,16 @@ function new_schedule(csrf_token){
     });
     data['free'] = json;
     data['other'] = $('#change_default').val();
-    data['week'] = [0,0,0,0,0,1,1];
+    var states = [];
+    $('#week-rows > .well > button').each(function(){
+        if ($(this).hasClass('active') || $(this).hasClass('focus active')) {
+            states.push(1);
+        } else {
+            states.push(0);
+        }
+    });
+    console.log(states);
+    data['week'] = states;
     console.log(JSON.stringify(data));
     $.post('/schedule/change',JSON.stringify(data),"json");
     /*$.ajax({
@@ -86,4 +87,5 @@ function new_schedule(csrf_token){
         url: '/schedule/change',
         data : data,
         dataType : "json"}); */
+    },100);
 };

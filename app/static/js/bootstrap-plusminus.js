@@ -27,7 +27,7 @@
                '<span class="plusminus-span-value text-primary"></span>',
                ' &deg;C',
              '</div>',
-             '<div class="plusminus-content">',
+             '<div class="container-fluid plusminus-content">',
                '<div class="btn-group">',
                '</div>',
              '</div>',

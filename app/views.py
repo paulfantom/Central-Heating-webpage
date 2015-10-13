@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 
 from .forms import *
-from config import LANGUAGES, SERVER_IP, BABEL_DEFAULT_LOCALE
+from config import LANGUAGES, SERVER_IP, BABEL_DEFAULT_LOCALE, WEEKDAYS
 from .system import *
 from .data import *
 
@@ -164,18 +164,22 @@ def schedule_validate():
     print("----------POST----------")
     data = request.get_json(force=True)
     #TODO exceptions
-    try:
-        data['other'] = round(float(data['other']),2)
+    print(data)
+    #try:
+    if True:
+        #data['other'] = round(float(data['other']),2)
         for i in range(7):
             data['week'][i] = int(bool(int(data['week'][i])))
         for day in ('work','free'):
             for i in range(len(data[day])):
                 for when in ('from', 'to'):
+                    time = data[day][i][when].split(":")
+                    data[day][i][when] = []
                     for j in (0,1):
-                        data[day][i][when][j] = int(data[day][i][when][j])
+                        data[day][i][when].append(int(time[j]))
                 data[day][i]['temp'] = round(float(data[day][i]['temp']),2)
-    except Exception:
-        data = "SOMETHING WENT WRONG"
+    #except Exception:
+    #    data = "SOMETHING WENT WRONG"
     print(data)
     print("----------POST----------")
     return schedule()
@@ -186,8 +190,16 @@ def schedule():
     #schedule = schedule.replace('\\','').replace('\'','"')
     #schedule = json.loads(schedule)
     #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
-
-    # TODO write form for this:
+    try:
+        diff = datetime.now() - datetime(*schedule['override']['start'])
+        duration =  schedule['override']['duration']
+        if diff.seconds < duration * 60:
+            override_temp = schedule['override']['temp']
+        else:
+            override_temp = None
+    except KeyError:
+        override_temp = None
+ 
     values = [{'title' : gettext('Work day'),
                'id'    : 'work_day',
                'table' : {
@@ -204,7 +216,8 @@ def schedule():
                    'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
               {'title'  : gettext('Week'),
                'id'     : 'week',
-               'states' : schedule['week']}
+               'states' : schedule['week'],
+               'days'   : WEEKDAYS}
                ]
 
      #Validator (move it to client-side JS)
@@ -223,6 +236,7 @@ def schedule():
                            tabs=values,
                            save=True,
                            init_tab=1,
+                           override=override_temp,
                            title=gettext('Heater'))
 
 @app.route('/schedule_old', methods=['GET','POST'])
