@@ -95,14 +95,22 @@
     {% else %}
     <div class="hidden-xs hidden-sm"><br></div>
     <div class="well text-center col-lg-8 col-lg-offset-2" style="padding:10px !important">
-      
+      {#<form method="post">
+      {{ week_form.hidden_tag() }}
+      {% for field in week_form if field.name != "csrf_token" %}
+        {% if tabs[2]['states'][loop.index-1] == 1%}
+        {% set a = ' active' %}{%else%}{% set a=''%}
+        {% endif %}
+          {{ field(class="btn btn-info btn-day"+a) }}
+      {% endfor %}
+      </form>#}
       <button class="btn btn-info btn-day" id="day_1" onclick="new_schedule('asdfga')">Poniedziałek</button>
       <button class="btn btn-info btn-day" id="day_2" onclick="new_schedule('asdfga')">Wtorek</button>
       <button class="btn btn-info btn-day" id="day_3" onclick="new_schedule('asdfga')">Środa</button>
       <button class="btn btn-info btn-day" id="day_4" onclick="new_schedule('asdfga')">Czwartek</button>
       <button class="btn btn-info btn-day" id="day_5" onclick="new_schedule('asdfga')">Piątek</button>
       <button class="btn btn-info btn-day" id="day_6" onclick="new_schedule('asdfga')">Sobota</button>
-      <button class="btn btn-info btn-day" id="day_7" onclick="new_schedule('asdfga')">Niedziela</button> 
+      <button class="btn btn-info btn-day" id="day_7" onclick="new_schedule('asdfga')">Niedziela</button>
     </div>
     {% endif %}
   </div>
@@ -113,21 +121,17 @@
 <script type="text/javascript">
 $('.clockpicker').clockpicker({
   placement: "bottom",
+  align: "top",
   autoclose: "true"
 });
-/*$('.changetemp').popover({
-  html: true,
-  container: 'tab-content',
-  placement: 'auto bottom',
-  title: "{%trans%}Temperature{%endtrans%}",
-  content: "OK"
-});*/
-$('.changetemp').spinner({
-  min: 15,
-  max: 28,
+$('.changetemp').plusminus({
+  placement: "bottom",
+  align: "top",
   step: 0.25,
-  strict: true,
-  precision: 2
+  precision: 2,
+  min: 15,
+  max: 28
 });
+
 </script>
 {% endblock %}

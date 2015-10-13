@@ -13,7 +13,7 @@ function addRow(container){
         <input type="text" class="form-control clockpicker text-center btn btn-link" name="to" value="'+time+'">\
       </div>\
       <div class="col-xs-3 col-sm-3 text-center">\
-        <input type="text" class="form-control text-center btn btn-link" name="temp" value="20.0">\
+        <input type="text" class="form-control text-center btn btn-link changetemp" name="temp" value="20.0">\
       </div>\
       <div class="col-xs-3 col-sm-1 text-center">\
         <button class="btn btn-danger" onclick="removeRow(\''+row_name+'\')">\
@@ -23,7 +23,16 @@ function addRow(container){
     </div> <!-- '+row_name+' -->');
   $('.clockpicker').clockpicker({
     placement: "bottom",
+    align: "top",
     autoclose: "true"
+  });
+  $('.changetemp').plusminus({
+    placement: "bottom",
+    align: "top",
+    step: 0.25,
+    precision: 2,
+    min: 15,
+    max: 28
   });
 }
 
