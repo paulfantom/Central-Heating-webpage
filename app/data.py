@@ -2,7 +2,7 @@ from pymysql.err import OperationalError as OperationalError
 from paho.mqtt.publish import single as mqtt_send
 from .models import *
 from app import db
-from config import DESCRIPTIONS,SERVER_IP,MQTT_ID
+from config import SERVER_IP,MQTT_ID,DESCRIPTIONS
 from json import loads as json_loads
 
 def get_query(db_model):

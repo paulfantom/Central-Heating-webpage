@@ -395,7 +395,7 @@ def set_value(name,category=None):
             #FIXME insert new into schedule
             schedule = get_data('schedule','heater','settings')
             time = list(datetime.today().timetuple())[0:6]
-            schedule['override'] = {'temp' : float(val), 'start' : time, 'duration': 30}
+            schedule['override'] = {'temp' : float(val), 'start' : time, 'duration': 60}
             s = '"' + json.dumps(schedule) + '"'
             change_setting(s,'schedule','heater')
         else:

@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-14 09:46+0200\n"
-"PO-Revision-Date: 2015-10-14 11:45+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Project-Id-Version: Solar Control\n"
+"Report-Msgid-Bugs-To: paulfantom@gmail.com\n"
+"POT-Creation-Date: 2015-10-14 12:35+0200\n"
+"PO-Revision-Date: 2015-10-14 12:36+0200\n"
+"Last-Translator: Paweł Krupa paulfantom@gmail.com\n"
 "Language-Team: pl <LL@li.org>\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
 "(n%100<10 || n%100>=20) ? 1 : 2)\n"
@@ -18,130 +18,134 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.0\n"
 
-#: config.py:25 app/forms.py:22
+#: app/data.py:70 app/views.py:224 app/views.py:271
+msgid "Week"
+msgstr "Tydzień"
+
+#: app/descriptions.py:5 app/forms.py:22
 msgid "Monday"
 msgstr "Poniedziałek"
 
-#: config.py:26 app/forms.py:23
+#: app/descriptions.py:6 app/forms.py:23
 msgid "Tuesday"
 msgstr "Wtorek"
 
-#: config.py:27 app/forms.py:24
+#: app/descriptions.py:7 app/forms.py:24
 msgid "Wednesday"
 msgstr "Środa"
 
-#: config.py:28 app/forms.py:25
+#: app/descriptions.py:8 app/forms.py:25
 msgid "Thursday"
 msgstr "Czwartek"
 
-#: config.py:29 app/forms.py:26
+#: app/descriptions.py:9 app/forms.py:26
 msgid "Friday"
 msgstr "Piątek"
 
-#: config.py:30 app/forms.py:27
+#: app/descriptions.py:10 app/forms.py:27
 msgid "Saturday"
 msgstr "Sobota"
 
-#: config.py:31 app/forms.py:28
+#: app/descriptions.py:11 app/forms.py:28
 msgid "Sunday"
 msgstr "Niedziela"
 
-#: config.py:36
+#: app/descriptions.py:16
 msgid "Interval"
 msgstr "Przerwa"
 
-#: config.py:37
+#: app/descriptions.py:17
 msgid "Set pump interval in water consumption mode"
 msgstr "Ustaw czas bezczynności pompy cyrkulacyjnej"
 
-#: config.py:42
+#: app/descriptions.py:22
 msgid "ON time"
 msgstr "Czas pracy"
 
-#: config.py:43
+#: app/descriptions.py:23
 msgid "Set pump mixing time in water consumption mode"
 msgstr "Ustaw czas pracy pompy cyrkulacyjnej"
 
-#: config.py:49
+#: app/descriptions.py:29
 msgid "Expected room temperature"
 msgstr "Oczekiwana temperatura pokojowa"
 
-#: config.py:50 config.py:113
+#: app/descriptions.py:30
 msgid "Override scheduled room temperature for 60 minutes"
 msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
 
-#: config.py:56
+#: app/descriptions.py:36
 msgid "Critical"
 msgstr "Krytyczna"
 
-#: config.py:57
+#: app/descriptions.py:37
 msgid "Set heater critical temperature"
 msgstr "Ustaw krytyczną temperaturę pieca"
 
-#: config.py:63
+#: app/descriptions.py:43
 msgid "Hysteresis"
 msgstr "Histereza"
 
-#: config.py:64
+#: app/descriptions.py:44
 msgid "Set heater hysteresis for central heating"
 msgstr "Ustaw histerezę centralnego ogrzewania"
 
-#: config.py:71
+#: app/descriptions.py:51
 msgid "Temperature difference (OFF)"
 msgstr "Różnica temperatur (Wył.)"
 
-#: config.py:72
+#: app/descriptions.py:52
 msgid "Temperature difference needed to stop solar system"
 msgstr "Różnica temperatur potrzebna do wyłączenia układu solarnego"
 
-#: config.py:78
+#: app/descriptions.py:58
 msgid "Temperature difference (ON)"
 msgstr "Różnica temperatur (Zał.)"
 
-#: config.py:79
+#: app/descriptions.py:59
 msgid "Temperature difference needed to start solar system"
 msgstr "Różnica temperatur potrzebna do załączenia układu solarnego"
 
-#: config.py:85
+#: app/descriptions.py:65
 msgid "Critical temperature"
 msgstr "Krytyczna temperatura"
 
-#: config.py:86
+#: app/descriptions.py:66
 msgid "Temperature of solar system turning off"
 msgstr "Temperatura wyłączenia ukłądu solarnego"
 
-#: config.py:92 app/views.py:145 app/templates/sidebar.html:37
+#: app/descriptions.py:72 app/views.py:146 app/templates/sidebar.html:37
 msgid "Solar"
 msgstr "Kolektor"
 
-#: config.py:93
+#: app/descriptions.py:73
 msgid "DHW maximum temperature with solar system usage"
 msgstr "Maksymalna temperatura CWU podczas pracy kolektora"
 
-#: config.py:98
+#: app/descriptions.py:78
 msgid "Heater (max)"
 msgstr "Piec (max)"
 
-#: config.py:99
+#: app/descriptions.py:79
 msgid "DHW maximum temperature with heater system usage"
 msgstr "Maksymalna temperatura CWU podczas pracy pieca"
 
-#: config.py:104
+#: app/descriptions.py:84
 msgid "Heater (min)"
 msgstr "Piec (min)"
 
-#: config.py:105
+#: app/descriptions.py:85
 msgid "DHW minimum temperature with heater system usage"
 msgstr "Minimalna temperatura CWU podczas pracy pieca"
 
-#: config.py:112 app/templates/content/dashboard.html:13
+#: app/descriptions.py:92 app/templates/content/dashboard.html:13
 #: app/templates/content/dashboard.html:16
 msgid "Room temperature"
-msgstr "Temperatura pomieszczenia"
+msgstr "Temperatura pokojowa"
 
-#: app/data.py:69 app/views.py:223 app/views.py:270
-msgid "Week"
-msgstr "Tydzień"
+#: app/descriptions.py:93
+msgid "Override scheduled room temperature for 1 hour"
+msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
 
 #: app/forms.py:12 app/templates/content/schedule.html:90
 #: app/templates/content/schedule_new.html:91
@@ -151,7 +155,7 @@ msgstr "Zapisz"
 
 #: app/forms.py:15
 msgid "Use apparent temperature"
-msgstr "Uży temperatury odczuwalnej"
+msgstr "Użyj temperatury odczuwalnej"
 
 #: app/forms.py:18
 msgid "Reboot HMI"
@@ -161,154 +165,154 @@ msgstr "Zrestartuj HMI"
 msgid "Reboot MCU"
 msgstr "Zrestartuj MCU"
 
-#: app/views.py:79 app/templates/content/dashboard.html:34
+#: app/views.py:80 app/templates/content/dashboard.html:34
 msgid "Outside temperature"
-msgstr "Temperatura na zewnętrz"
+msgstr "Temperatura na zewnątrz"
 
-#: app/views.py:81
+#: app/views.py:82
 msgid "Inside temperature"
 msgstr "Temperatura wewnątrz"
 
-#: app/views.py:83 app/templates/content/dashboard.html:11
+#: app/views.py:84 app/templates/content/dashboard.html:11
 #: app/templates/content/dashboard.html:18
 msgid "Apparent temperature"
 msgstr "Temperatura odczuwalna"
 
-#: app/views.py:85 app/templates/content/dashboard.html:21
+#: app/views.py:86 app/templates/content/dashboard.html:21
 msgid "Humidity"
 msgstr "Wilgotność"
 
-#: app/views.py:87 app/templates/content/dashboard.html:28
+#: app/views.py:88 app/templates/content/dashboard.html:28
 msgid "Pressure"
 msgstr "Ciśnienie"
 
-#: app/views.py:89
+#: app/views.py:90
 msgid "Solar temperature"
 msgstr "Temperatura kolektora"
 
-#: app/views.py:91
+#: app/views.py:92
 msgid "Solar input"
 msgstr "Wejście z kolektora"
 
-#: app/views.py:93
+#: app/views.py:94
 msgid "Solar output"
 msgstr "Wyjście na kolektor"
 
-#: app/views.py:95
+#: app/views.py:96
 msgid "Solar difference"
 msgstr "Różnica (kolektor)"
 
-#: app/views.py:97 app/templates/sidebar.html:32
+#: app/views.py:98 app/templates/sidebar.html:32
 msgid "Tank"
 msgstr "Zbiornik"
 
-#: app/views.py:99
+#: app/views.py:100
 msgid "Heater input"
 msgstr "Wejście z pieca"
 
-#: app/views.py:101
+#: app/views.py:102
 msgid "Heater output"
 msgstr "Wyjście na piec"
 
-#: app/views.py:103
+#: app/views.py:104
 msgid "Heater diffrence"
 msgstr "Różnica (piec)"
 
-#: app/views.py:106
+#: app/views.py:107
 msgid "Burner"
 msgstr "Palnik"
 
-#: app/views.py:107 app/views.py:111 app/views.py:113 app/views.py:117
-#: app/views.py:346 app/templates/content/dashboard.html:38
+#: app/views.py:108 app/views.py:112 app/views.py:114 app/views.py:118
+#: app/views.py:347 app/templates/content/dashboard.html:38
 #: app/templates/content/dashboard.html:103
 msgid "ON"
 msgstr "Zał."
 
-#: app/views.py:107 app/views.py:111 app/views.py:113 app/views.py:346
+#: app/views.py:108 app/views.py:112 app/views.py:114 app/views.py:347
 msgid "OFF"
 msgstr "Wył."
 
-#: app/views.py:108
+#: app/views.py:109
 msgid "DHW/CH actuator"
 msgstr "Siłownik CWU/CO"
 
-#: app/views.py:109
+#: app/views.py:110
 msgid "DHW"
 msgstr "CWU"
 
-#: app/views.py:109
+#: app/views.py:110
 msgid "CH"
 msgstr "CO"
 
-#: app/views.py:110
+#: app/views.py:111
 msgid "Solar pump"
 msgstr "Pompa kolektora"
 
-#: app/views.py:112
+#: app/views.py:113
 msgid "Solar system actuator"
 msgstr "Siłownik układu solarnego"
 
-#: app/views.py:114
+#: app/views.py:115
 msgid "Solar circuit flow"
 msgstr "Przepływ w układzie solarnym"
 
-#: app/views.py:116 app/views.py:141 app/templates/sidebar.html:42
+#: app/views.py:117 app/views.py:142 app/templates/sidebar.html:42
 msgid "Circulation"
 msgstr "Cyrkulacja"
 
-#: app/views.py:119
+#: app/views.py:120
 msgid "Sensors data"
 msgstr "Dane z czujników"
 
-#: app/views.py:149
+#: app/views.py:150
 msgid "Water"
 msgstr "Woda"
 
-#: app/views.py:152 app/views.py:246 app/views.py:312
+#: app/views.py:153 app/views.py:247 app/views.py:313
 #: app/templates/sidebar.html:27 app/templates/content/dashboard.html:39
 msgid "Heater"
 msgstr "Piec"
 
-#: app/views.py:209 app/views.py:256
+#: app/views.py:210 app/views.py:257
 msgid "Work day"
 msgstr "Dzień roboczy"
 
-#: app/views.py:212 app/views.py:219 app/views.py:259 app/views.py:266
+#: app/views.py:213 app/views.py:220 app/views.py:260 app/views.py:267
 msgid "Heating schedule"
 msgstr "Harmonogram ogrzewania"
 
-#: app/views.py:213 app/views.py:260
+#: app/views.py:214 app/views.py:261
 msgid "FROM"
 msgstr "OD"
 
-#: app/views.py:213 app/views.py:260
+#: app/views.py:214 app/views.py:261
 msgid "TO"
 msgstr "DO"
 
-#: app/views.py:215 app/views.py:222 app/views.py:262 app/views.py:269
+#: app/views.py:216 app/views.py:223 app/views.py:263 app/views.py:270
 msgid "Other"
 msgstr "Pozostałe"
 
-#: app/views.py:215 app/views.py:222 app/views.py:262 app/views.py:269
+#: app/views.py:216 app/views.py:223 app/views.py:263 app/views.py:270
 msgid "Hours"
 msgstr "Godziny"
 
-#: app/views.py:216 app/views.py:263
+#: app/views.py:217 app/views.py:264
 msgid "Free day"
 msgstr "Dzień wolny"
 
-#: app/views.py:324
+#: app/views.py:325
 msgid "Current temperature"
 msgstr "Aktualna temperatura"
 
-#: app/views.py:345 app/templates/content/dashboard.html:42
+#: app/views.py:346 app/templates/content/dashboard.html:42
 #: app/templates/content/dashboard.html:108
 msgid "Free"
 msgstr "Wolny"
 
-#: app/views.py:345
+#: app/views.py:346
 msgid "Normal"
-msgstr "Roboczy"
+msgstr "Zwykły"
 
 #: app/templates/base.html:2
 msgid "en"
