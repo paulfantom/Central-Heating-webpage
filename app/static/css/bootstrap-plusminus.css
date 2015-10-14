@@ -1,0 +1,50 @@
+/*!
+ * ClockPicker v0.0.7 for Bootstrap (http://weareoutman.github.io/plusminus/)
+ * Copyright 2014 Wang Shenwei.
+ * Licensed under MIT (https://github.com/weareoutman/plusminus/blob/gh-pages/LICENSE)
+ */
+
+.plusminus-align-left.popover > .arrow {
+	left: 25px;
+}
+.plusminus-align-top.popover > .arrow {
+	top: 17px;
+}
+.plusminus-align-right.popover > .arrow {
+	left: auto;
+	right: 25px;
+}
+.plusminus-align-bottom.popover > .arrow {
+	top: auto;
+	bottom: 6px;
+}
+.plusminus-popover .popover-title {
+	background-color: #fff;
+	color: #999;
+	font-size: 24px;
+	font-weight: bold;
+	line-height: 30px;
+	text-align: center;
+}
+.plusminus-popover .popover-content {
+	background-color: #f8f8f8;
+	padding: 12px;
+}
+.popover-content:last-child {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.plusminus-content .btn-group {
+        text-align: center; 
+	border-width: 1px 0 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	padding: 4px;
+}
+/*.plusminus-content .btn:hover {
+	background-image: none;
+	background-color: #ebebeb;
+}
+.plusminus-content .btn:focus {
+	outline: none!important;
+}*/

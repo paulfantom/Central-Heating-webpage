@@ -1,5 +1,12 @@
 # coding: utf-8
 from app import db
+#from flask.ext.login import UserMixin
+
+
+#class User(UserMixin):
+#    user_database = ("Administrator": 
+
+
 
 class SolarControlHeaterSettingsSchedule(db.Model):
     __tablename__ = 'solarControl_heater_settings_schedule'
