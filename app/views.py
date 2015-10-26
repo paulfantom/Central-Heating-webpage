@@ -40,6 +40,12 @@ def login():
                            title=gettext('Log in'),
                            form=form)
 
+@login_required
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect('/')
+
 @app.route('/')
 @app.route('/index')
 @app.route('/dashboard')
