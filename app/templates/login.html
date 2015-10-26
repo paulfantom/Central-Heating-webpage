@@ -2,33 +2,55 @@
 {% extends "base.html" %}
 
 {% block content %}
-<script type="text/javascript">
-function set_openid(openid, pr)
-{
-    u = openid.search('<username>')
-    if (u != -1) {
-        // openid requires username
-        user = prompt('Enter your ' + pr + ' username:')
-        openid = openid.substr(0, u) + user
-    }
-    form = document.forms['login'];
-    form.elements['openid'].value = openid
-}
-</script>
-<h1>Sign In</h1>
-<form action="" method="post" name="login">
+<div class="col-xs-12 col-md-10 col-md-offset-1">
+  <div class="row">
+    <h3 class="text-center"><b>{{ title }}</b></h3>
+  </div>
+  <form action="" method="POST" name="login">
     {{ form.hidden_tag() }}
-    <p>
-        Please enter your OpenID, or select one of the providers below:<br>
-        {{ form.openid(size=80) }}
-        {% for error in form.openid.errors %}
-          <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
-        |{% for pr in providers %}
-          <a href="javascript:set_openid('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a> |
-        {% endfor %}
-    </p>
-    <p>{{ form.remember_me }} Remember Me</p>
-    <p><input type="submit" value="Sign In"></p>
-</form>
+    {{ render_field_with_errors(form.username) }}
+    {{ render_field_with_errors(form.password) }}
+    {{ render_field_with_errors(form.remember) }}
+    {{ render_field(form.next) }}
+    {{ render_field(form.submit) }}
+  </form>
+</div>
+
 {% endblock %}
+
+{% macro render_field_with_errors(field) %}
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 text-right">
+      {{ field.label }}
+    </div>
+    <div class="col-xs-12 col-sm-6 text-left">
+      {{ field(**kwargs)|safe }}
+    </div>
+  {%- if field.errors %}
+    <div class="alert alert-danger" rol="alert">
+      {% for error in field.errors %}
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        {{ error }}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_field(field) %}
+  <div class="row text-center">
+    {{ field(class_="btn btn-primary",**kwargs)|safe }}
+  </div>
+{% endmacro %}
+
+{#{%- with messages = get_flashed_messages(with_categories=true) -%}
+  {% if messages %}
+    <ul class="flashes">
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{%- endwith %}
+#}

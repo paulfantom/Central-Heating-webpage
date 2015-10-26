@@ -1,4 +1,5 @@
 from flask import Flask
+from flask.ext.login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.babel import Babel
 from os import path
@@ -9,6 +10,8 @@ app.config.from_object('config')
 babel = Babel(app)
 db = SQLAlchemy(app)
 #db.Model.metadata.reflect(db.engine)
+lm = LoginManager()
+lm.init_app(app)
 #from app import views
 from app import views, models
 

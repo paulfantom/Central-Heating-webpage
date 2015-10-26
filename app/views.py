@@ -1,9 +1,10 @@
 # -*- coding: UTF-8 -*-
 
 from flask import render_template, redirect, request, g
+from flask.ext.login import login_user, logout_user, current_user, login_required
 from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
-from app import app, babel, db
+from app import app, babel, db, lm
 import json
 from datetime import datetime
 
@@ -22,17 +23,22 @@ def before_request():
     #g.user = current_user
     g.user = None 
 
-#@app.route('/login', methods=['GET', 'POST'])
-#def login():
-#    form = LoginForm()
+@lm.user_loader
+def load_user():
+    return User()
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    g.user = current_user
+    form = LoginForm()
 #    if form.validate_on_submit():
 #        flash('Login requested for OpenID="%s", remember_me=%s' %
 #              (form.openid.data, str(form.remember_me.data)))
 #        return redirect('/dashboard')
-#    return render_template('login.html', 
-#                           title='Sign In',
-#                           form=form,
-#                           providers=app.config['OPENID_PROVIDERS'])
+    return render_template('login.html',
+                           active='login',
+                           title=gettext('Log in'),
+                           form=form)
 
 @app.route('/')
 @app.route('/index')
@@ -134,6 +140,7 @@ def status():
 #                           data=get_full_data('sensors','all'),
 #                           title=gettext('Scheme'))
 
+@login_required
 @app.route('/heater/')
 @app.route('/tank/')
 @app.route('/solar/')
@@ -164,6 +171,7 @@ def data_rows():
                            #refresh_rate=settings['refresh_rate'],
                            title=title)
 
+@login_required
 @app.route('/schedule/change', methods=['POST'])
 def schedule_validate():
     print("----SCHEDULE RECEIVED---")
@@ -190,6 +198,7 @@ def schedule_validate():
     print("--NEW SCHEDULE POSTED--")
     #return schedule()
 
+@login_required
 @app.route('/schedule', methods=['GET','POST'])
 def schedule():
     save = True
@@ -250,71 +259,71 @@ def schedule():
                            override=override_temp,
                            title=gettext('Heater'))
 
-@app.route('/schedule_old', methods=['GET','POST'])
-def schedule_old():
-    schedule = get_data('schedule','heater','settings')
-    #schedule = schedule.replace('\\','').replace('\'','"')
-    #schedule = json.loads(schedule)
-    #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
-
-    # TODO write form for this:
-    values = [{'title' : gettext('Work day'),
-               'id'    : 'work_day',
-               'table' : {
-                   'title'     : gettext('Heating schedule'),
-                   'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
-                   'data'      : schedule['work'],
-                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
-              {'title' : gettext('Free day'),
-               'id'    : 'free_day',
-               'table' : {
-                   'title'     : gettext('Heating schedule'),
-                   'col_names' : ['OD','DO',u'T [°C]'],
-                   'data'      : schedule['free'],
-                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
-              {'title'  : gettext('Week'),
-               'id'     : 'week',
-               'states' : schedule['week']}
-               ]
-
-     #Validator (move it to client-side JS)
-#    for i in range(len(list_FROM)):
-#        if list_TO[i] < list_FROM[i]:
-#            print("Error - hour_TO is earlier than hour_FROM")
-#            break
-#        for j in range(len(list_FROM)-i):
-#            if list_FROM[j] < list_FROM[i] < list_TO[j]:
-#                print("Error - conflicting ranges")
-#            if list_FROM[j] < list_TO[i] < list_TO[j]:
-#                print("Error - conflicting ranges")
-    week = WeekForm()
-    init_tab = 1
-    print(week.data)
-    if week.validate_on_submit():
-        i = 0
-        v = []
-        for k in sorted(week.data):
-            v.append(week.data[k])
-            if week.data[k]:
-                values[2]['states'][i] = abs(values[2]['states'][i]-1)
-            i+=1
-        print(v)
-        init_tab = 3
-
-    # save to SQL
-    #if week.validate_on_submit() or timetable.validate_on_submit():
-    if week.validate_on_submit():
-        pass
-        #print(schedule)
-        #change_setting('schedule',json.dumps(schedule))
-
-    return render_template("content/schedule_old.html",
-                           active='schedule',
-                           tabs=values,
-                           save=True,
-                           week_form=week,
-                           init_tab=init_tab,
-                           title=gettext('Heater'))
+#@app.route('/schedule_old', methods=['GET','POST'])
+#def schedule_old():
+#    schedule = get_data('schedule','heater','settings')
+#    #schedule = schedule.replace('\\','').replace('\'','"')
+#    #schedule = json.loads(schedule)
+#    #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
+#
+#    # TODO write form for this:
+#    values = [{'title' : gettext('Work day'),
+#               'id'    : 'work_day',
+#               'table' : {
+#                   'title'     : gettext('Heating schedule'),
+#                   'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
+#                   'data'      : schedule['work'],
+#                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
+#              {'title' : gettext('Free day'),
+#               'id'    : 'free_day',
+#               'table' : {
+#                   'title'     : gettext('Heating schedule'),
+#                   'col_names' : ['OD','DO',u'T [°C]'],
+#                   'data'      : schedule['free'],
+#                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
+#              {'title'  : gettext('Week'),
+#               'id'     : 'week',
+#               'states' : schedule['week']}
+#               ]
+#
+#     #Validator (move it to client-side JS)
+##    for i in range(len(list_FROM)):
+##        if list_TO[i] < list_FROM[i]:
+##            print("Error - hour_TO is earlier than hour_FROM")
+##            break
+##        for j in range(len(list_FROM)-i):
+##            if list_FROM[j] < list_FROM[i] < list_TO[j]:
+##                print("Error - conflicting ranges")
+##            if list_FROM[j] < list_TO[i] < list_TO[j]:
+##                print("Error - conflicting ranges")
+#    week = WeekForm()
+#    init_tab = 1
+#    print(week.data)
+#    if week.validate_on_submit():
+#        i = 0
+#        v = []
+#        for k in sorted(week.data):
+#            v.append(week.data[k])
+#            if week.data[k]:
+#                values[2]['states'][i] = abs(values[2]['states'][i]-1)
+#            i+=1
+#        print(v)
+#        init_tab = 3
+#
+#    # save to SQL
+#    #if week.validate_on_submit() or timetable.validate_on_submit():
+#    if week.validate_on_submit():
+#        pass
+#        #print(schedule)
+#        #change_setting('schedule',json.dumps(schedule))
+#
+#    return render_template("content/schedule_old.html",
+#                           active='schedule',
+#                           tabs=values,
+#                           save=True,
+#                           week_form=week,
+#                           init_tab=init_tab,
+#                           title=gettext('Heater'))
 
 #@app.route('/get_value_<category>_<subcategory>_<name>', methods=['POST'])
 @app.route('/get/<category>/<subcategory>_<name>', methods=['POST'])
@@ -353,6 +362,7 @@ def dashboard_data():
         return json.dumps(data)
     return(data)
 
+@login_required
 @app.route('/change-<name>', methods=['GET', 'POST'])
 @app.route('/<category>/change-<name>', methods=['GET', 'POST'])
 #@app.route('/options/change-<name>', methods=['GET', 'POST'])
@@ -416,6 +426,7 @@ def set_value(name,category=None):
                            desc=description,
                            form=form)
 
+@login_required
 @app.route('/options', methods=['GET', 'POST'])
 def options():
     #data = get_SQL_last_row(Settings)

@@ -3,8 +3,25 @@ from app import db
 #from flask.ext.login import UserMixin
 
 
-#class User(UserMixin):
-#    user_database = ("Administrator": 
+class User(object):
+     login = 'admin'
+     #TODO hash function
+     password = 'password'
+     
+     @property
+     def is_authenticated(self):
+         return True
+    
+     @property
+     def is_active(self):
+         return True
+
+     @property
+     def is_anonymous(self):
+         return False
+
+     def __repr__(self):
+        return '<User %r>' % (self.login)
 
 
 
