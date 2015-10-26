@@ -58,8 +58,11 @@
         </div>
       </div> -->
       <div class="text-center">
-        <h4 style="margin-top: 1em;"><span id="time">24:00</span><br>
-        <br><span id="date">23/08/2015</span></h4>
+        <h4 style="margin-top: 1em;">
+          <span id="time">24:00</span><br><br>
+          <span id="dayofweek">Monday</span><br><br>
+          <span id="date">23/08/2015</span>
+        </h4>
       </div>
     </div>
   </div>
@@ -76,13 +79,16 @@ window.onload = function(){update()},
                   }, 500);
 
 function update() {
-  var myDate = new Date(),
-  time = myDate.getHours() + ':' + 
+  var myDate = new Date();
+  var time = myDate.getHours() + ':' + 
         ('0' + myDate.getMinutes()).slice(-2);
-  date = myDate.getDate() + '/' + 
+  var date = myDate.getDate() + '/' + 
         ('0' + (myDate.getMonth() + 1)).slice(-2) + '/' + 
         myDate.getFullYear();
+  var dow = myDate.toLocaleString("{% trans %}en{% endtrans %}", {weekday: 'long'});
+  {#var dow = myDate.toLocaleString(window.navigator.language, {weekday: 'long'});#}
   $('#time').text(time);
+  $('#dayofweek').text(dow);
   $('#date').text(date);
 };
 
