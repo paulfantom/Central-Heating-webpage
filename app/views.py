@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, g
 from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
 from app import app, babel, db
@@ -16,6 +16,11 @@ from .data import *
 def get_locale():
     #return request.accept_languages.best_match(LANGUAGES.keys())
     return request.accept_languages.best_match(['pl'])
+
+@app.before_request
+def before_request():
+    #g.user = current_user
+    g.user = None 
 
 #@app.route('/login', methods=['GET', 'POST'])
 #def login():
