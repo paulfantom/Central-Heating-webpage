@@ -110,6 +110,11 @@ h1, .h1, h2, .h2, h3, .h3 {
   font-size: 16px;
 }
 
+label {
+  font-size: 16px;
+  color: #428BCA;
+}
+
 .input-group-btn > .btn {
   height: 3em;
 }
