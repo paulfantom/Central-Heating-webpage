@@ -6,6 +6,17 @@
   <div class="row">
     <h3 class="text-center"><b>{{ title }}</b></h3>
   </div>
+  {%- with messages = get_flashed_messages() %}
+  {%- if messages %}
+  <div class="row">
+    <div class="alert alert-danger flashes text-center">
+      {%- for message in messages %}
+      <b>{{ message }}</b>
+      {%- endfor %}
+    </div>
+  </div>
+  {%- endif %}
+  {%- endwith %}  
   <form action="" method="POST" name="login">
     {{ form.hidden_tag() }}
     {{ render_field_with_errors(form.username) }}
@@ -27,7 +38,7 @@
       {{ field(**kwargs)|safe }}
     </div>
   {%- if field.errors %}
-    <div class="alert alert-danger" rol="alert">
+    <div class="alert alert-danger" role="alert">
       {% for error in field.errors %}
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">Error:</span>
