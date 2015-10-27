@@ -6,6 +6,7 @@ from wtforms import ValidationError
 
 from wtforms.validators import Optional
 
+from flask import request
 from flask.ext.babel import lazy_gettext as _
 from app import babel
 
@@ -20,10 +21,31 @@ class NextFormMixin():
 
 
 class LoginForm(Form,NextFormMixin):
-    username = TextField(_('username'))
-    password = PasswordField(_('password'))
-    remember = BooleanField(_('remember_me'))
-    submit = SubmitField(_('login'))
+    username = TextField(_('Username'))
+    password = PasswordField(_('Password'))
+    remember = BooleanField(_('Remember me'))
+    submit = SubmitField(_('Login'))
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        if not self.next.data:
+            self.next.data = request.args.get('next', '')
+        self.remember.default = False
+#        self.remember.default = config_value('DEFAULT_REMEMBER_ME')
+
+    def validate(self):
+        if not super(LoginForm, self).validate():
+            return False
+
+        if self.username.data.strip() == '':
+            self.username.errors.append(_("No username provided"))
+            return False
+
+        if self.password.data.strip() == '':
+            self.password.errors.append(_("No password provided"))
+            return False
+        
+        return True
 
 class RangeForm(Form):
     slider = DecimalRangeField('Slider')
