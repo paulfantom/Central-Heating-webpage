@@ -24,8 +24,8 @@ def catch_server_errors(e):
 
 #@app.before_request
 #def before_request():
-#    g.user = current_user
-#    #g.user = None 
+#    print(request.remote_addr)
+#    pass
 
 @lm.user_loader
 def load_user(id):
@@ -41,27 +41,24 @@ def next_is_valid(next):
 def login():
     #if g.user is not None and g.user.is_authenticated:
     #    return redirect('/')
+    if current_user.is_authenticated:
+        return redirect('/')
     form = LoginForm()
     if form.validate_on_submit():
-        print("Validating")
         user = User.get(request.form['username'])
-        print(user)
-        print(request.form['username'])
-        print(request.form['password'])
-    #    session['remember_me'] = form.remember.data
-    #    print(remember_me)
+        if request.form['remember'] == 'y':
+            remember_me = True
+        else:
+            remember_me = False
         if (user and user.password == request.form['password']):
-            login_user(user)
-            #login_user(user, remember = remember_me)
+            #login_user(user)
+            login_user(user, remember = remember_me)
             next = request.args.get('next')
             if not next_is_valid(next):
                 return abort(400)
             return redirect(next or '/')
         else:
             flash(gettext('Username or password incorrect'))
-#        flash('Login requested for OpenID="%s", remember_me=%s' %
-#              (form.openid.data, str(form.remember_me.data)))
-#        return redirect('/dashboard')
     return render_template('login.html',
                            active='login',
                            title=gettext('Log in'),
@@ -71,14 +68,12 @@ def login():
 @login_required
 def logout():
     logout_user()
-#    g.user = None
     return redirect('/')
 
 @app.route('/')
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
-    print(current_user)
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
@@ -462,30 +457,27 @@ def set_value(name,category=None):
 @app.route('/options', methods=['GET', 'POST'])
 @login_required
 def options():
-    #data = get_SQL_last_row(Settings)
     data = {}
     data['use_apparent'] = get_data('use_apparent','room','settings')
     #refresh = data['refresh_rate']
     refresh = 0.5
-    #hysteresis = data['room_hysteresis']
     hysteresis = get_data('hysteresis','heater','settings')
-    #hysteresis = float(get_SQL_value(SolarControlHeaterSettingsHysteresis))
     
     if request.remote_addr != SERVER_IP:
-        print(request.remote_addr)
-        print(SERVER_IP)
         return render_template("content/options.html",
                                active='options',
                                options = None,
                                refresh_rate = refresh,
                                hysteresis_value = hysteresis)
     options = OptionsForm()
-    options.apparent.description = data['use_apparent_temperature']
+    options.apparent.description = data['use_apparent']
 
     if options.validate_on_submit():
         if options.data['use_apparent'] is not None:
             options.apparent.description = not options.apparent.description
             change_setting('room',options.apparent.description)
+#        if options.data['reset_pass']:
+#            pass_reset()
         if options.data['reboot']:
             reboot()
         if options.data['reboot_mcu']:
