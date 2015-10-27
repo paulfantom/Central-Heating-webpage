@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from flask import render_template, redirect, request, session, g
+from flask import render_template, redirect, request, flash, abort
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
@@ -18,18 +18,24 @@ def get_locale():
     #return request.accept_languages.best_match(LANGUAGES.keys())
     return request.accept_languages.best_match(['pl'])
 
-@app.before_request
-def before_request():
-    g.user = current_user
-    #g.user = None 
+@app.errorhandler(400)
+def catch_server_errors(e):
+    return redirect('/')
+
+#@app.before_request
+#def before_request():
+#    g.user = current_user
+#    #g.user = None 
 
 @lm.user_loader
 def load_user(id):
     return User.get(id)
 
 def next_is_valid(next):
-    #FIXME
-    return False
+    if next is None: return True
+    next=next.strip('/')
+    valid = ['solar','tank','circulation','heater','schedule','options','dashboard','index']
+    return next in valid
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -52,7 +58,7 @@ def login():
                 return abort(400)
             return redirect(next or '/')
         else:
-            flash('Username or password incorrect')
+            flash(gettext('Username or password incorrect'))
 #        flash('Login requested for OpenID="%s", remember_me=%s' %
 #              (form.openid.data, str(form.remember_me.data)))
 #        return redirect('/dashboard')
@@ -65,19 +71,17 @@ def login():
 @login_required
 def logout():
     logout_user()
-    g.user = None
+#    g.user = None
     return redirect('/')
 
 @app.route('/')
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
-    #user='admin'
     print(current_user)
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
-                           user=g.user,
 #                           refresh_rate=get_SQL_value(MQTTData('refresh_rate')),
                            refresh_rate=0.5,
                            data=dashboard_data())
