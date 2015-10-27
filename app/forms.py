@@ -47,9 +47,15 @@ class LoginForm(Form,NextFormMixin):
         
         return True
 
+
 class RangeForm(Form):
     slider = DecimalRangeField('Slider')
     submit = SubmitField(_('Save'))
+
+
+class PasswordForm(Form):
+   password = PasswordField(_('Password'))
+   submit = SubmitField(_('Change'))
 
 
 class OptionsForm(Form):
@@ -58,6 +64,7 @@ class OptionsForm(Form):
                              description=True)
     reboot     = SubmitField(_('Reboot HMI'),validators=[Optional()])
     reboot_mcu = SubmitField(_('Reboot MCU'),validators=[Optional()])
+    reset_pass = SubmitField(_('Reset password'),validators=[Optional()])
 
 
 class WeekForm(Form):

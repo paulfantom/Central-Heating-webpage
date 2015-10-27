@@ -39,8 +39,6 @@ def next_is_valid(next):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    #if g.user is not None and g.user.is_authenticated:
-    #    return redirect('/')
     if current_user.is_authenticated:
         return redirect('/')
     form = LoginForm()
@@ -77,7 +75,6 @@ def dashboard():
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
-#                           refresh_rate=get_SQL_value(MQTTData('refresh_rate')),
                            refresh_rate=0.5,
                            data=dashboard_data())
 
@@ -287,73 +284,6 @@ def schedule():
                            override=override_temp,
                            title=gettext('Heater'))
 
-#@app.route('/schedule_old', methods=['GET','POST'])
-#def schedule_old():
-#    schedule = get_data('schedule','heater','settings')
-#    #schedule = schedule.replace('\\','').replace('\'','"')
-#    #schedule = json.loads(schedule)
-#    #schedule = json.loads(schedule.replace('\\','').replace('\'','"'))
-#
-#    # TODO write form for this:
-#    values = [{'title' : gettext('Work day'),
-#               'id'    : 'work_day',
-#               'table' : {
-#                   'title'     : gettext('Heating schedule'),
-#                   'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
-#                   'data'      : schedule['work'],
-#                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
-#              {'title' : gettext('Free day'),
-#               'id'    : 'free_day',
-#               'table' : {
-#                   'title'     : gettext('Heating schedule'),
-#                   'col_names' : ['OD','DO',u'T [°C]'],
-#                   'data'      : schedule['free'],
-#                   'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
-#              {'title'  : gettext('Week'),
-#               'id'     : 'week',
-#               'states' : schedule['week']}
-#               ]
-#
-#     #Validator (move it to client-side JS)
-##    for i in range(len(list_FROM)):
-##        if list_TO[i] < list_FROM[i]:
-##            print("Error - hour_TO is earlier than hour_FROM")
-##            break
-##        for j in range(len(list_FROM)-i):
-##            if list_FROM[j] < list_FROM[i] < list_TO[j]:
-##                print("Error - conflicting ranges")
-##            if list_FROM[j] < list_TO[i] < list_TO[j]:
-##                print("Error - conflicting ranges")
-#    week = WeekForm()
-#    init_tab = 1
-#    print(week.data)
-#    if week.validate_on_submit():
-#        i = 0
-#        v = []
-#        for k in sorted(week.data):
-#            v.append(week.data[k])
-#            if week.data[k]:
-#                values[2]['states'][i] = abs(values[2]['states'][i]-1)
-#            i+=1
-#        print(v)
-#        init_tab = 3
-#
-#    # save to SQL
-#    #if week.validate_on_submit() or timetable.validate_on_submit():
-#    if week.validate_on_submit():
-#        pass
-#        #print(schedule)
-#        #change_setting('schedule',json.dumps(schedule))
-#
-#    return render_template("content/schedule_old.html",
-#                           active='schedule',
-#                           tabs=values,
-#                           save=True,
-#                           week_form=week,
-#                           init_tab=init_tab,
-#                           title=gettext('Heater'))
-
-#@app.route('/get_value_<category>_<subcategory>_<name>', methods=['POST'])
 @app.route('/get/<category>/<subcategory>_<name>', methods=['POST'])
 @app.route('/get/<category>/<subcategory>/<name>', methods=['POST'])
 def refresh_data(subcategory,name,category='sensors'):
@@ -392,11 +322,6 @@ def dashboard_data():
 
 @app.route('/change-<name>', methods=['GET', 'POST'])
 @app.route('/<category>/change-<name>', methods=['GET', 'POST'])
-#@app.route('/options/change-<name>', methods=['GET', 'POST'])
-#@app.route('/heater/change-<name>', methods=['GET', 'POST'])
-#@app.route('/solar/change-<name>', methods=['GET', 'POST'])
-#@app.route('/tank/change-<name>', methods=['GET', 'POST'])
-#@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
 @login_required
 def set_value(name,category=None):
     if name.startswith('schedule'):
@@ -409,15 +334,9 @@ def set_value(name,category=None):
             name = i + '_' + name
    
     print(name)
-    #val = get_description(order,get_data('settings',uri))
     val = get_description(name,category)[0]
-    #if name == 'override_temp':
-    #    val['value'] = get_data('expected','heater','settings')
-    #else:
-    #    val['value'] = get_data(name,category,'settings')
     val['value'] = get_data(name,category,'settings')
     
-    #val = get_description(name)[0]
     if 'step' not in val:
         val['step'] = 1
     slider = {'min'   : val['range'][0],
@@ -459,16 +378,14 @@ def set_value(name,category=None):
 def options():
     data = {}
     data['use_apparent'] = get_data('use_apparent','room','settings')
-    #refresh = data['refresh_rate']
-    refresh = 0.5
-    hysteresis = get_data('hysteresis','heater','settings')
-    
+     
     if request.remote_addr != SERVER_IP:
+        password = PasswordForm()
         return render_template("content/options.html",
                                active='options',
                                options = None,
-                               refresh_rate = refresh,
-                               hysteresis_value = hysteresis)
+                               password = password,
+                               refresh_rate = 0.5)
     options = OptionsForm()
     options.apparent.description = data['use_apparent']
 
@@ -486,5 +403,5 @@ def options():
     return render_template("content/options.html",
                            active='options',
                            options = options,
-                           refresh_rate = refresh,
-                           hysteresis_value = hysteresis)
+                           password = None,
+                           refresh_rate = 0.5)

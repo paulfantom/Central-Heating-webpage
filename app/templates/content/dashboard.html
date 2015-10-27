@@ -1,27 +1,27 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block content -%}
 <!--  <div class="hidden-xs hidden-sm">
     <br>
   </div> -->
   <div class="row">
     <div class="col-xs-12 col-sm-6">
-      {%- if current_user.is_authenticated %}
+      {%- if current_user.is_authenticated -%}
       <a class="btn btn-block btn-link" href='change-schedule_override_temp' data-toggle="modal" data-target="#set-temp">
-      {%- else %}
+      {%- else -%}
       <a class="btn btn-block btn-link" href='/login'>
-      {%- endif %}
-        {% if data['use_apparent'] %}
+      {%- endif -%}
+        {% if data['use_apparent'] -%}
         <p>{% trans %}Apparent temperature{% endtrans %}:</p>
         <h1 style="font-size: 62px"><b><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;</b></h1>
         <p>{% trans %}Room temperature{% endtrans %}:</p>
         <h2><span id="inside_temperature">{{ data['inside_temperature'] }}</span>&deg;</h2>
-        {% else %}
+        {%- else -%}
         <p>{% trans %}Room temperature{% endtrans %}:</p>
         <h1 style="font-size: 62px"><b><span id="inside_temperature">{{ data['inside_temperature'] }}</span>&deg;</b></h1>
         <p>{% trans %}Apparent temperature{% endtrans %}:</p>
         <h2><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;</h2>
-        {% endif %}
+        {%- endif -%}
         <p>{% trans %}Humidity{% endtrans %}:</p>
         <h2><span id="humidity">{{ data['humidity'] }}</span>%</h2>
       </a>
@@ -40,11 +40,11 @@
         <p>{% trans %}Water temperature{% endtrans %}:</p>
         <h2><span id="tank_temp_up">{{ data['tank_temp_up']|default('--') }}</span>&deg;</h2>
         <div class="label heater heater-status {%if data['heater_status'] == gettext('ON') %}active{%endif%}">
-          {% trans %}Heater{% endtrans %}:<br>
+          {%- trans %}Heater{% endtrans %}:<br>
           <span id="heater_status">{{ data['heater_status'] }}</span>
         </div>
         <div class="label heater heater-schedule {%if data['heater_schedule'] == gettext('Free') %}active{%endif%}">
-          {% trans %}Schedule{% endtrans %}:<br>
+          {%- trans %}Schedule{% endtrans %}:<br>
           <span id="heater_schedule">{{ data['heater_schedule'] }}</span>
         </div>
         {#<span class="hidden-xs"><br></span>#}

@@ -1,67 +1,67 @@
-{%- set active = active|default('dashboard') -%}
-     <br>
-     <ul class="nav nav-sidebar">
-       <li class="text-center nav-dashboard {% if active == 'dashboard' %}
-       active{% endif %}"><a href="/dashboard">
-         <span class="glyphicon glyphicon-home"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Home{% endtrans %}</span></a>
-       </li>
-       {%- if current_user.is_authenticated -%}
-       <li class="text-center nav-login {% if active == 'logout' %}
-       active{% endif %}"><a href="/logout">
-         <span class="glyphicon glyphicon-user"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Logout{% endtrans %}</span></a>
-       </li>
-       {%- else -%}
-       <li class="text-center nav-login {% if active == 'login' %}
-       active{% endif %}"><a href="/login">
-         <span class="glyphicon glyphicon-user"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Login{% endtrans %}</span></a>
-       </li>
-       {%- endif -%}
-       <li class="text-center nav-status {% if active == 'status' %}
-       active{% endif %}"><a href="/status">
-         <span class="glyphicon glyphicon-list-alt"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Status{% endtrans %}</span></a>
-       </li>
-       {#<li class="text-center hidden-xs hidden-sm hidden-md nav-scheme {% if active == 'scheme' %}
-       active{% endif %}"><a href="/scheme">
-         <span class="glyphicon glyphicon-eye-open"></span>
-         <span> {% trans %}Scheme{% endtrans %}</span></a>
-       </li>#}
-       {%- if current_user.is_authenticated -%}
-       <li class="text-center hidden-xs nav-schedule {% if active == 'schedule' %}
-       active{% endif %}"><a href="/schedule">
-         <span class="glyphicon glyphicon-calendar"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Schedule{% endtrans %}</span></a>
-       </li>
-       <li class="text-center nav-heater {% if active == 'heater' %}
-       active{% endif %}"><a href="/heater">
-         <span class="glyphicon glyphicon-fire"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Heater{% endtrans %}</span></a>
-       </li>
-       <li class="text-center nav-tank {% if active == 'tank' %}
-       active{% endif %}"><a href="/tank">
-         <span class="glyphicon glyphicon-tint"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Tank{% endtrans %}</span></a>
-       </li>
-       <li class="text-center nav-solar {% if active == 'solar' %}
-       active{% endif %}"><a href="/solar">
-         <span class="glyphicon glyphicon-asterisk"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Solar{% endtrans %}</span></a>
-       </li>
-       <li class="text-center nav-circulation {% if active == 'circulation' %}
-       active{% endif %}"><a href="/circulation">
-         <span class="glyphicon glyphicon-repeat"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Circulation{% endtrans %}</span></a>
-       </li>{#
-       <li class="text-center hidden-xs hidden-sm">
-         <hr>
-       </li>#}
-       <li class="text-center nav-options {% if active == 'options' %}
-       active {% endif %}"><a href="/options">
-         <span class="glyphicon glyphicon-cog"></span>
-         <span class="hidden-xs hidden-sm"> {% trans %}Options{% endtrans %}</span></a>
-       </li>
-       {%- endif -%}
-     </ul>
+{% set active = active|default('dashboard') -%}
+<br>
+<ul class="nav nav-sidebar">
+  <li class="text-center nav-dashboard {% if active == 'dashboard' %}
+  active{% endif %}"><a href="/dashboard">
+    <span class="glyphicon glyphicon-home"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Home{% endtrans %}</span></a>
+  </li>
+  {% if current_user.is_authenticated -%}
+  <li class="text-center nav-login {% if active == 'logout' %}
+  active{% endif %}"><a href="/logout">
+    <span class="glyphicon glyphicon-user"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Logout{% endtrans %}</span></a>
+  </li>
+  {% else -%}
+  <li class="text-center nav-login {% if active == 'login' %}
+  active{% endif %}"><a href="/login">
+    <span class="glyphicon glyphicon-user"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Login{% endtrans %}</span></a>
+  </li>
+  {% endif -%}
+  <li class="text-center nav-status {% if active == 'status' %}
+  active{% endif %}"><a href="/status">
+    <span class="glyphicon glyphicon-list-alt"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Status{% endtrans %}</span></a>
+  </li>
+  {#<li class="text-center hidden-xs hidden-sm hidden-md nav-scheme {% if active == 'scheme' %}
+  active{% endif %}"><a href="/scheme">
+    <span class="glyphicon glyphicon-eye-open"></span>
+    <span> {% trans %}Scheme{% endtrans %}</span></a>
+  </li>#}
+  {% if current_user.is_authenticated -%}
+  <li class="text-center hidden-xs nav-schedule {% if active == 'schedule' %}
+  active{% endif %}"><a href="/schedule">
+    <span class="glyphicon glyphicon-calendar"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Schedule{% endtrans %}</span></a>
+  </li>
+  <li class="text-center nav-heater {% if active == 'heater' %}
+  active{% endif %}"><a href="/heater">
+    <span class="glyphicon glyphicon-fire"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Heater{% endtrans %}</span></a>
+  </li>
+  <li class="text-center nav-tank {% if active == 'tank' %}
+  active{% endif %}"><a href="/tank">
+    <span class="glyphicon glyphicon-tint"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Tank{% endtrans %}</span></a>
+  </li>
+  <li class="text-center nav-solar {% if active == 'solar' %}
+  active{% endif %}"><a href="/solar">
+    <span class="glyphicon glyphicon-asterisk"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Solar{% endtrans %}</span></a>
+  </li>
+  <li class="text-center nav-circulation {% if active == 'circulation' %}
+  active{% endif %}"><a href="/circulation">
+    <span class="glyphicon glyphicon-repeat"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Circulation{% endtrans %}</span></a>
+  </li>{#
+  <li class="text-center hidden-xs hidden-sm">
+    <hr>
+  </li>#}
+  <li class="text-center nav-options {% if active == 'options' %}
+  active {% endif %}"><a href="/options">
+    <span class="glyphicon glyphicon-cog"></span>
+    <span class="hidden-xs hidden-sm"> {% trans %}Options{% endtrans %}</span></a>
+  </li>
+  {% endif -%}
+</ul>
