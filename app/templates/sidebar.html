@@ -6,7 +6,7 @@
               <span class="glyphicon glyphicon-home"></span>
               <span class="hidden-xs hidden-sm"> {% trans %}Home{% endtrans %}</span></a>
             </li>
-            {%- if g.user.authenticated %}
+            {%- if current_user.is_authenticated %}
             <li class="text-center nav-login {% if active == 'logout' %}
             active{% endif %}"><a href="/logout">
               <span class="glyphicon glyphicon-user"></span>
@@ -29,7 +29,7 @@
               <span class="glyphicon glyphicon-eye-open"></span>
               <span> {% trans %}Scheme{% endtrans %}</span></a>
             </li>#}
-            {%- if g.user.authenticated %}
+            {%- if current_user.is_authenticated %}
             <li class="text-center hidden-xs nav-schedule {% if active == 'schedule' %}
             active{% endif %}"><a href="/schedule">
               <span class="glyphicon glyphicon-calendar"></span>

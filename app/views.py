@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from flask import render_template, redirect, request, g
+from flask import render_template, redirect, request, session, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
@@ -20,18 +20,39 @@ def get_locale():
 
 @app.before_request
 def before_request():
-    #g.user = current_user
-    g.user = None 
+    g.user = current_user
+    #g.user = None 
 
 @lm.user_loader
-def load_user():
-    return User()
+def load_user(id):
+    return User.get(id)
+
+def next_is_valid(next):
+    #FIXME
+    return False
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    g.user = current_user
+    #if g.user is not None and g.user.is_authenticated:
+    #    return redirect('/')
     form = LoginForm()
-#    if form.validate_on_submit():
+    if form.validate_on_submit():
+        print("Validating")
+        user = User.get(request.form['username'])
+        print(user)
+        print(request.form['username'])
+        print(request.form['password'])
+    #    session['remember_me'] = form.remember.data
+    #    print(remember_me)
+        if (user and user.password == request.form['password']):
+            login_user(user)
+            #login_user(user, remember = remember_me)
+            next = request.args.get('next')
+            if not next_is_valid(next):
+                return abort(400)
+            return redirect(next or '/')
+        else:
+            flash('Username or password incorrect')
 #        flash('Login requested for OpenID="%s", remember_me=%s' %
 #              (form.openid.data, str(form.remember_me.data)))
 #        return redirect('/dashboard')
@@ -40,21 +61,23 @@ def login():
                            title=gettext('Log in'),
                            form=form)
 
-@login_required
 @app.route("/logout")
+@login_required
 def logout():
     logout_user()
+    g.user = None
     return redirect('/')
 
 @app.route('/')
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
-    user='admin'
+    #user='admin'
+    print(current_user)
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
-                           user=user,
+                           user=g.user,
 #                           refresh_rate=get_SQL_value(MQTTData('refresh_rate')),
                            refresh_rate=0.5,
                            data=dashboard_data())
@@ -146,11 +169,11 @@ def status():
 #                           data=get_full_data('sensors','all'),
 #                           title=gettext('Scheme'))
 
-@login_required
 @app.route('/heater/')
 @app.route('/tank/')
 @app.route('/solar/')
 @app.route('/circulation/')
+@login_required
 def data_rows():
     uri = request.base_url.replace(request.url_root,'').replace('/','')
     data = []
@@ -177,8 +200,8 @@ def data_rows():
                            #refresh_rate=settings['refresh_rate'],
                            title=title)
 
-@login_required
 @app.route('/schedule/change', methods=['POST'])
+@login_required
 def schedule_validate():
     print("----SCHEDULE RECEIVED---")
     data = request.get_json(force=True)
@@ -204,8 +227,8 @@ def schedule_validate():
     print("--NEW SCHEDULE POSTED--")
     #return schedule()
 
-@login_required
 @app.route('/schedule', methods=['GET','POST'])
+@login_required
 def schedule():
     save = True
     schedule = get_data('schedule','heater','settings')
@@ -368,7 +391,6 @@ def dashboard_data():
         return json.dumps(data)
     return(data)
 
-@login_required
 @app.route('/change-<name>', methods=['GET', 'POST'])
 @app.route('/<category>/change-<name>', methods=['GET', 'POST'])
 #@app.route('/options/change-<name>', methods=['GET', 'POST'])
@@ -376,6 +398,7 @@ def dashboard_data():
 #@app.route('/solar/change-<name>', methods=['GET', 'POST'])
 #@app.route('/tank/change-<name>', methods=['GET', 'POST'])
 #@app.route('/circulation/change-<name>', methods=['GET', 'POST'])
+@login_required
 def set_value(name,category=None):
     if name.startswith('schedule'):
        category = 'heater'
@@ -432,8 +455,8 @@ def set_value(name,category=None):
                            desc=description,
                            form=form)
 
-@login_required
 @app.route('/options', methods=['GET', 'POST'])
+@login_required
 def options():
     #data = get_SQL_last_row(Settings)
     data = {}

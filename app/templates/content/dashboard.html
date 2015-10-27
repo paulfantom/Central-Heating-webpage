@@ -6,7 +6,11 @@
   </div> -->
   <div class="row">
     <div class="col-xs-12 col-sm-6">
+      {%- if current_user.is_authenticated %}
       <a class="btn btn-block btn-link" href='change-schedule_override_temp' data-toggle="modal" data-target="#set-temp">
+      {%- else %}
+      <a class="btn btn-block btn-link" href='/login'>
+      {%- endif %}
         {% if data['use_apparent'] %}
         <p>{% trans %}Apparent temperature{% endtrans %}:</p>
         <h1 style="font-size: 62px"><b><span id="apparent_temperature">{{ data['apparent_temperature'] }}</span>&deg;</b></h1>
@@ -85,6 +89,7 @@ function update() {
   var date = myDate.getDate() + '/' + 
         ('0' + (myDate.getMonth() + 1)).slice(-2) + '/' + 
         myDate.getFullYear();
+  {# Day of week not working on webkit #}
   var dow = myDate.toLocaleString("{% trans %}en{% endtrans %}", {weekday: 'long'});
   {#var dow = myDate.toLocaleString(window.navigator.language, {weekday: 'long'});#}
   $('#time').text(time);

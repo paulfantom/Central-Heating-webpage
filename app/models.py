@@ -1,28 +1,29 @@
 # coding: utf-8
 from app import db
-#from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin
 
+class UserNotFoundError(Exception):
+    pass
 
-class User(object):
-     login = 'admin'
+class User(UserMixin):
      #TODO hash function
-     password = 'password'
+     #TODO save it to file/db
+     USERS = {'admin' : 'password'}     
+
+     def __init__(self, id):
+         if not id in self.USERS:
+             raise UserNotFoundError()
+         self.id = id
+         #TODO read password
+         self.password = self.USERS[id]
      
-     @property
-     def is_authenticated(self):
-         return True
-    
-     @property
-     def is_active(self):
-         return True
-
-     @property
-     def is_anonymous(self):
-         return False
-
-     def __repr__(self):
-        return '<User %r>' % (self.login)
-
+     @classmethod
+     def get(self_class, id):
+         '''Return user instance of id, return None if not exist'''
+         try:
+             return self_class(id)
+         except UserNotFoundError:
+             return None
 
 
 class SolarControlHeaterSettingsSchedule(db.Model):
