@@ -44,12 +44,13 @@ def change_setting(value,name,category=None):
      if category is not None:
          uri = uri + category + '/'
      if name == 'room':
-        uri = uri + '/1/use_apparent'
+        uri = 'room/1/use_apparent'
         value = int(value)
      else:
         uri = uri + 'settings/' + name
      print(uri)
      #name = 'solarControl/heater/critical'
+     print(value)
      mqtt_send(uri, str(value), hostname=SERVER_IP, client_id=MQTT_ID)
 
 

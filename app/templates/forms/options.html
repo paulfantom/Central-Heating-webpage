@@ -78,13 +78,15 @@
 {%- macro render_field(field) -%}
   {%- if field.name == 'apparent' %}
     {%- if field.description %}
-      {%- set t = 'btn-success' %}
+      {%- set t = 'btn-primary' %}
     {%- else %}
-      {%- set t = 'btn-warning' %}
+      {%- set t = 'btn-success' %}
     {%- endif %}
     {%- set buttonize = 'btn btn-block ' + t %}
   {%- elif field.name == 'reboot' or field.name == 'reboot_mcu' %}
   {%- set buttonize = 'btn btn-block btn-danger' %}
+  {%- elif field.name == 'reset_pass'%} 
+  {%- set buttonize = 'btn btn-block btn-warning' %}
   {%- else %}
   {%- set buttonize = 'btn btn-block btn-primary'%}
   {%- endif %}

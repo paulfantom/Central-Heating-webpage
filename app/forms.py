@@ -63,12 +63,12 @@ class PasswordForm(Form):
 
 
 class OptionsForm(Form):
-    apparent   = SubmitField(_('Use apparent temperature'),
+    apparent   = SubmitField("",
                              validators=[Optional()],
                              description=True)
-    reboot     = SubmitField(_('Reboot HMI'),validators=[Optional()])
-    reboot_mcu = SubmitField(_('Reboot MCU'),validators=[Optional()])
     reset_pass = SubmitField(_('Reset password'),validators=[Optional()])
+    reboot     = SubmitField(_('Reboot HMI'),validators=[Optional()])
+#    reboot_mcu = SubmitField(_('Reboot MCU'),validators=[Optional()])
 
 
 class WeekForm(Form):

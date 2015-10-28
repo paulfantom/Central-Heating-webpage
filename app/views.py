@@ -379,32 +379,42 @@ def options():
         password = PasswordForm()
         if password.validate_on_submit():
             #TODO save password
-            print(password.password.data)
+            pass_change(password.password.data)
             flash(gettext("Password changed"))            
         return render_template("content/options.html",
                                active='options',
                                options = None,
                                password = password,
                                refresh_rate = 0.5)
-    
-    data = {}
-    data['use_apparent'] = get_data('use_apparent','room','settings')
-    options = OptionsForm()
-    options.apparent.description = data['use_apparent']
+    else:
+        options = OptionsForm()
+        options.apparent.description = get_data('use_apparent','room','settings')
+        if not options.apparent.description:
+            options.apparent.label.text = gettext('Use apparent temperature')
+        else:
+            options.apparent.label.text = gettext('Use real temperature')
 
-    if options.validate_on_submit():
-        if options.data['use_apparent'] is not None:
-            options.apparent.description = not options.apparent.description
-            change_setting('room',options.apparent.description)
-#        if options.data['reset_pass']:
-#            pass_reset()
-        if options.data['reboot']:
-            reboot()
-        if options.data['reboot_mcu']:
-            reboot_mcu()
-    
-    return render_template("content/options.html",
-                           active='options',
-                           options = options,
-                           password = None,
-                           refresh_rate = 0.5)
+        if options.validate_on_submit():
+            if options.data['apparent'] is not None and options.data['apparent']:
+                options.apparent.description = not options.apparent.description
+                if not options.apparent.description:
+                    options.apparent.label.text = gettext('Use apparent temperature')
+                else:
+                    options.apparent.label.text = gettext('Use real temperature') 
+                change_setting(options.apparent.description,'room')
+            if options.data['reset_pass']:
+                pass_change("password")
+            if options.data['reboot']:
+                reboot()
+#            if options.data['reboot_mcu']:
+#                reboot_mcu()
+        
+        return render_template("forms/options.html",
+                               active='options',
+                               options = options,
+                               password = None,
+                               refresh_rate = 0.5)
+
+#TODO
+def pass_change(new_pass):
+    print(new_pass)
