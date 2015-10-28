@@ -21,8 +21,8 @@ class NextFormMixin():
 
 
 class LoginForm(Form,NextFormMixin):
-    username = TextField(_('Username'),validators=[Required()])
-    password = PasswordField(_('Password'),validators=[Required()])
+    username = TextField(_('Username'),validators=[Required()],description=_('Username'))
+    password = PasswordField(_('Password'),validators=[Required()],description=_('Password'))
     remember = BooleanField(_('Remember me'))
     submit = SubmitField(_('Login'))
 

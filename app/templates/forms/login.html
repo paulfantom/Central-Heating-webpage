@@ -21,7 +21,14 @@
     {{ form.hidden_tag() }}
     {{ render_field_with_errors(form.username) }}
     {{ render_field_with_errors(form.password) }}
-    {{ render_field_with_errors(form.remember) }}
+    {#{{ render_field_with_errors(form.remember) }}#}
+    <div class="row"><br></div>
+    <div class="row form-group">
+      {{ form.remember.label(class="col-xs-9 col-xs-offset-0 col-sm-3 col-sm-offset-4 text-left") }}
+      <div class="col-xs-1">
+        {{ form.remember(class="form-control")|safe }}
+      </div>
+    </div>
     {{ render_field(form.next) }}
     {{ render_field(form.submit) }}
   </form>
@@ -31,12 +38,10 @@
 
 {% macro render_field_with_errors(field) %}
   <div class="row"><br></div>
-  <div class="row">
-    <div class="col-xs-12 col-sm-4 col-sm-offset-2 text-center">
-      {{ field.label }}
-    </div>
-    <div class="col-xs-12 col-sm-4 text-center">
-      {{ field(class='form-control',**kwargs)|safe }}
+  <div class="row form-group">
+    {{ field.label(class="hidden-xs col-sm-3 col-sm-offset-1 form-control-label text-left") }}
+    <div class="col-xs-10 col-xs-offset-1 col-sm-7 col-sm-offset-0">
+      {{ field(class="form-control",placeholder=field.description,**kwargs)|safe }}
     </div>
   </div>
   {%- if field.errors %}
