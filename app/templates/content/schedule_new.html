@@ -113,13 +113,24 @@
   </div>
 {% endfor %}
 </div> <!-- .tab-content -->
-{% if override %}
+{%- with messages = get_flashed_messages() %}
+  {%- if messages %}
+  <div class="container-fluid" style="margin-top: 10px;">
+    <div class="alert alert-warning flashes text-center" role="alert">
+      {% for message in messages -%}
+      <ul><b>{{ message }}</b></ul>
+      {% endfor -%}
+    </div>
+  </div>
+  {%- endif %}
+{%- endwith %}
+{#{% if override %}
 <div class="container-fluid">
   <div class="alert alert-danger text-center" role="alert" style="margin-top: 10px;">
     <strong>{%trans%}Schedule is currently overriden. Expected temperature:{%endtrans%} {{override}} &deg;C</strong>
   </div>
 </div>
-{% endif %}
+{% endif %}#}
 <!--</form>-->
 
 <script type="text/javascript">
@@ -136,6 +147,7 @@ $('.changetemp').plusminus({
   min: 15,
   max: 28
 });
+
 
 </script>
 {% endblock %}

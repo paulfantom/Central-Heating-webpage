@@ -20,6 +20,7 @@ def get_locale():
 
 @app.errorhandler(400)
 def catch_server_errors(e):
+    print("SERVER ERROR"+str(e))
     return redirect('/')
 
 #@app.before_request
@@ -65,6 +66,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash(gettext("Successful logout"))
     return redirect('/')
 
 @app.route('/')
@@ -196,7 +198,7 @@ def data_rows():
                            title=title)
 
 @app.route('/schedule/change', methods=['POST'])
-@login_required
+#@app.route('/schedule', methods=['POST'])
 def schedule_validate():
     print("----SCHEDULE RECEIVED---")
     data = request.get_json(force=True)
@@ -215,16 +217,19 @@ def schedule_validate():
                         data[day][i][when].append(int(time[j]))
                 data[day][i]['temp'] = round(float(data[day][i]['temp']),2)
     except (KeyError,IndexError):
-        pass
-        #return schedule(error=True)
+        return schedule(state=False)
     
     change_setting('"'+json.dumps(data,separators=(',', ':'))+'"','schedule','heater')
     print("--NEW SCHEDULE POSTED--")
-    #return schedule()
+    return schedule(state=True)
 
-@app.route('/schedule', methods=['GET','POST'])
+@app.route('/schedule', methods=['GET'])
+#@app.route('/schedule/change', methods=['POST'])
 @login_required
-def schedule():
+def schedule(state=None):
+    if request.method == 'POST':
+        state = schedule_validate()
+
     save = True
     schedule = get_data('schedule','heater','settings')
     if schedule is None:
@@ -263,24 +268,23 @@ def schedule():
                'states' : schedule['week'],
                'days'   : WEEKDAYS}
                ]
-
-     #Validator (move it to client-side JS)
-#    for i in range(len(list_FROM)):
-#        if list_TO[i] < list_FROM[i]:
-#            print("Error - hour_TO is earlier than hour_FROM")
-#            break
-#        for j in range(len(list_FROM)-i):
-#            if list_FROM[j] < list_FROM[i] < list_TO[j]:
-#                print("Error - conflicting ranges")
-#            if list_FROM[j] < list_TO[i] < list_TO[j]:
-#                print("Error - conflicting ranges")
+    if override_temp is not None:
+        flash(gettext("Schedule is currently overriden. Expected temperature:")+\
+                      " "+\
+                      str(override_temp)+\
+                      u'°C')
+    if state is None:
+        pass
+    elif state:
+        flash(gettext("New schedule has been saved"))
+    elif not state:
+        flash(gettext("Could not save new schedule"))
 
     return render_template("content/schedule_new.html",
                            active='schedule',
                            tabs=values,
                            save=save,
                            init_tab=1,
-                           override=override_temp,
                            title=gettext('Heater'))
 
 @app.route('/get/<category>/<subcategory>_<name>', methods=['POST'])
@@ -375,7 +379,7 @@ def set_value(name,category=None):
 @app.route('/options', methods=['GET', 'POST'])
 @login_required
 def options():
-    if request.remote_addr != SERVER_IP:
+    if request.remote_addr == SERVER_IP:
         password = PasswordForm()
         if password.validate_on_submit():
             #TODO save password
@@ -399,12 +403,17 @@ def options():
                 options.apparent.description = not options.apparent.description
                 if not options.apparent.description:
                     options.apparent.label.text = gettext('Use apparent temperature')
+                    flash(gettext("Currently using real temperature mode"))
                 else:
                     options.apparent.label.text = gettext('Use real temperature') 
+                    flash(gettext("Currently using apparent temperature mode"))
                 change_setting(options.apparent.description,'room')
             if options.data['reset_pass']:
+                flash(gettext("Password changed to")+': "password"')
                 pass_change("password")
+                
             if options.data['reboot']:
+                flash(gettext("Rebooting")+"...")
                 reboot()
 #            if options.data['reboot_mcu']:
 #                reboot_mcu()

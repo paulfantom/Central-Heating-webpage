@@ -14,17 +14,17 @@
 </div>#}
 {%- if password %}
 <div class="row text-center"><h4>{%trans%}Change password{%endtrans%}</h4></div>
-{%- with messages = get_flashed_messages() %}
-  {%- if messages %}
+{%- with messages = get_flashed_messages() -%}
+  {%- if messages -%}
   <div class="row">
     <div class="alert alert-success flashes text-center">
-      {%- for message in messages %}
+      {%- for message in messages -%}
       <b>{{ message }}</b>
-      {%- endfor %}
+      {%- endfor -%}
     </div>
   </div>
-  {%- endif %}
-  {%- endwith %}
+  {%- endif -%}
+{%- endwith -%}
 <form method="post">
 {% for field in [password.password, password.confirm] -%}
 {% if field.errors -%}
@@ -59,16 +59,27 @@
 
 {%- if options %}
 <div class="row text-center"><br></div>
+{%- with messages = get_flashed_messages() %}
+  {%- if messages %}
+  <div class="row">
+    <div class="alert alert-info flashes text-center">
+      {%- for message in messages %}
+      <b>{{ message }}</b>
+      {%- endfor %}
+    </div>
+  </div>
+  {%- endif %}
+{%- endwith %}
 <form method="post">
 {{ options.hidden_tag() }}
 {% for i in options -%}
   {%- if i.name != "csrf_token" %}
-<div class="row text-center"><br></div>
 <div class="row text-center">
   <div class="col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
     {{ render_field(i) }}
   </div>
 </div>
+<div class="row text-center"><br></div>
 {% endif -%}
 {% endfor -%}
 </form>
