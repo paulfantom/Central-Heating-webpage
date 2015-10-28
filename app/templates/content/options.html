@@ -5,19 +5,63 @@
 <div class="row">
   <h3 class="text-center">{{ title }}</h3>
 </div>
-{%- endif -%}
-
-<div class="row text-center"><br></div>
+{% endif -%}
+{#<div class="row text-center"><br></div>
 <div class="row text-center">
   <div class="col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
     <input type="button" class="btn btn-block btn-success" value="{% trans %}Reload Page{% endtrans %}" onClick="window.location.reload()"/>
   </div>
-</div>
-<div class="row text-center"><br></div>
-{%- if options %}
+</div>#}
+{%- if password %}
+<div class="row text-center"><h4>{%trans%}Change password{%endtrans%}</h4></div>
+{%- with messages = get_flashed_messages() %}
+  {%- if messages %}
+  <div class="row">
+    <div class="alert alert-success flashes text-center">
+      {%- for message in messages %}
+      <b>{{ message }}</b>
+      {%- endfor %}
+    </div>
+  </div>
+  {%- endif %}
+  {%- endwith %}
 <form method="post">
-{{- options.hidden_tag() }}
-{%- for i in options %}
+{% for field in [password.password, password.confirm] -%}
+{% if field.errors -%}
+<div class="row">
+  <div class="alert alert-danger text-center" role="alert">
+    {% for error in field.errors -%}
+      <ul>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      <b>{{ error }}</b></ul>
+    {% endfor -%}
+  </div>
+</div>
+{% endif -%}
+<div class="row text-center">
+  <div class="form-group row">
+    {{ field.label(class="hidden-xs col-sm-3 col-sm-offset-1 form-control-label text-left") }}
+    <div class="col-xs-10 col-xs-offset-1 col-sm-7 col-sm-offset-0">
+      {{ field(class="form-control",placeholder=field.description)|safe }}
+    </div>
+  </div>
+</div>
+{%endfor -%}
+<div class="row text-center">
+  <div class="col-sm-12 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+    {{ password.submit(class="btn btn-primary")|safe }}
+  </div>
+</div>
+{{ password.hidden_tag() }}
+</form>
+{% endif -%}
+
+{%- if options %}
+<div class="row text-center"><br></div>
+<form method="post">
+{{ options.hidden_tag() }}
+{% for i in options -%}
   {%- if i.name != "csrf_token" %}
 <div class="row text-center"><br></div>
 <div class="row text-center">
@@ -25,14 +69,11 @@
     {{ render_field(i) }}
   </div>
 </div>
-{%- endif %}
-{%- endfor %}
+{% endif -%}
+{% endfor -%}
 </form>
-{%- endif %}
-<div class="row text-center"><br></div>
-
-
-{% endblock %}
+{% endif -%}
+{% endblock -%}
 
 {%- macro render_field(field) -%}
   {%- if field.name == 'apparent' %}

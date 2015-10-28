@@ -71,7 +71,6 @@ def logout():
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
-    print(current_user)
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',
@@ -376,16 +375,20 @@ def set_value(name,category=None):
 @app.route('/options', methods=['GET', 'POST'])
 @login_required
 def options():
-    data = {}
-    data['use_apparent'] = get_data('use_apparent','room','settings')
-     
     if request.remote_addr != SERVER_IP:
         password = PasswordForm()
+        if password.validate_on_submit():
+            #TODO save password
+            print(password.password.data)
+            flash(gettext("Password changed"))            
         return render_template("content/options.html",
                                active='options',
                                options = None,
                                password = password,
                                refresh_rate = 0.5)
+    
+    data = {}
+    data['use_apparent'] = get_data('use_apparent','room','settings')
     options = OptionsForm()
     options.apparent.description = data['use_apparent']
 

@@ -4,7 +4,7 @@ from wtforms.fields import TextField, SubmitField, DateTimeField, DecimalField,\
                            HiddenField, BooleanField, PasswordField
 from wtforms import ValidationError
 
-from wtforms.validators import Optional
+from wtforms.validators import Optional, EqualTo, Required, Length
 
 from flask import request
 from flask.ext.babel import lazy_gettext as _
@@ -21,8 +21,8 @@ class NextFormMixin():
 
 
 class LoginForm(Form,NextFormMixin):
-    username = TextField(_('Username'))
-    password = PasswordField(_('Password'))
+    username = TextField(_('Username'),validators=[Required()])
+    password = PasswordField(_('Password'),validators=[Required()])
     remember = BooleanField(_('Remember me'))
     submit = SubmitField(_('Login'))
 
@@ -49,12 +49,16 @@ class LoginForm(Form,NextFormMixin):
 
 
 class RangeForm(Form):
-    slider = DecimalRangeField('Slider')
+    slider = DecimalRangeField('Slider', validators=[Required()])
     submit = SubmitField(_('Save'))
 
 
 class PasswordForm(Form):
-   password = PasswordField(_('Password'))
+   password = PasswordField(_('New password'), [
+        Required(),
+        Length(min=8, message='Password too short. Minimum 8 signs'),
+        EqualTo('confirm', message=_('Passwords must match')) ], description=_("New password"))
+   confirm = PasswordField(_('Repeat password'), description=_("Repeat password"))
    submit = SubmitField(_('Change'))
 
 
