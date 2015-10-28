@@ -105,10 +105,10 @@ function update() {
         success: function(result){
             $('#humidity').text(result.humidity)
             $('#pressure').text(result.pressure)
-            $("#outside_temperature").text(result.outside_temperature)
-            $("#apparent_temperature").text(result.apparent_temperature)
-            $("#inside_temperature").text(result.inside_temperature)
-            $("#tank_temp_up").text(result.tank_temp_up)
+            $("#outside_temperature").text(result.outside_temperature.toFixed(1))
+            $("#apparent_temperature").text(result.apparent_temperature.toFixed(1))
+            $("#inside_temperature").text(result.inside_temperature.toFixed(1))
+            $("#tank_temp_up").text(result.tank_temp_up.toFixed(1))
             $("#heater_schedule").text(result.heater_schedule)
             $("#heater_status").text(result.heater_status)
             if(result.heater_status == "{%trans%}ON{%endtrans%}" ){
