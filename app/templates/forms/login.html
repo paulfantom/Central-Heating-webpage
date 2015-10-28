@@ -35,7 +35,7 @@
       {{ field.label }}
     </div>
     <div class="col-xs-12 col-sm-4 text-center">
-      {{ field(**kwargs)|safe }}
+      {{ field(class='form-control',**kwargs)|safe }}
     </div>
   </div>
   {%- if field.errors %}
