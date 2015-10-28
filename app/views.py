@@ -40,24 +40,23 @@ def next_is_valid(next):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
+        print("redirecting")
         return redirect('/')
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.get(request.form['username'])
-        if request.form['remember'] == 'y':
-            remember_me = True
-        else:
-            remember_me = False
-        if (user and user.password == request.form['password']):
+        #user = User.get(request.form['username'])
+        user = User.get(form.username.data)
+        #if (user and user.password == request.form['password']):
+        if (user and user.password == form.password.data):
             #login_user(user)
-            login_user(user, remember = remember_me)
+            login_user(user, remember = form.remember.data)
             next = request.args.get('next')
             if not next_is_valid(next):
                 return abort(400)
             return redirect(next or '/')
         else:
             flash(gettext('Username or password incorrect'))
-    return render_template('login.html',
+    return render_template('forms/login.html',
                            active='login',
                            title=gettext('Log in'),
                            form=form)
@@ -72,6 +71,7 @@ def logout():
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
+    print(current_user)
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',

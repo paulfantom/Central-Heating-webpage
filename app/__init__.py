@@ -13,6 +13,7 @@ db = SQLAlchemy(app)
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'login'
+#lm.session_protection = "strong"
 #from app import views
 from app import views, models
 

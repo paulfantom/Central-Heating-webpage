@@ -31,10 +31,10 @@
 
 {% macro render_field_with_errors(field) %}
   <div class="row">
-    <div class="col-xs-12 col-sm-6 text-right">
+    <div class="col-xs-12 col-sm-4 col-sm-offset-2 text-center">
       {{ field.label }}
     </div>
-    <div class="col-xs-12 col-sm-6 text-left">
+    <div class="col-xs-12 col-sm-4 text-center">
       {{ field(**kwargs)|safe }}
     </div>
   </div>
