@@ -381,7 +381,7 @@ def options():
             #TODO save password
             pass_change(password.password.data)
             flash(gettext("Password changed"))            
-        return render_template("content/options.html",
+        return render_template("forms/options.html",
                                active='options',
                                options = None,
                                password = password,
