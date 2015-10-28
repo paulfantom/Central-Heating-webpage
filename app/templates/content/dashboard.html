@@ -4,6 +4,20 @@
 <!--  <div class="hidden-xs hidden-sm">
     <br>
   </div> -->
+{%- with messages = get_flashed_messages() -%}
+  {%- if messages -%}
+  <div class="row">
+    <div class="alert alert-info flashes alert-dismissable text-center" role="alert">
+      {%- for message in messages -%}
+      <b>{{ message }}</b>
+      {%- endfor -%}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color:red !important;">
+        <span aria-hidden="true" class="glyphicon glyphicon-remove"></span>
+      </button>
+    </div>
+  </div>
+  {%- endif -%}
+{%- endwith -%}
   <div class="row">
     <div class="col-xs-12 col-sm-6">
       {%- if current_user.is_authenticated -%}
