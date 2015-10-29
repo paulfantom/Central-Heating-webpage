@@ -1,29 +1,51 @@
 # coding: utf-8
-from app import db
+from app import db, bcrypt
 from flask.ext.login import UserMixin
+from sqlalchemy.ext.hybrid import hybrid_property
+from werkzeug.security import generate_password_hash, \
+     check_password_hash
 
 class UserNotFoundError(Exception):
     pass
 
-class User(UserMixin):
-     #TODO hash function
-     #TODO save it to file/db
-     USERS = {'admin' : 'password'}     
+class User(UserMixin,db.Model):
+     __tablename__ = 'users'
+     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+     username = db.Column(db.String(50), nullable=False, unique=True)
+     _password = db.Column(db.String(255))
 
-     def __init__(self, id):
-         if not id in self.USERS:
-             raise UserNotFoundError()
-         self.id = id
-         #TODO read password
-         self.password = self.USERS[id]
+     @hybrid_property
+     def password(self):
+         return self._password
+
+     @password.setter
+     def _set_password(self, plaintext):
+         self._password = bcrypt.generate_password_hash(plaintext)
+
+     def is_correct_password(self, plaintext):
+         return bcrypt.check_password_hash(self._password, plaintext)
+
+     def is_active(self): return True
+     def is_authenticated(self): return True
+     def is_anonymous(self): return False
+     def get_id(self):
+         return self.id
+     def __repr__(self):
+        return '<User %r>' % (self.username)
      
-     @classmethod
-     def get(self_class, id):
-         '''Return user instance of id, return None if not exist'''
-         try:
-             return self_class(id)
-         except UserNotFoundError:
-             return None
+
+#class MqttWarnData(db.Model):
+#    __tablename__ = None
+#    id = db.Column(db.Integer, primary_key=True)
+#    _dtepoch = db.Column(db.String)
+#    _dtiso = db.Column(db.Text)
+#    topic = db.Column(db.Text)
+#    _dthhmm = db.Column(db.Text)
+#    payload = db.Column(db.Text)
+#    _dthhmmss = db.Column(db.Text)
+#    
+#    def __init__(self, table):
+#        self.__tablename__ = table
 
 
 class SolarControlHeaterSettingsSchedule(db.Model):
@@ -37,11 +59,11 @@ class SolarControlHeaterSettingsSchedule(db.Model):
     payload = db.Column(db.Text)
     _dthhmmss = db.Column(db.Text)
 
-class IndexMqtt(db.Model):
-    __tablename__ = 'index_mqtt'
-
-    topic = db.Column(db.Text, primary_key=True)
-    ts = db.Column(db.DateTime, nullable=False, server_default=db.text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+#class IndexMqtt(db.Model):
+#    __tablename__ = 'index_mqtt'
+#
+#    topic = db.Column(db.Text, primary_key=True)
+#    ts = db.Column(db.DateTime, nullable=False, server_default=db.text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
 class OutsideTemp(db.Model):

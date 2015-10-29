@@ -1,9 +1,20 @@
+# -*- coding: UTF-8 -*-
+
 from pymysql.err import OperationalError as OperationalError
 from paho.mqtt.publish import single as mqtt_send
 from .models import *
 from app import db
 from config import SERVER_IP,MQTT_ID,DESCRIPTIONS
 from json import loads as json_loads
+
+def get_user(username):
+    return User.query.filter_by(username=username).first_or_404()
+
+def pass_change(new_pass):
+    user = get_user('admin')
+    user.password = new_pass
+    db.session.add(user)
+    db.session.commit()
 
 def get_query(db_model):
     try:
@@ -15,14 +26,14 @@ def get_query(db_model):
             return None
     return q
 
-def get_SQL_last_row(db_model=IndexMqtt):
-    q = get_query(db_model)
-    d = {}
-    for col in q.__table__.columns._data.keys():
-        d[col] = getattr(q,col)
-    return d
+#def get_SQL_last_row(db_model=IndexMqtt):
+#    q = get_query(db_model)
+#    d = {}
+#    for col in q.__table__.columns._data.keys():
+#        d[col] = getattr(q,col)
+#    return d
 
-def get_SQL_value(db_model=IndexMqtt,column='payload'):
+def get_SQL_value(db_model=Room1TempReal,column='payload'):
     try:
         q = get_query(db_model)
     except Exception:

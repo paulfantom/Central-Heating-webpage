@@ -24,6 +24,7 @@ class LoginForm(Form,NextFormMixin):
     username = TextField(_('Username'),validators=[Required()],description=_('Username'))
     password = PasswordField(_('Password'),validators=[Required()],description=_('Password'))
     remember = BooleanField(_('Remember me'))
+    next = HiddenField()
     submit = SubmitField(_('Login'))
 
     def __init__(self, *args, **kwargs):
@@ -59,6 +60,7 @@ class PasswordForm(Form):
         Length(min=8, message='Password too short. Minimum 8 signs'),
         EqualTo('confirm', message=_('Passwords must match')) ], description=_("New password"))
    confirm = PasswordField(_('Repeat password'), description=_("Repeat password"))
+   next = HiddenField()
    submit = SubmitField(_('Change'))
 
 
