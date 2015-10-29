@@ -6,6 +6,7 @@
     <span class="glyphicon glyphicon-home"></span>
     <span class="hidden-xs hidden-sm"> {% trans %}Home{% endtrans %}</span></a>
   </li>
+  {% if request.remote_addr != config['SERVER_IP'] -%}
   {% if current_user.is_authenticated -%}
   <li class="text-center nav-login {% if active == 'logout' %}
   active{% endif %}"><a href="/logout">
@@ -18,6 +19,7 @@
     <span class="glyphicon glyphicon-user"></span>
     <span class="hidden-xs hidden-sm"> {% trans %}Login{% endtrans %}</span></a>
   </li>
+  {% endif -%}
   {% endif -%}
   <li class="text-center nav-status {% if active == 'status' %}
   active{% endif %}"><a href="/status">
