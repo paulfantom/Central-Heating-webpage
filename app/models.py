@@ -1,29 +1,43 @@
 # coding: utf-8
 from app import db
-from flask.ext.login import UserMixin
+#from flask.ext.login import UserMixin
+from flask.ext.user import UserMixin
 
-class UserNotFoundError(Exception):
-    pass
+class User(db.Model,UserMixin):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(255), nullable=False, server_default='')
+    reset_password_token = db.Column(db.String(100), nullable=False, server_default='')
+    is_enabled = True
+    active = True
+    
+    def is_active(self):
+        return self.is_enabled
 
-class User(UserMixin):
-     #TODO hash function
-     #TODO save it to file/db
-     USERS = {'admin' : 'password'}     
 
-     def __init__(self, id):
-         if not id in self.USERS:
-             raise UserNotFoundError()
-         self.id = id
-         #TODO read password
-         self.password = self.USERS[id]
-     
-     @classmethod
-     def get(self_class, id):
-         '''Return user instance of id, return None if not exist'''
-         try:
-             return self_class(id)
-         except UserNotFoundError:
-             return None
+#class UserNotFoundError(Exception):
+#    pass
+#
+#class User(UserMixin):
+#     #TODO hash function
+#     #TODO save it to file/db
+#     USERS = {'admin' : 'password'}     
+#
+#     def __init__(self, id):
+#         if not id in self.USERS:
+#             raise UserNotFoundError()
+#         self.id = id
+#         #TODO read password
+#         self.password = self.USERS[id]
+#     
+#     @classmethod
+#     def get(self_class, id):
+#         '''Return user instance of id, return None if not exist'''
+#         try:
+#             return self_class(id)
+#         except UserNotFoundError:
+#             return None
 
 
 class SolarControlHeaterSettingsSchedule(db.Model):
@@ -37,11 +51,11 @@ class SolarControlHeaterSettingsSchedule(db.Model):
     payload = db.Column(db.Text)
     _dthhmmss = db.Column(db.Text)
 
-class IndexMqtt(db.Model):
-    __tablename__ = 'index_mqtt'
-
-    topic = db.Column(db.Text, primary_key=True)
-    ts = db.Column(db.DateTime, nullable=False, server_default=db.text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
+#class IndexMqtt(db.Model):
+#    __tablename__ = 'index_mqtt'
+#
+#    topic = db.Column(db.Text, primary_key=True)
+#    ts = db.Column(db.DateTime, nullable=False, server_default=db.text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
 
 
 class OutsideTemp(db.Model):

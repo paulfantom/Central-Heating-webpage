@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-
 
 from flask import render_template, redirect, request, flash, abort
-from flask.ext.login import login_user, logout_user, current_user, login_required
+#from flask.ext.login import login_user, logout_user, current_user, login_required
+from flask.ext.login import login_user, logout_user, current_user
+from flask.ext.user import login_required
 from flask.ext.babel import gettext
 from wtforms.validators import NumberRange
-from app import app, babel, db, lm
+from app import app, babel, db
 import json
 from datetime import datetime
 
@@ -15,8 +17,8 @@ from .data import *
 
 @babel.localeselector
 def get_locale():
-    #return request.accept_languages.best_match(LANGUAGES.keys())
-    return request.accept_languages.best_match(['pl'])
+    return request.accept_languages.best_match(LANGUAGES.keys())
+    #return request.accept_languages.best_match(['pl'])
 
 @app.errorhandler(400)
 def catch_server_errors(e):
@@ -28,9 +30,9 @@ def catch_server_errors(e):
 #    print(request.remote_addr)
 #    pass
 
-@lm.user_loader
-def load_user(id):
-    return User.get(id)
+#@lm.user_loader
+#def load_user(id):
+#    return User.get(id)
 
 def next_is_valid(next):
     if next is None: return True
@@ -73,6 +75,7 @@ def logout():
 @app.route('/index')
 @app.route('/dashboard')
 def dashboard():
+    print(current_user)
     return render_template("content/dashboard.html",
                            active='dashboard',
                            title='',

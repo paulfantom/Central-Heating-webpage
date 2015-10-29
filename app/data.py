@@ -15,14 +15,14 @@ def get_query(db_model):
             return None
     return q
 
-def get_SQL_last_row(db_model=IndexMqtt):
-    q = get_query(db_model)
-    d = {}
-    for col in q.__table__.columns._data.keys():
-        d[col] = getattr(q,col)
-    return d
+#def get_SQL_last_row(db_model=Room1TempReal):
+#    q = get_query(db_model)
+#    d = {}
+#    for col in q.__table__.columns._data.keys():
+#        d[col] = getattr(q,col)
+#    return d
 
-def get_SQL_value(db_model=IndexMqtt,column='payload'):
+def get_SQL_value(db_model=Room1TempReal,column='payload'):
     try:
         q = get_query(db_model)
     except Exception:
