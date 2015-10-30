@@ -15,7 +15,8 @@ bcrypt = Bcrypt(app)
 lm = LoginManager()
 lm.init_app(app)
 lm.login_view = 'login'
+from app import models
+lm.anonymous_user = models.Anonymous
 #lm.session_protection = "strong"
-#from app import views
-from app import views, models
+from app import views
 from app.startup import startup

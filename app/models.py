@@ -1,12 +1,13 @@
 # coding: utf-8
 from app import db, bcrypt
-from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin, AnonymousUserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, \
      check_password_hash
 
-class UserNotFoundError(Exception):
-    pass
+class Anonymous(AnonymousUserMixin):
+  def __init__(self):
+    self.username = 'guest'
 
 class User(UserMixin,db.Model):
      __tablename__ = 'users'
