@@ -23,10 +23,13 @@ def catch_server_errors(e):
     print("SERVER ERROR"+str(e))
     return redirect('/')
 
-#@app.before_request
-#def before_request():
-#    print(request.remote_addr)
-#    pass
+@app.before_request
+def before_request():
+    #if request.remote_addr == SERVER_IP
+    if request.remote_addr == "192.168.10.10":
+        print(current_user)
+        print(current_user.username)
+#       login_user(user, remember = form.remember.data)
 
 @lm.user_loader
 def load_user(id):
