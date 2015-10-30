@@ -30,7 +30,8 @@ def catch_server_errors(e):
 
 @lm.user_loader
 def load_user(id):
-    return User.get(id)
+    #return User.get(id)
+    return User.query.filter(User.id==id).first()
 
 def next_is_valid(next):
     if next is None: return True
@@ -41,14 +42,12 @@ def next_is_valid(next):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        print("redirecting")
         return redirect('/')
     form = LoginForm()
     if form.validate_on_submit():
         #user = User.get(request.form['username'])
-        user = User.get(form.username.data)
-        #if (user and user.password == request.form['password']):
-        if (user and user.password == form.password.data):
+        user = get_user(form.username.data)
+        if (user and user.is_correct_password(form.password.data)):
             #login_user(user)
             login_user(user, remember = form.remember.data)
             next = request.args.get('next')
@@ -377,9 +376,10 @@ def set_value(name,category=None):
                            form=form)
 
 @app.route('/options', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def options():
-    if request.remote_addr == SERVER_IP:
+    if False:
+    #if request.remote_addr == SERVER_IP:
         password = PasswordForm()
         if password.validate_on_submit():
             #TODO save password
@@ -423,7 +423,3 @@ def options():
                                options = options,
                                password = None,
                                refresh_rate = 0.5)
-
-#TODO
-def pass_change(new_pass):
-    print(new_pass)
