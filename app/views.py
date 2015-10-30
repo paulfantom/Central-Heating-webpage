@@ -25,7 +25,7 @@ def catch_server_errors(e):
 
 @app.before_request
 def before_request():
-    if request.remote_addr == SERVER_IP
+    if request.remote_addr == SERVER_IP:
     #if request.remote_addr == "192.168.10.10":
         if current_user.username != "admin":
             print("LOGING IN")
