@@ -11,7 +11,11 @@ def startup():
         db.create_all()
         user = User.query.filter(User.username == 'admin').first()
     except OperationalError:
-        flash(gettext("Cannot connect to database"))
+        try:
+            flash(gettext(
+                "Cannot connect to database")+": "+str(err.orig))
+        except:
+            flash(gettext("Cannot connect to database"))
         return
     if not user:
         flash(gettext("Created user")+" 'admin'")
