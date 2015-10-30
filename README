@@ -3,6 +3,7 @@ dependencies:
 - flask-wtf
 - flask-babel
 - flask-sqlalchemy
+- flask-bcrypt
 - wtforms
 - jinja
 - sqlalchemy
