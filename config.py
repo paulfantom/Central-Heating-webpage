@@ -11,6 +11,8 @@ MYSQL_PASS = ''
 #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://' + MYSQL_USER + ':' + MYSQL_PASS + '@localhost/mqtt_data'
 
+BCRYPT_LOG_ROUNDS = 12
+
 WTF_CSRF_ENABLED = True
 SECRET_KEY = 'you-will-never-guess'
 
