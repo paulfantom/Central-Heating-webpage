@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from pymysql.err import OperationalError as OperationalError
+from sqlalchemy.exc import OperationalError
 from paho.mqtt.publish import single as mqtt_send
 from .models import *
 from app import db
@@ -36,7 +36,7 @@ def get_query(db_model):
 def get_SQL_value(db_model=Room1TempReal,column='payload'):
     try:
         q = get_query(db_model)
-    except Exception:
+    except OperationalError:
         return 0
     try:
         return getattr(q,column)
