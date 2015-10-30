@@ -382,8 +382,7 @@ def set_value(name,category=None):
 @app.route('/options', methods=['GET', 'POST'])
 #@login_required
 def options():
-    if False:
-    #if request.remote_addr == SERVER_IP:
+    if request.remote_addr != SERVER_IP:
         password = PasswordForm()
         if password.validate_on_submit():
             #TODO save password
