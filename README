@@ -9,3 +9,7 @@ dependencies:
 - sqlalchemy
 - paho.mqtt
 - mysqldb
+
+default user: "admin"
+default pass: "password"
+
