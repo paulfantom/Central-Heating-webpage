@@ -59,7 +59,7 @@ def login():
                 return abort(400)
             return redirect(next or '/')
         else:
-            flash(gettext('Username or password incorrect'))
+            flash(gettext('Incorrect username or password'))
     return render_template('forms/login.html',
                            active='login',
                            title=gettext('Log in'),

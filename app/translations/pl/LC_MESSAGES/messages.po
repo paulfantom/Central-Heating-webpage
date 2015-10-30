@@ -1,16 +1,16 @@
-# Polish translations for PROJECT.
-# Copyright (C) 2015 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+# Polish translations for .
+# Copyright (C) 2015 Pawel Krupa 
+# This file is distributed under the same license as the  project.
+# Pawel Krupa <paulfantom@gmail.com>, 2015.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Solar Control\n"
+"Project-Id-Version:  0.1\n"
 "Report-Msgid-Bugs-To: paulfantom@gmail.com\n"
-"POT-Creation-Date: 2015-10-14 12:35+0200\n"
-"PO-Revision-Date: 2015-10-14 12:36+0200\n"
-"Last-Translator: Paweł Krupa paulfantom@gmail.com\n"
-"Language-Team: pl <LL@li.org>\n"
+"POT-Creation-Date: 2015-10-30 13:41+0100\n"
+"PO-Revision-Date: 2015-10-30 13:44+0100\n"
+"Last-Translator: Paul <paulfantom@gmail.com>\n"
+"Language-Team: Polish <paulfantom@gmail.com>\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
 "(n%100<10 || n%100>=20) ? 1 : 2)\n"
 "MIME-Version: 1.0\n"
@@ -18,355 +18,433 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.0\n"
 
-#: app/data.py:70 app/views.py:224 app/views.py:271
-msgid "Week"
-msgstr "Tydzień"
-
-#: app/descriptions.py:5 app/forms.py:22
+#: config.py:26 app/core/forms.py:77
 msgid "Monday"
 msgstr "Poniedziałek"
 
-#: app/descriptions.py:6 app/forms.py:23
+#: config.py:27 app/core/forms.py:78
 msgid "Tuesday"
 msgstr "Wtorek"
 
-#: app/descriptions.py:7 app/forms.py:24
+#: config.py:28 app/core/forms.py:79
 msgid "Wednesday"
 msgstr "Środa"
 
-#: app/descriptions.py:8 app/forms.py:25
+#: config.py:29 app/core/forms.py:80
 msgid "Thursday"
 msgstr "Czwartek"
 
-#: app/descriptions.py:9 app/forms.py:26
+#: config.py:30 app/core/forms.py:81
 msgid "Friday"
 msgstr "Piątek"
 
-#: app/descriptions.py:10 app/forms.py:27
+#: config.py:31 app/core/forms.py:82
 msgid "Saturday"
 msgstr "Sobota"
 
-#: app/descriptions.py:11 app/forms.py:28
+#: config.py:32 app/core/forms.py:83
 msgid "Sunday"
 msgstr "Niedziela"
 
-#: app/descriptions.py:16
+#: config.py:37
 msgid "Interval"
 msgstr "Przerwa"
 
-#: app/descriptions.py:17
+#: config.py:38
 msgid "Set pump interval in water consumption mode"
 msgstr "Ustaw czas bezczynności pompy cyrkulacyjnej"
 
-#: app/descriptions.py:22
+#: config.py:43
 msgid "ON time"
 msgstr "Czas pracy"
 
-#: app/descriptions.py:23
+#: config.py:44
 msgid "Set pump mixing time in water consumption mode"
 msgstr "Ustaw czas pracy pompy cyrkulacyjnej"
 
-#: app/descriptions.py:29
+#: config.py:50
 msgid "Expected room temperature"
 msgstr "Oczekiwana temperatura pokojowa"
 
-#: app/descriptions.py:30
+#: config.py:51
 msgid "Override scheduled room temperature for 60 minutes"
 msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
 
-#: app/descriptions.py:36
+#: config.py:57
 msgid "Critical"
 msgstr "Krytyczna"
 
-#: app/descriptions.py:37
+#: config.py:58
 msgid "Set heater critical temperature"
 msgstr "Ustaw krytyczną temperaturę pieca"
 
-#: app/descriptions.py:43
+#: config.py:64
 msgid "Hysteresis"
 msgstr "Histereza"
 
-#: app/descriptions.py:44
+#: config.py:65
 msgid "Set heater hysteresis for central heating"
 msgstr "Ustaw histerezę centralnego ogrzewania"
 
-#: app/descriptions.py:51
+#: config.py:72
 msgid "Temperature difference (OFF)"
 msgstr "Różnica temperatur (Wył.)"
 
-#: app/descriptions.py:52
+#: config.py:73
 msgid "Temperature difference needed to stop solar system"
 msgstr "Różnica temperatur potrzebna do wyłączenia układu solarnego"
 
-#: app/descriptions.py:58
+#: config.py:79
 msgid "Temperature difference (ON)"
 msgstr "Różnica temperatur (Zał.)"
 
-#: app/descriptions.py:59
+#: config.py:80
 msgid "Temperature difference needed to start solar system"
 msgstr "Różnica temperatur potrzebna do załączenia układu solarnego"
 
-#: app/descriptions.py:65
+#: config.py:86
 msgid "Critical temperature"
-msgstr "Krytyczna temperatura"
+msgstr "Temperatura krytyczna"
 
-#: app/descriptions.py:66
+#: config.py:87
 msgid "Temperature of solar system turning off"
-msgstr "Temperatura wyłączenia ukłądu solarnego"
+msgstr "Temperatura wyłączenia układu solarnego"
 
-#: app/descriptions.py:72 app/views.py:146 app/templates/sidebar.html:37
+#: config.py:93 app/core/views.py:186 app/templates/sidebar.html:53
 msgid "Solar"
 msgstr "Kolektor"
 
-#: app/descriptions.py:73
+#: config.py:94
 msgid "DHW maximum temperature with solar system usage"
 msgstr "Maksymalna temperatura CWU podczas pracy kolektora"
 
-#: app/descriptions.py:78
+#: config.py:99
 msgid "Heater (max)"
 msgstr "Piec (max)"
 
-#: app/descriptions.py:79
+#: config.py:100
 msgid "DHW maximum temperature with heater system usage"
 msgstr "Maksymalna temperatura CWU podczas pracy pieca"
 
-#: app/descriptions.py:84
+#: config.py:105
 msgid "Heater (min)"
 msgstr "Piec (min)"
 
-#: app/descriptions.py:85
+#: config.py:106
 msgid "DHW minimum temperature with heater system usage"
 msgstr "Minimalna temperatura CWU podczas pracy pieca"
 
-#: app/descriptions.py:92 app/templates/content/dashboard.html:13
-#: app/templates/content/dashboard.html:16
+#: config.py:113 app/templates/content/dashboard.html:31
+#: app/templates/content/dashboard.html:34
 msgid "Room temperature"
 msgstr "Temperatura pokojowa"
 
-#: app/descriptions.py:93
+#: config.py:114
 msgid "Override scheduled room temperature for 1 hour"
 msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
 
-#: app/forms.py:12 app/templates/content/schedule.html:90
+#: app/core/data.py:81 app/core/views.py:269
+msgid "Week"
+msgstr "Tydzień"
+
+#: app/core/forms.py:24
+msgid "Username"
+msgstr "Użytkownik"
+
+#: app/core/forms.py:25
+msgid "Password"
+msgstr "Hasło"
+
+#: app/core/forms.py:26
+msgid "Remember me"
+msgstr "Zapamiętaj mnie"
+
+#: app/core/forms.py:28 app/templates/sidebar.html:20
+msgid "Login"
+msgstr "Zaloguj"
+
+#: app/core/forms.py:42
+msgid "No username provided"
+msgstr "Nie podano użytkownika"
+
+#: app/core/forms.py:46
+msgid "No password provided"
+msgstr "Nie podano hasła"
+
+#: app/core/forms.py:54 app/templates/content/schedule.html:90
 #: app/templates/content/schedule_new.html:91
 #: app/templates/content/schedule_old.html:89
 msgid "Save"
 msgstr "Zapisz"
 
-#: app/forms.py:15
-msgid "Use apparent temperature"
-msgstr "Użyj temperatury odczuwalnej"
+#: app/core/forms.py:58 app/core/forms.py:61
+msgid "New password"
+msgstr "Nowe hasło"
 
-#: app/forms.py:18
+#: app/core/forms.py:61
+msgid "Passwords must match"
+msgstr "Hasła muszą się zgadzać"
+
+#: app/core/forms.py:62
+msgid "Repeat password"
+msgstr "Powtórz hasło"
+
+#: app/core/forms.py:64
+msgid "Change"
+msgstr "Zmień"
+
+#: app/core/forms.py:71
+msgid "Reset password"
+msgstr "Zresetuj hasło"
+
+#: app/core/forms.py:72
 msgid "Reboot HMI"
 msgstr "Zrestartuj HMI"
 
-#: app/forms.py:19
-msgid "Reboot MCU"
-msgstr "Zrestartuj MCU"
+#: app/core/views.py:62
+msgid "Incorrect username or password"
+msgstr "Nazwa użytkownika lub hasło jest nieprawidłowe"
 
-#: app/views.py:80 app/templates/content/dashboard.html:34
+#: app/core/views.py:65
+msgid "Log in"
+msgstr "Zaloguj"
+
+#: app/core/views.py:72
+msgid "Successful logout"
+msgstr "Pomyślnie wylogowano"
+
+#: app/core/views.py:119 app/templates/content/dashboard.html:52
 msgid "Outside temperature"
 msgstr "Temperatura na zewnątrz"
 
-#: app/views.py:82
+#: app/core/views.py:121
 msgid "Inside temperature"
 msgstr "Temperatura wewnątrz"
 
-#: app/views.py:84 app/templates/content/dashboard.html:11
-#: app/templates/content/dashboard.html:18
+#: app/core/views.py:123 app/templates/content/dashboard.html:29
+#: app/templates/content/dashboard.html:36
 msgid "Apparent temperature"
 msgstr "Temperatura odczuwalna"
 
-#: app/views.py:86 app/templates/content/dashboard.html:21
+#: app/core/views.py:125 app/templates/content/dashboard.html:39
 msgid "Humidity"
 msgstr "Wilgotność"
 
-#: app/views.py:88 app/templates/content/dashboard.html:28
+#: app/core/views.py:127 app/templates/content/dashboard.html:46
 msgid "Pressure"
 msgstr "Ciśnienie"
 
-#: app/views.py:90
+#: app/core/views.py:129
 msgid "Solar temperature"
 msgstr "Temperatura kolektora"
 
-#: app/views.py:92
+#: app/core/views.py:131
 msgid "Solar input"
 msgstr "Wejście z kolektora"
 
-#: app/views.py:94
+#: app/core/views.py:133
 msgid "Solar output"
 msgstr "Wyjście na kolektor"
 
-#: app/views.py:96
+#: app/core/views.py:135
 msgid "Solar difference"
 msgstr "Różnica (kolektor)"
 
-#: app/views.py:98 app/templates/sidebar.html:32
+#: app/core/views.py:137 app/templates/sidebar.html:48
 msgid "Tank"
 msgstr "Zbiornik"
 
-#: app/views.py:100
+#: app/core/views.py:139
 msgid "Heater input"
 msgstr "Wejście z pieca"
 
-#: app/views.py:102
+#: app/core/views.py:141
 msgid "Heater output"
 msgstr "Wyjście na piec"
 
-#: app/views.py:104
+#: app/core/views.py:143
 msgid "Heater diffrence"
 msgstr "Różnica (piec)"
 
-#: app/views.py:107
+#: app/core/views.py:146
 msgid "Burner"
 msgstr "Palnik"
 
-#: app/views.py:108 app/views.py:112 app/views.py:114 app/views.py:118
-#: app/views.py:347 app/templates/content/dashboard.html:38
-#: app/templates/content/dashboard.html:103
+#: app/core/views.py:147 app/core/views.py:151 app/core/views.py:153
+#: app/core/views.py:157 app/core/views.py:324
+#: app/templates/content/dashboard.html:56
+#: app/templates/content/dashboard.html:128
 msgid "ON"
 msgstr "Zał."
 
-#: app/views.py:108 app/views.py:112 app/views.py:114 app/views.py:347
+#: app/core/views.py:147 app/core/views.py:151 app/core/views.py:153
+#: app/core/views.py:324
 msgid "OFF"
 msgstr "Wył."
 
-#: app/views.py:109
+#: app/core/views.py:148
 msgid "DHW/CH actuator"
 msgstr "Siłownik CWU/CO"
 
-#: app/views.py:110
+#: app/core/views.py:149
 msgid "DHW"
 msgstr "CWU"
 
-#: app/views.py:110
+#: app/core/views.py:149
 msgid "CH"
 msgstr "CO"
 
-#: app/views.py:111
+#: app/core/views.py:150
 msgid "Solar pump"
 msgstr "Pompa kolektora"
 
-#: app/views.py:113
+#: app/core/views.py:152
 msgid "Solar system actuator"
 msgstr "Siłownik układu solarnego"
 
-#: app/views.py:115
+#: app/core/views.py:154
 msgid "Solar circuit flow"
 msgstr "Przepływ w układzie solarnym"
 
-#: app/views.py:117 app/views.py:142 app/templates/sidebar.html:42
+#: app/core/views.py:156 app/core/views.py:182 app/templates/sidebar.html:58
 msgid "Circulation"
 msgstr "Cyrkulacja"
 
-#: app/views.py:120
+#: app/core/views.py:159
 msgid "Sensors data"
 msgstr "Dane z czujników"
 
-#: app/views.py:150
+#: app/core/views.py:190
 msgid "Water"
 msgstr "Woda"
 
-#: app/views.py:153 app/views.py:247 app/views.py:313
-#: app/templates/sidebar.html:27 app/templates/content/dashboard.html:39
+#: app/core/views.py:193 app/core/views.py:291 app/templates/sidebar.html:43
+#: app/templates/content/dashboard.html:57
 msgid "Heater"
 msgstr "Piec"
 
-#: app/views.py:210 app/views.py:257
+#: app/core/views.py:255
 msgid "Work day"
-msgstr "Dzień roboczy"
+msgstr "Dzień zwykły"
 
-#: app/views.py:213 app/views.py:220 app/views.py:260 app/views.py:267
+#: app/core/views.py:258 app/core/views.py:265
 msgid "Heating schedule"
 msgstr "Harmonogram ogrzewania"
 
-#: app/views.py:214 app/views.py:261
+#: app/core/views.py:259
 msgid "FROM"
-msgstr "OD"
+msgstr "Od"
 
-#: app/views.py:214 app/views.py:261
+#: app/core/views.py:259
 msgid "TO"
-msgstr "DO"
+msgstr "Do"
 
-#: app/views.py:216 app/views.py:223 app/views.py:263 app/views.py:270
+#: app/core/views.py:261 app/core/views.py:268
 msgid "Other"
-msgstr "Pozostałe"
+msgstr "Inne"
 
-#: app/views.py:216 app/views.py:223 app/views.py:263 app/views.py:270
+#: app/core/views.py:261 app/core/views.py:268
 msgid "Hours"
 msgstr "Godziny"
 
-#: app/views.py:217 app/views.py:264
+#: app/core/views.py:262
 msgid "Free day"
 msgstr "Dzień wolny"
 
-#: app/views.py:325
+#: app/core/views.py:275
+msgid "Schedule is currently overriden. Expected temperature:"
+msgstr "Harmonogram jest aktualnie nadpisany. Oczekiwana temperatura to:"
+
+#: app/core/views.py:282
+msgid "New schedule has been saved"
+msgstr "Nowy harmonogram został zapisany"
+
+#: app/core/views.py:284
+msgid "Could not save new schedule"
+msgstr "Nie można zapisać nowego harmonogramu"
+
+#: app/core/views.py:302
 msgid "Current temperature"
 msgstr "Aktualna temperatura"
 
-#: app/views.py:346 app/templates/content/dashboard.html:42
-#: app/templates/content/dashboard.html:108
+#: app/core/views.py:323 app/templates/content/dashboard.html:60
+#: app/templates/content/dashboard.html:133
 msgid "Free"
 msgstr "Wolny"
 
-#: app/views.py:346
+#: app/core/views.py:323
 msgid "Normal"
 msgstr "Zwykły"
 
-#: app/templates/base.html:2
+#: app/core/views.py:390
+msgid "Password changed"
+msgstr "Hasło zostało zmienione"
+
+#: app/core/views.py:400 app/core/views.py:408
+msgid "Use apparent temperature"
+msgstr "Używaj temperatury odczuwalnej"
+
+#: app/core/views.py:402 app/core/views.py:411
+msgid "Use real temperature"
+msgstr "Używaj temperatury rzeczywistej"
+
+#: app/core/views.py:409
+msgid "Currently using real temperature mode"
+msgstr "Aktualnie używasz temperatury rzeczywistej"
+
+#: app/core/views.py:412
+msgid "Currently using apparent temperature mode"
+msgstr "Aktualnie używasz temperatury odczuwalnej"
+
+#: app/core/views.py:415
+msgid "Password changed to"
+msgstr "Hasło zmienione na"
+
+#: app/core/views.py:419
+msgid "Rebooting"
+msgstr "Restarowanie"
+
+#: app/templates/base.html:2 app/templates/content/dashboard.html:107
 msgid "en"
 msgstr "pl"
 
 #: app/templates/base.html:13 app/templates/base.html:15
 msgid "Water Management"
-msgstr "Zarządzanie wodą"
+msgstr "Zarządzanie ciepłem"
 
 #: app/templates/footer.html:4
 msgid "Made by"
-msgstr "Stworzone przez"
+msgstr ""
 
 #: app/templates/sidebar.html:7
 msgid "Home"
 msgstr ""
 
-#: app/templates/sidebar.html:12
+#: app/templates/sidebar.html:14
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: app/templates/sidebar.html:27
 msgid "Status"
 msgstr ""
 
-#: app/templates/sidebar.html:22 app/templates/content/dashboard.html:43
+#: app/templates/sidebar.html:38 app/templates/content/dashboard.html:61
 msgid "Schedule"
 msgstr "Harmonogram"
 
-#: app/templates/content/dashboard.html:36
+#: app/templates/sidebar.html:66
+msgid "Options"
+msgstr "Opcje"
+
+#: app/templates/content/dashboard.html:54
 msgid "Water temperature"
 msgstr "Temperatura wody"
-
-#: app/templates/content/options.html:13
-msgid "Reload Page"
-msgstr "Odśwież stronę"
-
-#: app/templates/content/options.html:20
-msgid "Refresh rate"
-msgstr "Częstotliwość odświeżania"
-
-#: app/templates/content/options.html:31
-msgid "Heating hysteresis"
-msgstr "Histereza ogrzewania"
-
-#: app/templates/content/options.html:31
-msgid "°C"
-msgstr ""
 
 #: app/templates/content/schedule.html:11
 #: app/templates/content/schedule_new.html:12
 #: app/templates/content/schedule_old.html:11
 msgid "Menu"
 msgstr ""
-
-#: app/templates/content/schedule_new.html:119
-msgid "Schedule is currently overriden. Expected temperature:"
-msgstr "Harmonogram jest aktualnie nadpisany. Oczekiwana temperatura:"
 
 #: app/templates/forms/modal-range.html:36
 msgid "New value"
@@ -375,4 +453,8 @@ msgstr "Nowa wartość"
 #: app/templates/forms/modal-range.html:41
 msgid "Cancel"
 msgstr "Anuluj"
+
+#: app/templates/forms/options.html:16
+msgid "Change password"
+msgstr "Zmień hasło"
 
