@@ -1,14 +1,15 @@
 dependencies:
 - flask
 - flask-wtf
+- flask-login
 - flask-babel
 - flask-sqlalchemy
 - flask-bcrypt
 - wtforms
 - jinja
 - sqlalchemy
-- paho.mqtt
-- mysqldb
+- paho-mqtt
+- pymysql
 
 default user: "admin"
 default pass: "password"
