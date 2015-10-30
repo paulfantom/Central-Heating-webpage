@@ -1,7 +1,2 @@
-+ heater schedule form + validation
-+ SQL sensors data db connection
-+ user login
-+ AJAX fetch data in refresh rate interval
 + set HMI date + set HMI hour + TZ (is it needed if NTP enabled???)
-+ user management
 + HTML5 canvas scheme

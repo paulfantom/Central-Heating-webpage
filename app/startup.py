@@ -1,6 +1,6 @@
 
 from app import app, db, bcrypt
-from app.models import User
+from app.core.models import User
 
 @app.before_first_request
 def startup():

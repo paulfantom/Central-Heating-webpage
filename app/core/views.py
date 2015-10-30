@@ -8,9 +8,9 @@ from app import app, babel, db, lm
 import json
 from datetime import datetime
 
-from .forms import *
 from config import LANGUAGES, SERVER_IP, BABEL_DEFAULT_LOCALE, WEEKDAYS
 from .system import *
+from .forms import *
 from .data import *
 
 @babel.localeselector
