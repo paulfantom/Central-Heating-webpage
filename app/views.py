@@ -25,11 +25,12 @@ def catch_server_errors(e):
 
 @app.before_request
 def before_request():
-    #if request.remote_addr == SERVER_IP
-    if request.remote_addr == "192.168.10.10":
-        print(current_user)
-        print(current_user.username)
-#       login_user(user, remember = form.remember.data)
+    if request.remote_addr == SERVER_IP
+    #if request.remote_addr == "192.168.10.10":
+        if current_user.username != "admin":
+            print("LOGING IN")
+            user = get_user("admin")
+            login_user(user)
 
 @lm.user_loader
 def load_user(id):
