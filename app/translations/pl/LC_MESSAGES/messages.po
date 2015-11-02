@@ -1,147 +1,32 @@
 # Polish translations for .
-# Copyright (C) 2015 Pawel Krupa 
+# Copyright (C) 2015 Pawel Krupa
 # This file is distributed under the same license as the  project.
 # Pawel Krupa <paulfantom@gmail.com>, 2015.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:  0.1\n"
+"Project-Id-Version: 0.1\n"
 "Report-Msgid-Bugs-To: paulfantom@gmail.com\n"
-"POT-Creation-Date: 2015-10-30 13:41+0100\n"
-"PO-Revision-Date: 2015-10-30 13:44+0100\n"
+"POT-Creation-Date: 2015-11-02 17:19+0100\n"
+"PO-Revision-Date: 2015-11-02 17:23+0100\n"
 "Last-Translator: Paul <paulfantom@gmail.com>\n"
+"Language: pl\n"
 "Language-Team: Polish <paulfantom@gmail.com>\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
-"(n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.0\n"
+"Generated-By: Babel 2.1.1\n"
+"X-Generator: Poedit 1.8.5\n"
 
-#: config.py:26 app/core/forms.py:77
-msgid "Monday"
-msgstr "Poniedziałek"
+#: app/startup.py:15 app/startup.py:18
+msgid "Cannot connect to database"
+msgstr "Nie można połączyć się do bazy danych"
 
-#: config.py:27 app/core/forms.py:78
-msgid "Tuesday"
-msgstr "Wtorek"
-
-#: config.py:28 app/core/forms.py:79
-msgid "Wednesday"
-msgstr "Środa"
-
-#: config.py:29 app/core/forms.py:80
-msgid "Thursday"
-msgstr "Czwartek"
-
-#: config.py:30 app/core/forms.py:81
-msgid "Friday"
-msgstr "Piątek"
-
-#: config.py:31 app/core/forms.py:82
-msgid "Saturday"
-msgstr "Sobota"
-
-#: config.py:32 app/core/forms.py:83
-msgid "Sunday"
-msgstr "Niedziela"
-
-#: config.py:37
-msgid "Interval"
-msgstr "Przerwa"
-
-#: config.py:38
-msgid "Set pump interval in water consumption mode"
-msgstr "Ustaw czas bezczynności pompy cyrkulacyjnej"
-
-#: config.py:43
-msgid "ON time"
-msgstr "Czas pracy"
-
-#: config.py:44
-msgid "Set pump mixing time in water consumption mode"
-msgstr "Ustaw czas pracy pompy cyrkulacyjnej"
-
-#: config.py:50
-msgid "Expected room temperature"
-msgstr "Oczekiwana temperatura pokojowa"
-
-#: config.py:51
-msgid "Override scheduled room temperature for 60 minutes"
-msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
-
-#: config.py:57
-msgid "Critical"
-msgstr "Krytyczna"
-
-#: config.py:58
-msgid "Set heater critical temperature"
-msgstr "Ustaw krytyczną temperaturę pieca"
-
-#: config.py:64
-msgid "Hysteresis"
-msgstr "Histereza"
-
-#: config.py:65
-msgid "Set heater hysteresis for central heating"
-msgstr "Ustaw histerezę centralnego ogrzewania"
-
-#: config.py:72
-msgid "Temperature difference (OFF)"
-msgstr "Różnica temperatur (Wył.)"
-
-#: config.py:73
-msgid "Temperature difference needed to stop solar system"
-msgstr "Różnica temperatur potrzebna do wyłączenia układu solarnego"
-
-#: config.py:79
-msgid "Temperature difference (ON)"
-msgstr "Różnica temperatur (Zał.)"
-
-#: config.py:80
-msgid "Temperature difference needed to start solar system"
-msgstr "Różnica temperatur potrzebna do załączenia układu solarnego"
-
-#: config.py:86
-msgid "Critical temperature"
-msgstr "Temperatura krytyczna"
-
-#: config.py:87
-msgid "Temperature of solar system turning off"
-msgstr "Temperatura wyłączenia układu solarnego"
-
-#: config.py:93 app/core/views.py:186 app/templates/sidebar.html:53
-msgid "Solar"
-msgstr "Kolektor"
-
-#: config.py:94
-msgid "DHW maximum temperature with solar system usage"
-msgstr "Maksymalna temperatura CWU podczas pracy kolektora"
-
-#: config.py:99
-msgid "Heater (max)"
-msgstr "Piec (max)"
-
-#: config.py:100
-msgid "DHW maximum temperature with heater system usage"
-msgstr "Maksymalna temperatura CWU podczas pracy pieca"
-
-#: config.py:105
-msgid "Heater (min)"
-msgstr "Piec (min)"
-
-#: config.py:106
-msgid "DHW minimum temperature with heater system usage"
-msgstr "Minimalna temperatura CWU podczas pracy pieca"
-
-#: config.py:113 app/templates/content/dashboard.html:31
-#: app/templates/content/dashboard.html:34
-msgid "Room temperature"
-msgstr "Temperatura pokojowa"
-
-#: config.py:114
-msgid "Override scheduled room temperature for 1 hour"
-msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
+#: app/startup.py:21
+msgid "Created user"
+msgstr "Utworzono użytkownika"
 
 #: app/core/data.py:81 app/core/views.py:269
 msgid "Week"
@@ -173,7 +58,6 @@ msgstr "Nie podano hasła"
 
 #: app/core/forms.py:54 app/templates/content/schedule.html:90
 #: app/templates/content/schedule_new.html:91
-#: app/templates/content/schedule_old.html:89
 msgid "Save"
 msgstr "Zapisz"
 
@@ -200,6 +84,34 @@ msgstr "Zresetuj hasło"
 #: app/core/forms.py:72
 msgid "Reboot HMI"
 msgstr "Zrestartuj HMI"
+
+#: app/core/forms.py:77
+msgid "Monday"
+msgstr "Poniedziałek"
+
+#: app/core/forms.py:78
+msgid "Tuesday"
+msgstr "Wtorek"
+
+#: app/core/forms.py:79
+msgid "Wednesday"
+msgstr "Środa"
+
+#: app/core/forms.py:80
+msgid "Thursday"
+msgstr "Czwartek"
+
+#: app/core/forms.py:81
+msgid "Friday"
+msgstr "Piątek"
+
+#: app/core/forms.py:82
+msgid "Saturday"
+msgstr "Sobota"
+
+#: app/core/forms.py:83
+msgid "Sunday"
+msgstr "Niedziela"
 
 #: app/core/views.py:62
 msgid "Incorrect username or password"
@@ -313,6 +225,10 @@ msgstr "Cyrkulacja"
 #: app/core/views.py:159
 msgid "Sensors data"
 msgstr "Dane z czujników"
+
+#: app/core/views.py:186 app/templates/sidebar.html:53
+msgid "Solar"
+msgstr "Kolektor"
 
 #: app/core/views.py:190
 msgid "Water"
@@ -436,13 +352,17 @@ msgstr "Harmonogram"
 msgid "Options"
 msgstr "Opcje"
 
+#: app/templates/content/dashboard.html:31
+#: app/templates/content/dashboard.html:34
+msgid "Room temperature"
+msgstr "Temperatura pokojowa"
+
 #: app/templates/content/dashboard.html:54
 msgid "Water temperature"
 msgstr "Temperatura wody"
 
 #: app/templates/content/schedule.html:11
 #: app/templates/content/schedule_new.html:12
-#: app/templates/content/schedule_old.html:11
 msgid "Menu"
 msgstr ""
 
@@ -458,3 +378,68 @@ msgstr "Anuluj"
 msgid "Change password"
 msgstr "Zmień hasło"
 
+#~ msgid "Interval"
+#~ msgstr "Przerwa"
+
+#~ msgid "Set pump interval in water consumption mode"
+#~ msgstr "Ustaw czas bezczynności pompy cyrkulacyjnej"
+
+#~ msgid "ON time"
+#~ msgstr "Czas pracy"
+
+#~ msgid "Set pump mixing time in water consumption mode"
+#~ msgstr "Ustaw czas pracy pompy cyrkulacyjnej"
+
+#~ msgid "Expected room temperature"
+#~ msgstr "Oczekiwana temperatura pokojowa"
+
+#~ msgid "Override scheduled room temperature for 60 minutes"
+#~ msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
+
+#~ msgid "Critical"
+#~ msgstr "Krytyczna"
+
+#~ msgid "Set heater critical temperature"
+#~ msgstr "Ustaw krytyczną temperaturę pieca"
+
+#~ msgid "Hysteresis"
+#~ msgstr "Histereza"
+
+#~ msgid "Set heater hysteresis for central heating"
+#~ msgstr "Ustaw histerezę centralnego ogrzewania"
+
+#~ msgid "Temperature difference (OFF)"
+#~ msgstr "Różnica temperatur (Wył.)"
+
+#~ msgid "Temperature difference needed to stop solar system"
+#~ msgstr "Różnica temperatur potrzebna do wyłączenia układu solarnego"
+
+#~ msgid "Temperature difference (ON)"
+#~ msgstr "Różnica temperatur (Zał.)"
+
+#~ msgid "Temperature difference needed to start solar system"
+#~ msgstr "Różnica temperatur potrzebna do załączenia układu solarnego"
+
+#~ msgid "Critical temperature"
+#~ msgstr "Temperatura krytyczna"
+
+#~ msgid "Temperature of solar system turning off"
+#~ msgstr "Temperatura wyłączenia układu solarnego"
+
+#~ msgid "DHW maximum temperature with solar system usage"
+#~ msgstr "Maksymalna temperatura CWU podczas pracy kolektora"
+
+#~ msgid "Heater (max)"
+#~ msgstr "Piec (max)"
+
+#~ msgid "DHW maximum temperature with heater system usage"
+#~ msgstr "Maksymalna temperatura CWU podczas pracy pieca"
+
+#~ msgid "Heater (min)"
+#~ msgstr "Piec (min)"
+
+#~ msgid "DHW minimum temperature with heater system usage"
+#~ msgstr "Minimalna temperatura CWU podczas pracy pieca"
+
+#~ msgid "Override scheduled room temperature for 1 hour"
+#~ msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"

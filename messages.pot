@@ -6,140 +6,23 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1\n"
-"Report-Msgid-Bugs-To: paulfantom@gmail.com\n"
-"POT-Creation-Date: 2015-10-30 13:41+0100\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-11-02 17:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Paul <paulfantom@gmail.com>\n"
-"Language-Team: Polish <paulfantom@gmail.com>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.0\n"
+"Generated-By: Babel 2.1.1\n"
 
-#: config.py:26 app/core/forms.py:77
-msgid "Monday"
+#: app/startup.py:15 app/startup.py:18
+msgid "Cannot connect to database"
 msgstr ""
 
-#: config.py:27 app/core/forms.py:78
-msgid "Tuesday"
-msgstr ""
-
-#: config.py:28 app/core/forms.py:79
-msgid "Wednesday"
-msgstr ""
-
-#: config.py:29 app/core/forms.py:80
-msgid "Thursday"
-msgstr ""
-
-#: config.py:30 app/core/forms.py:81
-msgid "Friday"
-msgstr ""
-
-#: config.py:31 app/core/forms.py:82
-msgid "Saturday"
-msgstr ""
-
-#: config.py:32 app/core/forms.py:83
-msgid "Sunday"
-msgstr ""
-
-#: config.py:37
-msgid "Interval"
-msgstr ""
-
-#: config.py:38
-msgid "Set pump interval in water consumption mode"
-msgstr ""
-
-#: config.py:43
-msgid "ON time"
-msgstr ""
-
-#: config.py:44
-msgid "Set pump mixing time in water consumption mode"
-msgstr ""
-
-#: config.py:50
-msgid "Expected room temperature"
-msgstr ""
-
-#: config.py:51
-msgid "Override scheduled room temperature for 60 minutes"
-msgstr ""
-
-#: config.py:57
-msgid "Critical"
-msgstr ""
-
-#: config.py:58
-msgid "Set heater critical temperature"
-msgstr ""
-
-#: config.py:64
-msgid "Hysteresis"
-msgstr ""
-
-#: config.py:65
-msgid "Set heater hysteresis for central heating"
-msgstr ""
-
-#: config.py:72
-msgid "Temperature difference (OFF)"
-msgstr ""
-
-#: config.py:73
-msgid "Temperature difference needed to stop solar system"
-msgstr ""
-
-#: config.py:79
-msgid "Temperature difference (ON)"
-msgstr ""
-
-#: config.py:80
-msgid "Temperature difference needed to start solar system"
-msgstr ""
-
-#: config.py:86
-msgid "Critical temperature"
-msgstr ""
-
-#: config.py:87
-msgid "Temperature of solar system turning off"
-msgstr ""
-
-#: config.py:93 app/core/views.py:186 app/templates/sidebar.html:53
-msgid "Solar"
-msgstr ""
-
-#: config.py:94
-msgid "DHW maximum temperature with solar system usage"
-msgstr ""
-
-#: config.py:99
-msgid "Heater (max)"
-msgstr ""
-
-#: config.py:100
-msgid "DHW maximum temperature with heater system usage"
-msgstr ""
-
-#: config.py:105
-msgid "Heater (min)"
-msgstr ""
-
-#: config.py:106
-msgid "DHW minimum temperature with heater system usage"
-msgstr ""
-
-#: config.py:113 app/templates/content/dashboard.html:31
-#: app/templates/content/dashboard.html:34
-msgid "Room temperature"
-msgstr ""
-
-#: config.py:114
-msgid "Override scheduled room temperature for 1 hour"
+#: app/startup.py:21
+msgid "Created user"
 msgstr ""
 
 #: app/core/data.py:81 app/core/views.py:269
@@ -172,7 +55,6 @@ msgstr ""
 
 #: app/core/forms.py:54 app/templates/content/schedule.html:90
 #: app/templates/content/schedule_new.html:91
-#: app/templates/content/schedule_old.html:89
 msgid "Save"
 msgstr ""
 
@@ -198,6 +80,34 @@ msgstr ""
 
 #: app/core/forms.py:72
 msgid "Reboot HMI"
+msgstr ""
+
+#: app/core/forms.py:77
+msgid "Monday"
+msgstr ""
+
+#: app/core/forms.py:78
+msgid "Tuesday"
+msgstr ""
+
+#: app/core/forms.py:79
+msgid "Wednesday"
+msgstr ""
+
+#: app/core/forms.py:80
+msgid "Thursday"
+msgstr ""
+
+#: app/core/forms.py:81
+msgid "Friday"
+msgstr ""
+
+#: app/core/forms.py:82
+msgid "Saturday"
+msgstr ""
+
+#: app/core/forms.py:83
+msgid "Sunday"
 msgstr ""
 
 #: app/core/views.py:62
@@ -311,6 +221,10 @@ msgstr ""
 
 #: app/core/views.py:159
 msgid "Sensors data"
+msgstr ""
+
+#: app/core/views.py:186 app/templates/sidebar.html:53
+msgid "Solar"
 msgstr ""
 
 #: app/core/views.py:190
@@ -435,13 +349,17 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
+#: app/templates/content/dashboard.html:31
+#: app/templates/content/dashboard.html:34
+msgid "Room temperature"
+msgstr ""
+
 #: app/templates/content/dashboard.html:54
 msgid "Water temperature"
 msgstr ""
 
 #: app/templates/content/schedule.html:11
 #: app/templates/content/schedule_new.html:12
-#: app/templates/content/schedule_old.html:11
 msgid "Menu"
 msgstr ""
 
