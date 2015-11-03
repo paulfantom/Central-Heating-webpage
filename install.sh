@@ -1,5 +1,5 @@
 #!/bin/bash
-PASSWORD = "$1"
+PASSWORD= "$1"
 
 sudo apt-get install -y python-virtualenv libffi-dev python-dev
 
