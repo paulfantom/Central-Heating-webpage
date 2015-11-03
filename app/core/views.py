@@ -311,7 +311,7 @@ def dashboard_data():
     day = datetime.today().weekday()
     try: 
         schedule_day = bool(int(get_data('schedule','heater','settings')['week'][day]))
-    except TypeError:
+    except (TypeError,AttributeError):
         schedule_day = False
     data = { "inside_temperature"   : round(get_data('inside_temperature','room'),1),
              "apparent_temperature" : round(get_data('apparent_temperature','room'),1),

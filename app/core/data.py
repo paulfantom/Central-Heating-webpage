@@ -40,10 +40,9 @@ def get_SQL_value(db_model=Room1TempReal,column='payload'):
         return 0
     try:
         return getattr(q,column)
-    except AttributeError:
-        return None
-    except TypeError:
-        return None
+    except (AttributeError,TypeError):
+#        return None
+        return 0
 
 def change_setting(value,name,category=None):
      solarControlID = 'solarControl'
