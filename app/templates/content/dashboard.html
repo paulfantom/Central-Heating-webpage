@@ -104,10 +104,10 @@ function update() {
         ('0' + (myDate.getMonth() + 1)).slice(-2) + '/' + 
         myDate.getFullYear();
   {# Day of week not working on webkit #}
-  var dow = myDate.toLocaleString("{% trans %}en{% endtrans %}", {weekday: 'long'});
+  //var dow = myDate.toLocaleString("{% trans %}en{% endtrans %}", {weekday: 'long'});
   {#var dow = myDate.toLocaleString(window.navigator.language, {weekday: 'long'});#}
   $('#time').text(time);
-  $('#dayofweek').text(dow);
+  //$('#dayofweek').text(dow);
   $('#date').text(date);
 };
 
