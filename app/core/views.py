@@ -235,12 +235,12 @@ def schedule(state=None):
 
     save = True
     schedule = get_data('schedule','heater','settings')
-    if schedule is None:
-        save=False
-        schedule = {"week":[0,0,0,0,0,0,0],
-                    "work":[{"to":[0,0],"from":[0,0],"temp":0}],
-                    "free":[{"to":[0,0],"from":[0,0],"temp":0}],
-                    "other":0}
+    #if schedule is None:
+    #    save=False
+    #    schedule = {"week":[0,0,0,0,0,0,0],
+    #                "work":[{"to":[0,0],"from":[0,0],"temp":0}],
+    #                "free":[{"to":[0,0],"from":[0,0],"temp":0}],
+    #                "other":0}
  
     try:
         diff = datetime.now() - datetime(*schedule['override']['start'])
@@ -363,7 +363,10 @@ def set_value(name,category=None):
             #FIXME insert new into schedule
             schedule = get_data('schedule','heater','settings')
             time = list(datetime.today().timetuple())[0:6]
-            schedule['override'] = {'temp' : float(val), 'start' : time, 'duration': 60}
+            f_val = float(val)
+            schedule['override'] = {'temp' : f_val, 
+                                    'start' : time,
+                                    'duration': 60}
             s = '"' + json.dumps(schedule) + '"'
             change_setting(s,'schedule','heater')
         else:

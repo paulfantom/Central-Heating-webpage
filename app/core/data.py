@@ -282,7 +282,10 @@ def get_data(name,category,dataset='sensors'):
             if name == 'schedule'  :
                 schedule = get_SQL_value(SolarControlHeaterSettingsSchedule)
                 if schedule == 0:
-                    return None
+                    return {"week":[0,0,0,0,0,0,0],
+                            "work":[{"to":[0,0],"from":[0,0],"temp":0}],
+                            "free":[{"to":[0,0],"from":[0,0],"temp":0}],
+                            "other":0}
                 schedule = schedule.replace('\\','').replace('\'','"')
                 if schedule[0] == '"':
                     schedule = schedule[1:-1]
