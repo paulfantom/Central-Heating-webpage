@@ -27,9 +27,9 @@
 <div class="tab-content">
 {%- for tab in tabs %}
   {%- if loop.index == init_tab %}
-  <div class="tab-pane fade in active" id="{{ tab['id'] }}-tab">
+  <div class="tab-pane in active" id="{{ tab['id'] }}-tab">
   {%- else %}
-  <div class="tab-pane fade" id="{{ tab['id'] }}-tab">
+  <div class="tab-pane" id="{{ tab['id'] }}-tab">
   {%- endif %}
     <div class="container-fluid">
       {%- if tab['table'] is defined %}
