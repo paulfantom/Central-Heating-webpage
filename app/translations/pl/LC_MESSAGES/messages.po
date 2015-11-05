@@ -378,68 +378,68 @@ msgstr "Anuluj"
 msgid "Change password"
 msgstr "Zmień hasło"
 
-#~ msgid "Interval"
-#~ msgstr "Przerwa"
+msgid "Interval"
+msgstr "Przerwa"
 
-#~ msgid "Set pump interval in water consumption mode"
-#~ msgstr "Ustaw czas bezczynności pompy cyrkulacyjnej"
+msgid "Set pump interval in water consumption mode"
+msgstr "Ustaw czas bezczynności pompy cyrkulacyjnej"
 
-#~ msgid "ON time"
-#~ msgstr "Czas pracy"
+msgid "ON time"
+msgstr "Czas pracy"
 
-#~ msgid "Set pump mixing time in water consumption mode"
-#~ msgstr "Ustaw czas pracy pompy cyrkulacyjnej"
+msgid "Set pump mixing time in water consumption mode"
+msgstr "Ustaw czas pracy pompy cyrkulacyjnej"
 
-#~ msgid "Expected room temperature"
-#~ msgstr "Oczekiwana temperatura pokojowa"
+msgid "Expected room temperature"
+msgstr "Oczekiwana temperatura pokojowa"
 
-#~ msgid "Override scheduled room temperature for 60 minutes"
-#~ msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
+msgid "Override scheduled room temperature for 60 minutes"
+msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
 
-#~ msgid "Critical"
-#~ msgstr "Krytyczna"
+msgid "Critical"
+msgstr "Krytyczna"
 
-#~ msgid "Set heater critical temperature"
-#~ msgstr "Ustaw krytyczną temperaturę pieca"
+msgid "Set heater critical temperature"
+msgstr "Ustaw krytyczną temperaturę pieca"
 
-#~ msgid "Hysteresis"
-#~ msgstr "Histereza"
+msgid "Hysteresis"
+msgstr "Histereza"
 
-#~ msgid "Set heater hysteresis for central heating"
-#~ msgstr "Ustaw histerezę centralnego ogrzewania"
+msgid "Set heater hysteresis for central heating"
+msgstr "Ustaw histerezę centralnego ogrzewania"
 
-#~ msgid "Temperature difference (OFF)"
-#~ msgstr "Różnica temperatur (Wył.)"
+msgid "Temperature difference (OFF)"
+msgstr "Różnica temperatur (Wył.)"
 
-#~ msgid "Temperature difference needed to stop solar system"
-#~ msgstr "Różnica temperatur potrzebna do wyłączenia układu solarnego"
+msgid "Temperature difference needed to stop solar system"
+msgstr "Różnica temperatur potrzebna do wyłączenia układu solarnego"
 
-#~ msgid "Temperature difference (ON)"
-#~ msgstr "Różnica temperatur (Zał.)"
+msgid "Temperature difference (ON)"
+msgstr "Różnica temperatur (Zał.)"
 
-#~ msgid "Temperature difference needed to start solar system"
-#~ msgstr "Różnica temperatur potrzebna do załączenia układu solarnego"
+msgid "Temperature difference needed to start solar system"
+msgstr "Różnica temperatur potrzebna do załączenia układu solarnego"
 
-#~ msgid "Critical temperature"
-#~ msgstr "Temperatura krytyczna"
+msgid "Critical temperature"
+msgstr "Temperatura krytyczna"
 
-#~ msgid "Temperature of solar system turning off"
-#~ msgstr "Temperatura wyłączenia układu solarnego"
+msgid "Temperature of solar system turning off"
+msgstr "Temperatura wyłączenia układu solarnego"
 
-#~ msgid "DHW maximum temperature with solar system usage"
-#~ msgstr "Maksymalna temperatura CWU podczas pracy kolektora"
+msgid "DHW maximum temperature with solar system usage"
+msgstr "Maksymalna temperatura CWU podczas pracy kolektora"
 
-#~ msgid "Heater (max)"
-#~ msgstr "Piec (max)"
+msgid "Heater (max)"
+msgstr "Piec (max)"
 
-#~ msgid "DHW maximum temperature with heater system usage"
-#~ msgstr "Maksymalna temperatura CWU podczas pracy pieca"
+msgid "DHW maximum temperature with heater system usage"
+msgstr "Maksymalna temperatura CWU podczas pracy pieca"
 
-#~ msgid "Heater (min)"
-#~ msgstr "Piec (min)"
+msgid "Heater (min)"
+msgstr "Piec (min)"
 
-#~ msgid "DHW minimum temperature with heater system usage"
-#~ msgstr "Minimalna temperatura CWU podczas pracy pieca"
+msgid "DHW minimum temperature with heater system usage"
+msgstr "Minimalna temperatura CWU podczas pracy pieca"
 
-#~ msgid "Override scheduled room temperature for 1 hour"
-#~ msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
+msgid "Override scheduled room temperature for 1 hour"
+msgstr "Nadpisz harmonogram ogrzewania na okres 60 minut"
