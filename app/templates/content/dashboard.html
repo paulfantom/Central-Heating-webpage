@@ -111,7 +111,7 @@ function update() {
   $('#date').text(date);
 };
 
-(setInterval( function () {
+setInterval( function () {
   $.ajax({
         url: '/dashboard/get_data',
         dataType: "json",
@@ -136,7 +136,7 @@ function update() {
                 $("#heater_schedule").parent().removeClass('active')
             }
         }})
-},{{refresh_rate|default(1.5)}}*60000)());
+},{{refresh_rate|default(1.5)}}*60000);
 
 {# {% if data['heater_status'] == gettext('ON') %}active{% endif %} #}
 
