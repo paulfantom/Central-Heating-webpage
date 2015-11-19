@@ -21,27 +21,27 @@ def get_locale():
 @app.errorhandler(400)
 def catch_server_errors_400(e):
     flash("Something went wrong. ERROR 400")
-    return redirect('/'), 400
+    return redirect('/dashboard'), 400
 
 @app.errorhandler(403)
 def catch_server_errors_403(e):
     flash("You can't go there. ERROR 403")
-    return redirect('/'), 403
+    return redirect('/dashboard'), 403
 
 @app.errorhandler(404)
 def catch_server_errors_404(e):
     flash("Are you sure this is the correct address? ERROR 404")
-    return redirect('/'), 404
+    return redirect('/dashboard'), 404
 
 @app.errorhandler(410)
 def catch_server_errors_410(e):
     flash("It was here but now it's gone. ERROR 410")
-    return redirect('/'), 410
+    return redirect('/dashboard'), 410
 
 @app.errorhandler(500)
 def catch_server_errors_500(e):
     flash("Sorry cannot do it right now. ERROR 500")
-    return redirect('/'), 500
+    return redirect('/dashboard'), 500
 
 @app.before_request
 def before_request():
