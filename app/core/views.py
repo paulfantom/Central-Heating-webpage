@@ -283,7 +283,7 @@ def schedule(state=None):
                'id'    : 'free_day',
                'table' : {
                    'title'     : gettext('Heating schedule'),
-                   'col_names' : ['OD','DO',u'T [°C]'],
+                   'col_names' : [gettext('FROM'),gettext('TO'),u'T [°C]'],
                    'data'      : schedule['free'],
                    'footer'    : [gettext('Other'),gettext('Hours'),schedule['other']]}},
               {'title'  : gettext('Week'),
