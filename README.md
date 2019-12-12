@@ -1,3 +1,5 @@
+## Project was replaced with Home Assistant and @automatedhome components
+
 dependencies:
 - flask
 - flask-wtf
